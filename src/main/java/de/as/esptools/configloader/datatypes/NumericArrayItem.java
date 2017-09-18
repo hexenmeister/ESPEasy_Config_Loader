@@ -16,9 +16,10 @@ public abstract class NumericArrayItem extends DataItem {
 	public boolean isSigned() {
 		return this.signed;
 	}
-	
+
 	/**
 	 * Liefert Länge eines Items in Bytes.
+	 * 
 	 * @return Länge
 	 */
 	public int getItemLengthInBytes() {
@@ -28,7 +29,7 @@ public abstract class NumericArrayItem extends DataItem {
 	@Override
 	public void importString(String data) throws DataImportException {
 		long longNum;
-		if(isSigned()) {
+		if (isSigned()) {
 			longNum = Long.parseLong(data);
 		} else {
 			longNum = Long.parseUnsignedLong(data);
@@ -42,27 +43,27 @@ public abstract class NumericArrayItem extends DataItem {
 		return Long.toString(bytesToLong(this.getData()));
 	}
 
-//	public static final byte[] intToByteArray(int value) {
-//	    return new byte[] {
-//	            (byte)(value >>> 24),
-//	            (byte)(value >>> 16),
-//	            (byte)(value >>> 8),
-//	            (byte)value};
-//	}
-	
-	private static long bytesToLong(byte[] bytes) {
-	    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-	    buffer.put(bytes);
-	    buffer.flip();//need flip 
-	    return buffer.getLong();
+	// public static final byte[] intToByteArray(int value) {
+	// return new byte[] {
+	// (byte)(value >>> 24),
+	// (byte)(value >>> 16),
+	// (byte)(value >>> 8),
+	// (byte)value};
+	// }
+
+	protected static long bytesToLong(byte[] bytes) {
+		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+		buffer.put(bytes);
+		buffer.flip(); // need flip
+		return buffer.getLong();
 	}
-	
+
 	protected static final byte[] longToReverseByteArray(long value, int lenghtInBytes) {
 		byte[] array = new byte[lenghtInBytes];
-		for(int i=0; i<lenghtInBytes;i++) {
-			array[i] = (byte)(value >>> 8*i);
+		for (int i = 0; i < lenghtInBytes; i++) {
+			array[i] = (byte) (value >>> 8 * i);
 		}
-		
-	    return array;
+
+		return array;
 	}
 }
