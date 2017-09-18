@@ -2,6 +2,8 @@ package de.as.esptools.configloader;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,14 +51,15 @@ public class NumericArrayItemTest {
 
 	@Test
 	public void testBytesToLong() {
-		byte[] bytes = new byte[] {(byte) 0xD1, (byte) 0x68, (byte) 0x2B, (byte) 0x78, (byte) 0x02};
+		byte[] bytes = new byte[] {(byte) 0xD1, (byte) 0x68, (byte) 0x2B, (byte) 0x78};
 		long l = inst14s.bytesToLong(bytes);
 		Assert.assertEquals(2016110801l, l);
 	}
 
 	@Test
 	public void testLongToReverseByteArray() {
-		fail("Not yet implemented");
+		byte[] bytes = inst14s.longToReverseByteArray(2016110801l, 4);
+		Assert.assertTrue(Arrays.equals(new byte[]{(byte) 0xD1, (byte) 0x68, (byte) 0x2B, (byte) 0x78}, bytes));
 	}
 
 }
