@@ -51,14 +51,14 @@ public abstract class NumericArrayItem extends DataItem {
 	// (byte)value};
 	// }
 
-	protected static long bytesToLong(byte[] bytes) {
+	protected long bytesToLong(byte[] bytes) {
 		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
 		buffer.put(bytes);
 		buffer.flip(); // need flip
 		return buffer.getLong();
 	}
 
-	protected static final byte[] longToReverseByteArray(long value, int lenghtInBytes) {
+	protected byte[] longToReverseByteArray(long value, int lenghtInBytes) {
 		byte[] array = new byte[lenghtInBytes];
 		for (int i = 0; i < lenghtInBytes; i++) {
 			array[i] = (byte) (value >>> 8 * i);
