@@ -112,5 +112,19 @@ public class UtilTest {
 		bytes = Util.longToReverseByteArray(1l, 1);
 		Assert.assertTrue(Arrays.equals(new byte[] { (byte) 0x01 }, bytes));
 	}
+	
+	@Test
+	public void testFloat() {
+		float f = 1f;
+		java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(4);
+		buf.putFloat(f);
+		byte[] bytes = buf.array();
+		System.out.println(Arrays.toString(bytes));
+		java.nio.ByteBuffer buf2 = java.nio.ByteBuffer.allocate(4);
+		buf2.put(bytes);
+		float f2 = buf2.getFloat(0);
+		
+		Assert.assertEquals(f, f2, 0.0);
+	}
 
 }
