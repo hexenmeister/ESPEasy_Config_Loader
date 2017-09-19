@@ -34,13 +34,30 @@ public abstract class NumericArrayItem extends DataItem {
 		} else {
 			longNum = Long.parseUnsignedLong(data);
 		}
-		byte[] bytes = Util.longToReverseByteArray(longNum, this.getItemLengthInBytes());
-		setData(bytes);
+		this.setNumber(longNum);
 	}
 
 	@Override
 	public String exportString() {
-		return Long.toString(Util.reverseByteArrayToLong(this.getData(), this.isSigned()));
+		return Long.toString(this.getNumber());
 	}
 
+	/**
+	 * Liefert den Wert numerisch (als long),
+	 * @return Wert
+	 */
+	public long getNumber() {
+		return Util.reverseByteArrayToLong(this.getData(), this.isSigned());
+	}
+
+	/**
+	 * Übernimmt den gegebenen numerischen Wert.
+	 * @param number Wert
+	 * @throws DataImportException
+	 */
+	public void setNumber(long number) throws DataImportException {
+		// TODO: Prüfen, ob die Länge (Array-Länge) ausreicht
+		byte[] bytes = Util.longToReverseByteArray(number, this.getItemLengthInBytes());
+		setData(bytes);
+	}
 }

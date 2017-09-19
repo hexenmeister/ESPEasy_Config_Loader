@@ -2,9 +2,11 @@ package de.as.esptools.configloader;
 
 import static org.junit.Assert.fail;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.as.esptools.configloader.datatypes.DataImportException;
 import de.as.esptools.configloader.datatypes.NumericArrayItem;
 
 public class NumericArrayItemTest {
@@ -26,12 +28,25 @@ public class NumericArrayItemTest {
 	}
 
 	@Test
-	public void testImportString() {
+	public void testImportString() throws DataImportException {
+		inst14s.importString("1234");
+		Assert.assertEquals("1234", inst14s.exportString());
+		
 		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testExportString() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testGetNumber() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testSetNumber() {
 		fail("Not yet implemented");
 	}
 
