@@ -2,13 +2,13 @@ package de.as.esptools.configloader.datatypes;
 
 import de.as.esptools.configloader.datatypes.util.Util;
 
-public abstract class NumericArrayItem extends DataItem {
+public abstract class NumericItem extends DataItem {
 
 	private boolean signed = true;
 	private int bytesPerItem;
 
-	protected NumericArrayItem(int length, int bytesPerItem, boolean singned) {
-		super(length * bytesPerItem);
+	protected NumericItem(int bytesPerItem, boolean singned) {
+		super(bytesPerItem);
 		this.signed = singned;
 		this.bytesPerItem = bytesPerItem;
 	}
@@ -48,6 +48,7 @@ public abstract class NumericArrayItem extends DataItem {
 
 	/**
 	 * Liefert den Wert numerisch (als long).
+	 * 
 	 * @return Wert
 	 */
 	public long getNumber() {

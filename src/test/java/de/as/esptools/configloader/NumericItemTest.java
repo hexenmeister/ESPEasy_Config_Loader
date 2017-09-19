@@ -7,24 +7,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.DataImportException;
-import de.as.esptools.configloader.datatypes.NumericArrayItem;
+import de.as.esptools.configloader.datatypes.NumericItem;
 
-public class NumericArrayItemTest {
+public class NumericItemTest {
 
 	NumericArrayItemInst inst14s;
 	NumericArrayItemInst inst14u;
 
-	static class NumericArrayItemInst extends NumericArrayItem {
+	static class NumericArrayItemInst extends NumericItem {
 
-		protected NumericArrayItemInst(int length, int bytesPerItem, boolean singned) {
-			super(length, bytesPerItem, singned);
+		protected NumericArrayItemInst(int bytesPerItem, boolean singned) {
+			super(bytesPerItem, singned);
 		}
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		inst14s = new NumericArrayItemInst(1, 4, true);
-		inst14u = new NumericArrayItemInst(1, 4, false);
+		inst14s = new NumericArrayItemInst(4, true);
+		inst14u = new NumericArrayItemInst(4, false);
 	}
 
 	@Test

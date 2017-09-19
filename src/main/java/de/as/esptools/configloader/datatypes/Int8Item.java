@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class Int8ArrayItem extends NumericArrayItem {
+public class Int8Item extends NumericItem {
 
 	
 	/**
@@ -8,8 +8,8 @@ public class Int8ArrayItem extends NumericArrayItem {
 	 */
 	private static final int BYTES_PER_ITEM = 1;
 	
-	protected Int8ArrayItem(int length, boolean signed) {
-		super(length, BYTES_PER_ITEM, signed);
+	protected Int8Item(boolean signed) {
+		super(BYTES_PER_ITEM, signed);
 	}
 
 }
