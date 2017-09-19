@@ -11,6 +11,4 @@ public class Int16ArrayItem extends NumericArrayItem {
 		super(length, BYTES_PER_ITEM, signed);
 	}
 
-	// TODO
-	
 }

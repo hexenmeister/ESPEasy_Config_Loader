@@ -1,15 +1,15 @@
 package de.as.esptools.configloader.datatypes;
 
+import de.as.esptools.configloader.datatypes.util.Util;
+
 public class FloatArrayItem extends DataItem {
 
-	// TODO: implementieren
-	
 	/**
 	 * Datentyp-Länge in Bytes.
 	 */
 	private static final int BYTES_PER_ITEM = 4;
 	
-	protected FloatArrayItem(int length) {
+	public FloatArrayItem(int length) {
 		super(length*BYTES_PER_ITEM);
 	}
 
@@ -38,8 +38,7 @@ public class FloatArrayItem extends DataItem {
 	 * @return Wert
 	 */
 	public float getFloat() {
-		// TODO
-		return 0;
+		return Util.byteArrayToFloat(this.getData());
 	}
 
 	/**
@@ -49,22 +48,7 @@ public class FloatArrayItem extends DataItem {
 	 */
 	public void setFloat(float number) throws DataImportException {
 		// TODO: Prüfen, ob die Länge (Array-Länge) ausreicht?
-		
-		// TODO
-//		byte[] bytes = floatToByteArray(number);
-//		setData(bytes);
+		this.setData(Util.floatToByteArray(number));
 	}
-
-//	public void testFloat() {
-//		float f = 1f;
-//		java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(4);
-//		buf.putFloat(f);
-//		byte[] bytes = buf.array();
-//		System.out.println(Arrays.toString(bytes));
-//		java.nio.ByteBuffer buf2 = java.nio.ByteBuffer.allocate(4);
-//		buf2.put(bytes);
-//		float f2 = buf2.getFloat(0);
-//		
-//	}
 
 }

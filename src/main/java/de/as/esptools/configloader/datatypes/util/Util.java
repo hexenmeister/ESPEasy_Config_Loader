@@ -58,4 +58,27 @@ public final class Util {
 
 		return res;
 	}
+	
+	/**
+	 * Erstellt eine float-Zahl aus ihrer Byte-Representaion.
+	 * @param bytes ByteArray
+	 * @return float-Wert
+	 */
+	public static final float byteArrayToFloat(byte[] bytes) {
+		java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(4);
+		buf.put(bytes);
+		return buf.getFloat(0);
+	}
+
+	/**
+	 * Liefert Byte-Representation einer float-Zahl.
+	 * @param f float-Wert.
+	 * @return ByteArray
+	 */
+	public static final byte[] floatToByteArray(float f) {
+		java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(Float.BYTES);
+		buf.putFloat(f);
+		byte[] bytes = buf.array();
+		return bytes;
+	}
 }

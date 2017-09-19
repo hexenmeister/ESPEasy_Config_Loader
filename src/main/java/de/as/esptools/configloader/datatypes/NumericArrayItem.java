@@ -32,7 +32,11 @@ public abstract class NumericArrayItem extends DataItem {
 		if (isSigned()) {
 			longNum = Long.parseLong(data);
 		} else {
-			longNum = Long.parseUnsignedLong(data);
+			try {
+				longNum = Long.parseUnsignedLong(data);
+			} catch (NumberFormatException e) {
+				throw new DataImportException(e.getMessage());
+			}
 		}
 		this.setNumber(longNum);
 	}
@@ -43,7 +47,7 @@ public abstract class NumericArrayItem extends DataItem {
 	}
 
 	/**
-	 * Liefert den Wert numerisch (als long),
+	 * Liefert den Wert numerisch (als long).
 	 * @return Wert
 	 */
 	public long getNumber() {
@@ -52,11 +56,16 @@ public abstract class NumericArrayItem extends DataItem {
 
 	/**
 	 * Übernimmt den gegebenen numerischen Wert.
-	 * @param number Wert
+	 * 
+	 * @param number
+	 *            Wert
 	 * @throws DataImportException
 	 */
 	public void setNumber(long number) throws DataImportException {
 		// TODO: Prüfen, ob die Länge (Array-Länge) ausreicht
+		if (!this.isSigned() && number < 0) {
+			throw new DataImportException("negative numbers are not supported");
+		}
 		byte[] bytes = Util.longToReverseByteArray(number, this.getItemLengthInBytes());
 		setData(bytes);
 	}
