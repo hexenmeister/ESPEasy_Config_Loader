@@ -52,10 +52,30 @@ public abstract class NumericArrayItem extends DataItem {
 	// }
 
 	protected long bytesToLong(byte[] bytes) {
-		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-		buffer.put(bytes);
-		buffer.flip(); // need flip
-		return buffer.getLong();
+		long res = 0;
+		// byte ist signed, falls höchstwertiger byte < 0, dann ist die ganze
+		// Zahl negativ
+		boolean negativ = (this.isSigned() && bytes[bytes.length - 1] < 0);
+		for (int i = 0, n = bytes.length; i < n; i++) {
+			// byte ist signed, es soll jedoch als unsigned interpretiert werden
+			long unsignedValue = bytes[i] & 0xFF;
+			if (negativ) {
+				// falls die Zahl negativ sein soll, Zweierkomplement berechnen
+				unsignedValue ^= 0xFF;
+			}
+			res += (unsignedValue << 8 * (i));
+		}
+
+		if (negativ) {
+			// Zweierkomplement
+			res = -res - 1;
+		}
+
+		return res;
+		// ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+		// buffer.put(bytes);
+		// buffer.flip(); // need flip
+		// return buffer.getLong();
 	}
 
 	protected byte[] longToReverseByteArray(long value, int lenghtInBytes) {
