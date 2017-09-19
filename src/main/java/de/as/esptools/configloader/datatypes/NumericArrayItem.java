@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-import java.nio.ByteBuffer;
+import de.as.esptools.configloader.datatypes.util.Util;
 
 public abstract class NumericArrayItem extends DataItem {
 
@@ -34,56 +34,13 @@ public abstract class NumericArrayItem extends DataItem {
 		} else {
 			longNum = Long.parseUnsignedLong(data);
 		}
-		byte[] bytes = longToReverseByteArray(longNum, this.getItemLengthInBytes());
+		byte[] bytes = Util.longToReverseByteArray(longNum, this.getItemLengthInBytes());
 		setData(bytes);
 	}
 
 	@Override
 	public String exportString() {
-		return Long.toString(bytesToLong(this.getData()));
+		return Long.toString(Util.reverseByteArrayToLong(this.getData(), this.isSigned()));
 	}
 
-	// public static final byte[] intToByteArray(int value) {
-	// return new byte[] {
-	// (byte)(value >>> 24),
-	// (byte)(value >>> 16),
-	// (byte)(value >>> 8),
-	// (byte)value};
-	// }
-
-	protected long bytesToLong(byte[] bytes) {
-		long res = 0;
-		// byte ist signed, falls höchstwertiger byte < 0, dann ist die ganze
-		// Zahl negativ
-		boolean negativ = (this.isSigned() && bytes[bytes.length - 1] < 0);
-		for (int i = 0, n = bytes.length; i < n; i++) {
-			// byte ist signed, es soll jedoch als unsigned interpretiert werden
-			long unsignedValue = bytes[i] & 0xFF;
-			if (negativ) {
-				// falls die Zahl negativ sein soll, Zweierkomplement berechnen
-				unsignedValue ^= 0xFF;
-			}
-			res += (unsignedValue << 8 * (i));
-		}
-
-		if (negativ) {
-			// Zweierkomplement
-			res = -res - 1;
-		}
-
-		return res;
-		// ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-		// buffer.put(bytes);
-		// buffer.flip(); // need flip
-		// return buffer.getLong();
-	}
-
-	protected byte[] longToReverseByteArray(long value, int lenghtInBytes) {
-		byte[] array = new byte[lenghtInBytes];
-		for (int i = 0; i < lenghtInBytes; i++) {
-			array[i] = (byte) (value >>> 8 * i);
-		}
-
-		return array;
-	}
 }
