@@ -13,6 +13,12 @@ public abstract class NumericItem extends DataItem {
 		this.bytesPerItem = bytesPerItem;
 	}
 
+	protected NumericItem(byte[] data, int offset, int bytesPerItem, boolean singned) {
+		super(data, offset, bytesPerItem);
+		this.signed = singned;
+		this.bytesPerItem = bytesPerItem;
+	}
+
 	public boolean isSigned() {
 		return this.signed;
 	}

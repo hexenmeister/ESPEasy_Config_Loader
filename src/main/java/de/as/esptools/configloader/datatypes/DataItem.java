@@ -1,7 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 import de.as.esptools.configloader.datatypes.util.Util;
 
