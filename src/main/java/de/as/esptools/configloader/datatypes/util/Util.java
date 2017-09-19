@@ -1,4 +1,4 @@
-package de.as.esptools.configloader.utils;
+package de.as.esptools.configloader.datatypes.util;
 
 public final class Util {
 
