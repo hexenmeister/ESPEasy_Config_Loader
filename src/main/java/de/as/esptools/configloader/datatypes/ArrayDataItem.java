@@ -2,7 +2,7 @@ package de.as.esptools.configloader.datatypes;
 
 import de.as.esptools.configloader.datatypes.util.Util;
 
-public abstract class ArrayDataItem<T extends DataItem> implements IDataType {
+public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataType {
 
 	private DataItem[] array;
 	private byte[] data;
@@ -36,6 +36,10 @@ public abstract class ArrayDataItem<T extends DataItem> implements IDataType {
 		return data;
 	}
 
+	public int getArrayLength() {
+		return this.array.length;
+	}
+
 	@Override
 	public void importBin(byte[] data) throws DataImportException {
 		if (data.length != this.data.length) {
@@ -59,7 +63,9 @@ public abstract class ArrayDataItem<T extends DataItem> implements IDataType {
 
 	@Override
 	public void importHex(String data) throws DataImportException {
-		// TODO Auto-generated method stub
+		// TODO
+		// allowShortDataImport
+		// allowLongDataImport
 	}
 
 	@Override
@@ -76,14 +82,34 @@ public abstract class ArrayDataItem<T extends DataItem> implements IDataType {
 
 	@Override
 	public void importString(String data) throws DataImportException {
-		// TODO Auto-generated method stub
-
+		// TODO
+		// allowShortDataImport
+		// allowLongDataImport
 	}
 
 	@Override
 	public String exportString() {
-		// TODO Auto-generated method stub
+		// TODO
 		return null;
 	}
 
+	/**
+	 * Gibt an, ob es erlaubt sein soll,auch kürzere (als Array-Buffer) Daten zu
+	 * importieren. In diesem Fall wird der Rest mit Nulen überschrieben.
+	 * 
+	 * @return Entscheidung
+	 */
+	protected boolean allowShortDataImport() {
+		return false;
+	}
+
+	/**
+	 * Gibt an, ob es erlaubt sein soll,auch längere (als Array-Buffer) Daten zu
+	 * importieren. In diesem Fall wird der Rest ignoriert.
+	 * 
+	 * @return Entscheidung
+	 */
+	protected boolean allowLongDataImport() {
+		return false;
+	}
 }
