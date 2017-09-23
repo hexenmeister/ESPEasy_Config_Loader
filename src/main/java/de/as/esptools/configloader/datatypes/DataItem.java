@@ -9,20 +9,30 @@ public abstract class DataItem implements IDataType {
 	private byte[] data;
 	private int offset = 0;
 	private int length = 0;
+	private String name;
+	private boolean isInArray = false;
 
 	/**
 	 * Erstellt ein XDataItem mit eigenem ByteArray in der (für ein Item)
 	 * notwendigen Länge.
 	 * 
+	 * @param name
+	 *            Typname
 	 * @param length
 	 *            Länge der Item-Representation in Bytes
 	 */
-	protected DataItem(int length) {
+	protected DataItem(String name, int length) {
+		this.name = name;
 		this.data = new byte[length];
 		this.length = length;
+		this.isInArray = false;
 	}
 
 	/**
+	 * Erstellt ein Item als Referenz auf ein existierendes DataArray.
+	 * 
+	 * @param name
+	 *            Typname
 	 * @param data
 	 *            Referenz auf ein existierendes byteArray (für
 	 *            XArrayItem-Elemente => sie halten selbst die Daten für alle
@@ -33,14 +43,38 @@ public abstract class DataItem implements IDataType {
 	 * @param length
 	 *            Länge der Item-Representation in Bytes
 	 */
-	protected DataItem(byte[] data, int offset, int length) {
+	protected DataItem(String name, byte[] data, int offset, int length) {
+		this.name = name;
 		this.data = data;
 		this.offset = offset;
 		this.length = length;
+		this.isInArray = false;
+	}
+
+	public String getTypeName() {
+		return this.name;
+	}
+
+	public boolean isInArray() {
+		return this.isInArray;
+	}
+
+	static final String EMPTY = "                             ";
+	static final int INTENT = 13;
+
+	public String exportTypeAndDataString() {
+		return this.getTypeName() + EMPTY.substring(0, Math.max(0, INTENT - this.getTypeName().length())) + " "
+				+ exportDataString();
 	}
 
 	protected byte[] getData() {
-		return data;
+		if(this.offset==0) {
+			return this.data;
+		}
+		
+		byte[] pData = new byte[this.length];
+		System.arraycopy(this.data, this.offset, pData, 0, this.length);
+		return pData;
 	}
 
 	protected void setData(byte[] bytes) throws DataImportException {
@@ -108,36 +142,18 @@ public abstract class DataItem implements IDataType {
 
 	@Override
 	public byte[] exportBin() {
-		return this.getData();
+		return this.getData(); 
 	}
 
 	@Override
 	public void importHex(String data) throws DataImportException {
-		Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
-		// StringTokenizer st = new StringTokenizer(data);
-		// byte[] bytes = this.getData();
-		// int cnt = 0;
-		// while (st.hasMoreTokens()) {
-		// String s = st.nextToken();
-		// // TODO (Verbesserung):
-		// // Wenn die Länge!=2, dann in 2-Zeichen Strings aufteilen, wenn
-		// // nicht teilbar => Fehler
-		// if (cnt >= bytes.length) {
-		// if (this.allowLongDataImport()) {
-		// break;
-		// } else {
-		// throw new DataImportException("import string to long");
-		// }
-		// }
-		// bytes[cnt++] = (byte) Integer.parseInt(s, 16);
-		// }
-		// if (this.allowShortDataImport()) {
-		// for (int i = cnt, n = bytes.length; i < n; i++) {
-		// bytes[i] = 0;
-		// }
-		// } else if (cnt < bytes.length) {
-		// throw new DataImportException("import string to short");
-		// }
+		if(this.offset==0) {
+			Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
+		}else {
+			byte[] pData = new byte[this.length];
+			Util.hexToBytes(pData, data, this.allowShortDataImport(), this.allowLongDataImport());
+			System.arraycopy(pData, 0, this.data, this.offset, this.length);
+		}
 	}
 
 	@Override

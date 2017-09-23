@@ -1,33 +1,53 @@
 package de.as.esptools.configloader.datatypes;
 
+import de.as.esptools.configloader.datatypes.util.Util;
+
 public class BooleanItem extends DataItem {
 
-    /**
-     * Datentyp-Länge in Bytes.
-     */
-    static final int BYTES_PER_ITEM = 1;
+	public static final String NAME = "boolean";
 
-    public BooleanItem() {
-        super(BYTES_PER_ITEM);
-    }
+	/**
+	 * Datentyp-Länge in Bytes.
+	 */
+	static final int BYTES_PER_ITEM = 1;
 
-    protected BooleanItem(byte[] data, int offset) {
-        super(data, offset, BYTES_PER_ITEM);
-    }
-    
-    @Override
-    public void importString(String data) throws DataImportException {
-        if (data.equalsIgnoreCase("true") || data.equals("1") || data.equals("01")) {
-            setData(new byte[] {(byte) 0x01 });
-        } else if(data.equalsIgnoreCase("false") || data.equals("0") || data.equals("00")) {
-            setData(new byte[] {(byte) 0x00 });
-        } else throw new DataImportException("unknown import format");
-    }
+	public BooleanItem() {
+		super(NAME, BYTES_PER_ITEM);
+	}
 
-    @Override
-    public String exportString() {
-        byte b = getData()[0];
-        return b != 0 ? "1" : "0";
-    }
+	protected BooleanItem(byte[] data, int offset) {
+		super(NAME, data, offset, BYTES_PER_ITEM);
+	}
+
+	@Override
+	public String importDataString(String data) throws DataImportException {
+		if(data==null) {
+			throw new DataImportException("invalid input data (null)");
+		}
+		
+		String token = data.trim();
+		String rest = null;
+
+		int pos = Util.searchTokenSplitPosition(token," \t\r\n\f");
+		if(pos>0) {
+			rest = token.substring(pos);
+			token = token.substring(0,  pos);
+		}
+		
+		if (token.equalsIgnoreCase("true") || token.equals("1") || token.equals("01")) {
+			setData(new byte[] { (byte) 0x01 });
+		} else if (token.equalsIgnoreCase("false") || token.equals("0") || token.equals("00")) {
+			setData(new byte[] { (byte) 0x00 });
+		} else
+			throw new DataImportException("unknown import format");
+		
+		return rest;
+	}
+
+	@Override
+	public String exportDataString() {
+		byte b = getData()[0];
+		return b != 0 ? "1" : "0";
+	}
 
 }

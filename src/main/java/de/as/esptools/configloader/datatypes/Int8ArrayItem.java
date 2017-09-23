@@ -6,7 +6,7 @@ public class Int8ArrayItem extends ArrayDataItem<Int8Item> {
 	private boolean signed;
 
 	public Int8ArrayItem(int length, boolean signed) {
-		super(length, BYTES_PER_ITEM);
+		super(Int8Item.NAME, length, BYTES_PER_ITEM);
 		this.signed = signed;
 	}
 
@@ -14,5 +14,5 @@ public class Int8ArrayItem extends ArrayDataItem<Int8Item> {
 	protected Int8Item createType(byte[] data, int offset) {
 		return new Int8Item(data, offset, BYTES_PER_ITEM, this.signed);
 	}
-
+ 
 }

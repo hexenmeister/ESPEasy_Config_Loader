@@ -6,7 +6,7 @@ public class Int16ArrayItem extends ArrayDataItem<Int16Item> {
 	private boolean signed;
 
 	public Int16ArrayItem(int length, boolean signed) {
-		super(length, BYTES_PER_ITEM);
+		super(Int16Item.NAME, length, BYTES_PER_ITEM);
 		this.signed = signed;
 	}
 

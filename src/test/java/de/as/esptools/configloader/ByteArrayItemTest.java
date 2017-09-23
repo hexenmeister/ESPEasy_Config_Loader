@@ -19,16 +19,21 @@ public class ByteArrayItemTest {
 	}
 
 	@Test
+	public void testName() {
+		Assert.assertEquals("byte", inst.getTypeName());
+	}
+	
+	@Test
 	public void testSingleImportExportString() throws DataImportException {
-		inst.importString("FF");
+		inst.importDataString("FF");
 		
-		Assert.assertEquals("FF", inst.exportString());
+		Assert.assertEquals("FF", inst.exportDataString());
 	}
 
 	@Test
 	public void testMultipleImportExportString() throws DataImportException {
-		inst2.importString("00 10 20 30 FF 50 60 DD");
+		inst2.importDataString("00 10 20 30 FF 50 60 DD");
 		
-		Assert.assertEquals("00 10 20 30 FF 50 60 DD", inst2.exportString());
+		Assert.assertEquals("00 10 20 30 FF 50 60 DD", inst2.exportDataString());
 	}
 }

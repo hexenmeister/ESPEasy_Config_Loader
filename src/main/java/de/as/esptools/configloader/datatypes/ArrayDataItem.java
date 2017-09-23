@@ -7,18 +7,23 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
 	private DataItem[] array;
 	private byte[] data;
 	private int bytesPerItem;
+	private String name;
 
-	protected ArrayDataItem(int length, int bytesPerItem) {
+	protected ArrayDataItem(String name, int length, int bytesPerItem) {
 		if (length <= 0) {
-			throw new RuntimeException("empty array is not allowed"); // TODO
-																		// Exception
+			throw new RuntimeException("empty array is not allowed");
 		}
+		this.name = name;
 		this.array = new DataItem[length];
 		this.data = new byte[length * bytesPerItem];
 		this.bytesPerItem = bytesPerItem;
 		for (int i = 0; i < length; i++) {
 			this.array[i] = this.createType(this.data, i * bytesPerItem);
 		}
+	}
+
+	public String getTypeName() {
+		return this.name;
 	}
 
 	protected abstract T createType(byte[] data, int offset);
@@ -63,34 +68,53 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
 
 	@Override
 	public void importHex(String data) throws DataImportException {
-		// TODO
-		// allowShortDataImport
-		// allowLongDataImport
+		Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
 	}
 
 	@Override
 	public String exportHex() {
-		// String ret = "";
-		// for (int i = 0, n = this.array.length; i < n; i++) {
-		// ret += this.array[i].exportHex();
-		// ret += this.getArrayDelimenter();
-		// }
-		//
-		// return ret;
 		return Util.bytesToHex(this.getData(), this.bytesPerItem, "\r\n\t");
 	}
 
 	@Override
-	public void importString(String data) throws DataImportException {
-		// TODO
-		// allowShortDataImport
-		// allowLongDataImport
+	public String importDataString(String data) throws DataImportException {
+		for (int i = 0, n = this.array.length; i < n; i++) {
+			data = this.array[i].importDataString(data);
+		}
+		
+		if (!this.array[0].isInArray() && !this.array[0].allowLongDataImport() && data != null) {
+			throw new DataImportException("data to long");
+		}
+		
+		return data;
 	}
 
 	@Override
-	public String exportString() {
-		// TODO
-		return null;
+	public String exportDataString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0, n = this.array.length; i < n; i++) {
+			sb.append(this.array[i].exportDataString());
+			if (i < n - 1) {
+				sb.append(this.getExportDelimeter());
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Lieefert Zeichenkette, die als Trenner zw. den Daten einzelnen Items beim
+	 * Export fungiert.
+	 * 
+	 * @return Trenner-String
+	 */
+	protected String getExportDelimeter() {
+		return " ";
+	}
+
+	public String exportTypeAndDataString() {
+		return this.getTypeName()
+				+ DataItem.EMPTY.substring(0, Math.max(0, DataItem.INTENT - this.getTypeName().length())) + " "
+				+ exportDataString();
 	}
 
 	/**

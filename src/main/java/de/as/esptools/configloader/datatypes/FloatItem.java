@@ -4,27 +4,40 @@ import de.as.esptools.configloader.datatypes.util.Util;
 
 public class FloatItem extends DataItem {
 
+	public static final String NAME = "float";
+	
 	/**
 	 * Datentyp-Länge in Bytes.
 	 */
 	static final int BYTES_PER_ITEM = 4;
 	
 	public FloatItem() {
-		super(BYTES_PER_ITEM);
+		super(NAME, BYTES_PER_ITEM);
 	}
 
 	protected FloatItem(byte[] data, int offset) {
-        super(data, offset, BYTES_PER_ITEM);
+        super(NAME, data, offset, BYTES_PER_ITEM);
     }
 	
 	@Override
-	public void importString(String data) throws DataImportException {
-		float fNum = Float.parseFloat(data);
-		this.setFloat(fNum);
-	}
+	public String importDataString(String data) throws DataImportException {
+		String token = data.trim();
+		String rest = null;
 
+		int pos = Util.searchTokenSplitPosition(token," \t\n\r\f");
+		if(pos>0) {
+			rest = token.substring(pos);
+			token = token.substring(0,  pos);
+		}
+		
+		float fNum = Float.parseFloat(token);
+		this.setFloat(fNum);
+		
+		return rest;
+	}
+	
 	@Override
-	public String exportString() {
+	public String exportDataString() {
 		return Float.toString(this.getFloat());
 	}
 	

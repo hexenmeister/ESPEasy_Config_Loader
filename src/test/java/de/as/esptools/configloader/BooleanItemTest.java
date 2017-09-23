@@ -19,27 +19,32 @@ public class BooleanItemTest {
 	}
 
 	@Test
+	public void testName() {
+		Assert.assertEquals("boolean", inst.getTypeName());
+	}
+	
+	@Test
 	public void testImportExportString() throws DataImportException {
-		inst.importString("true");
-		Assert.assertEquals("1", inst.exportString());
+		inst.importDataString("true");
+		Assert.assertEquals("1", inst.exportDataString());
 		
-		inst.importString("false");
-		Assert.assertEquals("0", inst.exportString());
+		inst.importDataString("false");
+		Assert.assertEquals("0", inst.exportDataString());
 		
-		inst.importString("0");
-		Assert.assertEquals("0", inst.exportString());
+		inst.importDataString("0");
+		Assert.assertEquals("0", inst.exportDataString());
 
-		inst.importString("1");
-		Assert.assertEquals("1", inst.exportString());
+		inst.importDataString("1");
+		Assert.assertEquals("1", inst.exportDataString());
 		
-		inst.importString("00");
-		Assert.assertEquals("0", inst.exportString());
+		inst.importDataString("00");
+		Assert.assertEquals("0", inst.exportDataString());
 		
-		inst.importString("01");
-		Assert.assertEquals("1", inst.exportString());
+		inst.importDataString("01");
+		Assert.assertEquals("1", inst.exportDataString());
 		
 		try {
-			inst.importString("test");
+			inst.importDataString("test");
 			fail("Not yet implemented");
 		} catch (DataImportException e) {
 			// NOP

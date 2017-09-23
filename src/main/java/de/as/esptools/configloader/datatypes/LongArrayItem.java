@@ -7,7 +7,7 @@ public class LongArrayItem extends ArrayDataItem<LongItem> {
     private boolean signed;
 
     public LongArrayItem(int length, boolean signed) {
-        super(length, BYTES_PER_ITEM);
+        super(LongItem.NAME, length, BYTES_PER_ITEM);
         this.signed = signed;
     }
 

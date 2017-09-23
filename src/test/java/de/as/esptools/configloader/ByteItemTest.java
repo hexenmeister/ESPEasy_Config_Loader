@@ -10,37 +10,42 @@ import de.as.esptools.configloader.datatypes.DataImportException;
 public class ByteItemTest {
 
 	private ByteItem inst;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.inst = new ByteItem();
 	}
 
 	@Test
+	public void testName() {
+		Assert.assertEquals("byte", inst.getTypeName());
+	}
+
+	@Test
 	public void testImportExportString() throws DataImportException {
-		inst.importString("FF");
-		Assert.assertEquals("FF", inst.exportString());
-		
-		inst.importString("00");
-		Assert.assertEquals("00", inst.exportString());
+		inst.importDataString("FF");
+		Assert.assertEquals("FF", inst.exportDataString());
 
-		inst.importString("01");
-		Assert.assertEquals("01", inst.exportString());
-		
-		inst.importString("0A");
-		Assert.assertEquals("0A", inst.exportString());
-		
-		inst.importString("C0");
-		Assert.assertEquals("C0", inst.exportString());
-		
-		inst.importString("99");
-		Assert.assertEquals("99", inst.exportString());
-		
-		inst.importString("DA");
-		Assert.assertEquals("DA", inst.exportString());
+		inst.importDataString("00");
+		Assert.assertEquals("00", inst.exportDataString());
 
-		inst.importString("87");
-		Assert.assertEquals("87", inst.exportString());
+		inst.importDataString("01");
+		Assert.assertEquals("01", inst.exportDataString());
+
+		inst.importDataString("0A");
+		Assert.assertEquals("0A", inst.exportDataString());
+
+		inst.importDataString("C0");
+		Assert.assertEquals("C0", inst.exportDataString());
+
+		inst.importDataString("99");
+		Assert.assertEquals("99", inst.exportDataString());
+
+		inst.importDataString("DA");
+		Assert.assertEquals("DA", inst.exportDataString());
+
+		inst.importDataString("87");
+		Assert.assertEquals("87", inst.exportDataString());
 	}
 
 }

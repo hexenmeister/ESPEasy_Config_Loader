@@ -46,11 +46,19 @@ public final class Util {
 
 	/**
 	 * Überführt hexadecimale Darstellung in ein Byte-Array.
-	 * @param bytes Ziel-Array
-	 * @param data Input-String
-	 * @param allowShort gibt an, ob zu kurze Daten erlaub sein sollen (Rest wird mit Nulen gefüllt) 
-	 * @param allowLong gibt an, ob zu lang Daten erlaub sein sollen (Überflüssiges wird verworfen)
-	 * @throws DataImportException Zeigt Import/Interpretationsprobleme an
+	 * 
+	 * @param bytes
+	 *            Ziel-Array
+	 * @param data
+	 *            Input-String
+	 * @param allowShort
+	 *            gibt an, ob zu kurze Daten erlaub sein sollen (Rest wird mit
+	 *            Nulen gefüllt)
+	 * @param allowLong
+	 *            gibt an, ob zu lang Daten erlaub sein sollen (Überflüssiges
+	 *            wird verworfen)
+	 * @throws DataImportException
+	 *             Zeigt Import/Interpretationsprobleme an
 	 */
 	public static final void hexToBytes(byte[] bytes, String data, boolean allowShort, boolean allowLong)
 			throws DataImportException {
@@ -155,5 +163,22 @@ public final class Util {
 		buf.putFloat(f);
 		byte[] bytes = buf.array();
 		return bytes;
+	}
+
+	public static int searchTokenSplitPosition(String data, String delim) {
+		return searchTokenSplitPosition(data, delim, 1);
+	}
+
+	public static int searchTokenSplitPosition(String data, String delim, int occur) {
+		int ret = -1;
+		for (int i = 0, n = data.length(); i < n; i++) {
+			if (delim.indexOf(data.charAt(i)) >= 0) {
+				occur--;
+				if (occur < 1) {
+					return i;
+				}
+			}
+		}
+		return ret;
 	}
 }

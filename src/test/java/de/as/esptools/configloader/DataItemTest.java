@@ -20,15 +20,16 @@ public class DataItemTest {
 	private static class DataItemTestClass extends DataItem {
 
 		protected DataItemTestClass() {
-			super(LENGTH);
+			super("DATA_TEST", LENGTH);
 		}
 
 		@Override
-		public void importString(String data) throws DataImportException {
+		public String importDataString(String data) throws DataImportException {
+			return null;
 		}
 
 		@Override
-		public String exportString() {
+		public String exportDataString() {
 			return null;
 		}
 	}
@@ -143,7 +144,7 @@ public class DataItemTest {
 		hex = "00 10 20 30 40 50 60";
 		inst2.importHex(hex);
 		bytes = new byte[] { 0x00, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x00 };
-		//fail(inst2.exportHex());
+		// fail(inst2.exportHex());
 		Assert.assertTrue(Arrays.equals(bytes, inst2.exportBin()));
 	}
 

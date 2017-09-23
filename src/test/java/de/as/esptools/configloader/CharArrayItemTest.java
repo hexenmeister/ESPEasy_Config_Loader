@@ -21,24 +21,29 @@ public class CharArrayItemTest {
 	}
 
 	@Test
-	public void testSingleImportExportString() throws DataImportException {
-		inst.importString("A");
-		Assert.assertEquals("A", inst.exportString());
+	public void testName() {
+		Assert.assertEquals("char", inst.getTypeName());
+	}
 
-		inst.importString("B");
-		Assert.assertNotEquals("b", inst.exportString());
+	@Test
+	public void testSingleImportExportString() throws DataImportException {
+		inst.importDataString("A");
+		Assert.assertEquals("A", inst.exportDataString());
+
+		inst.importDataString("B");
+		Assert.assertNotEquals("b", inst.exportDataString());
 	}
 
 	@Test
 	public void testMultipleImportExportString() throws DataImportException {
-		inst2.importString("Test1234");
-		Assert.assertEquals("Test1234", inst2.exportString());
+		inst2.importDataString("Test1234");
+		Assert.assertEquals("Test1234", inst2.exportDataString());
 
-		inst2.importString("ABC");
+		inst2.importDataString("ABC");
 		Assert.assertEquals("41 42 43 00 00 00 00 00", inst2.exportHex());
 
 		try {
-			inst2.importString("ABCDEFGHIJ");
+			inst2.importDataString("ABCDEFGHIJ");
 			// Assert.assertEquals("41 42 43 44 45 46 47 48",inst2.exportHex());
 			fail("too long data should not be imported");
 		} catch (DataImportException e) {
