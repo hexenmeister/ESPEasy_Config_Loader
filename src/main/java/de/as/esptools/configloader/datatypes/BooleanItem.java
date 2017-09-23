@@ -19,9 +19,9 @@ public class BooleanItem extends DataItem {
     public void importString(String data) throws DataImportException {
         if (data.equalsIgnoreCase("true") || data.equals("1") || data.equals("01")) {
             setData(new byte[] {(byte) 0x01 });
-        } else {
+        } else if(data.equalsIgnoreCase("false") || data.equals("0") || data.equals("00")) {
             setData(new byte[] {(byte) 0x00 });
-        }
+        } else throw new DataImportException("unknown import format");
     }
 
     @Override
