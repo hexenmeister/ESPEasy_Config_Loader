@@ -48,7 +48,7 @@ public abstract class DataItem implements IDataType {
 		this.data = data;
 		this.offset = offset;
 		this.length = length;
-		this.isInArray = false;
+		this.isInArray = true;
 	}
 
 	public String getTypeName() {
@@ -68,10 +68,10 @@ public abstract class DataItem implements IDataType {
 	}
 
 	protected byte[] getData() {
-		if(this.offset==0) {
+		if (this.offset == 0) {
 			return this.data;
 		}
-		
+
 		byte[] pData = new byte[this.length];
 		System.arraycopy(this.data, this.offset, pData, 0, this.length);
 		return pData;
@@ -142,14 +142,18 @@ public abstract class DataItem implements IDataType {
 
 	@Override
 	public byte[] exportBin() {
-		return this.getData(); 
+		return this.getData();
 	}
 
 	@Override
 	public void importHex(String data) throws DataImportException {
-		if(this.offset==0) {
-			Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
-		}else {
+		if (this.offset == 0) {
+			try {
+				Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
+			} catch (NumberFormatException e) {
+				throw new DataImportException("invalid data: " + e.getMessage());
+			}
+		} else {
 			byte[] pData = new byte[this.length];
 			Util.hexToBytes(pData, data, this.allowShortDataImport(), this.allowLongDataImport());
 			System.arraycopy(pData, 0, this.data, this.offset, this.length);

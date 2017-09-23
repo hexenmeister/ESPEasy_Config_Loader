@@ -21,26 +21,30 @@ public class BooleanItem extends DataItem {
 
 	@Override
 	public String importDataString(String data) throws DataImportException {
-		if(data==null) {
+		if (data == null) {
 			throw new DataImportException("invalid input data (null)");
 		}
-		
+
 		String token = data.trim();
 		String rest = null;
 
-		int pos = Util.searchTokenSplitPosition(token," \t\r\n\f");
-		if(pos>0) {
+		int pos = Util.searchTokenSplitPosition(token, " \t\r\n\f");
+		if (pos > 0) {
 			rest = token.substring(pos);
-			token = token.substring(0,  pos);
+			token = token.substring(0, pos);
 		}
-		
+
 		if (token.equalsIgnoreCase("true") || token.equals("1") || token.equals("01")) {
 			setData(new byte[] { (byte) 0x01 });
 		} else if (token.equalsIgnoreCase("false") || token.equals("0") || token.equals("00")) {
 			setData(new byte[] { (byte) 0x00 });
 		} else
 			throw new DataImportException("unknown import format");
-		
+
+		if (!this.isInArray() && !this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {
+			throw new DataImportException("data array to long");
+		}
+
 		return rest;
 	}
 

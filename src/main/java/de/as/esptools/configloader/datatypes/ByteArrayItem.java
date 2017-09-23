@@ -23,8 +23,21 @@ public class ByteArrayItem extends DataItem implements IArrayDataType {
 
 		this.importHex(token);
 
+//		if (!this.isInArray() && !this.allowLongDataImport() && rest != null) {
+//			throw new DataImportException("data array to long");
+//		}
+
+		if (!this.allowLongDataImport() && rest != null) {
+			throw new DataImportException("data array to long");
+		}
+		
 		return rest;
 	}
+
+//	@Override
+//	public boolean isInArray() {
+//		return this.getArrayLength() > 1;
+//	}
 
 	@Override
 	public String exportDataString() {
