@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class CharArrayItem extends DataItem {
+public class CharArrayItem extends DataItem implements IArrayDataType {
 
 	public CharArrayItem(int length) {
 		super(length);
@@ -24,6 +24,11 @@ public class CharArrayItem extends DataItem {
 	@Override
 	protected boolean allowLongDataImport() {
 		return false;
+	}
+
+	@Override
+	public int getArrayLength() {
+		return this.getBinLength();
 	}
 
 }

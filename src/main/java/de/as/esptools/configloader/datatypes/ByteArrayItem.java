@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class ByteArrayItem extends DataItem {
+public class ByteArrayItem extends DataItem implements IArrayDataType {
 
 	public ByteArrayItem(int length) {
 		super(length);
@@ -16,4 +16,8 @@ public class ByteArrayItem extends DataItem {
 		return this.exportHex();
 	}
 
+	@Override
+	public int getArrayLength() {
+		return this.getBinLength();
+	}
 }
