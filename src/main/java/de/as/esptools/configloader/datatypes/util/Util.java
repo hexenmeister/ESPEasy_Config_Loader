@@ -165,10 +165,23 @@ public final class Util {
 		return bytes;
 	}
 
+	/**
+	 * Sucht die erste Position eines Delimeters (irgendein Zeichen aus delim).
+	 * @param data String, in dem gesucht wird
+	 * @param delim Trennerliste
+	 * @return Position oder -1
+	 */
 	public static int searchTokenSplitPosition(String data, String delim) {
 		return searchTokenSplitPosition(data, delim, 1);
 	}
 
+	/**
+	 * Sucht die N-te (occur) Position eines Delimeters (irgendein Zeichen aus delim).
+	 * @param data String, in dem gesucht wird
+	 * @param delim Trennerliste
+	 * @param occur Gesuchtes Vorkommen
+	 * @return Position oder -1
+	 */
 	public static int searchTokenSplitPosition(String data, String delim, int occur) {
 		int ret = -1;
 		for (int i = 0, n = data.length(); i < n; i++) {
