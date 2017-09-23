@@ -44,7 +44,14 @@ public final class Util {
 		return builder.toString().trim().toUpperCase();
 	}
 
-	// TODO: JavaDoc
+	/**
+	 * Überführt hexadecimale Darstellung in ein Byte-Array.
+	 * @param bytes Ziel-Array
+	 * @param data Input-String
+	 * @param allowShort gibt an, ob zu kurze Daten erlaub sein sollen (Rest wird mit Nulen gefüllt) 
+	 * @param allowLong gibt an, ob zu lang Daten erlaub sein sollen (Überflüssiges wird verworfen)
+	 * @throws DataImportException Zeigt Import/Interpretationsprobleme an
+	 */
 	public static final void hexToBytes(byte[] bytes, String data, boolean allowShort, boolean allowLong)
 			throws DataImportException {
 		StringTokenizer st = new StringTokenizer(data);
