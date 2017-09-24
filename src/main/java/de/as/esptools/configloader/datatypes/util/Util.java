@@ -37,7 +37,7 @@ public final class Util {
 		for (byte b : in) {
 			builder.append(String.format("%02x ", b));
 			cnt++;
-			if (bytePerLine >= 0 && bytePerLine == cnt) {
+			if (delimeter != null && bytePerLine >= 0 && cnt % bytePerLine == 0) {
 				builder.append(delimeter);
 			}
 		}
@@ -167,8 +167,11 @@ public final class Util {
 
 	/**
 	 * Sucht die erste Position eines Delimeters (irgendein Zeichen aus delim).
-	 * @param data String, in dem gesucht wird
-	 * @param delim Trennerliste
+	 * 
+	 * @param data
+	 *            String, in dem gesucht wird
+	 * @param delim
+	 *            Trennerliste
 	 * @return Position oder -1
 	 */
 	public static int searchTokenSplitPosition(String data, String delim) {
@@ -176,10 +179,15 @@ public final class Util {
 	}
 
 	/**
-	 * Sucht die N-te (occur) Position eines Delimeters (irgendein Zeichen aus delim).
-	 * @param data String, in dem gesucht wird
-	 * @param delim Trennerliste
-	 * @param occur Gesuchtes Vorkommen
+	 * Sucht die N-te (occur) Position eines Delimeters (irgendein Zeichen aus
+	 * delim).
+	 * 
+	 * @param data
+	 *            String, in dem gesucht wird
+	 * @param delim
+	 *            Trennerliste
+	 * @param occur
+	 *            Gesuchtes Vorkommen
 	 * @return Position oder -1
 	 */
 	public static int searchTokenSplitPosition(String data, String delim, int occur) {

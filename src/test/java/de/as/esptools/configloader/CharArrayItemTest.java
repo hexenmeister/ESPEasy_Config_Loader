@@ -26,12 +26,33 @@ public class CharArrayItemTest {
 	}
 
 	@Test
+	public void testTypeExport() throws DataImportException {
+		inst.importDataString("A");
+		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
+		Assert.assertEquals("char[1] :          A", inst.exportTypeAndDataString(true));
+
+		inst2.importDataString("A");
+		Assert.assertEquals("char[8] : A", inst2.exportTypeAndDataString(false));
+		Assert.assertEquals("char[8] :          A", inst2.exportTypeAndDataString(true));
+	}
+
+	@Test
 	public void testSingleImportExportString() throws DataImportException {
 		inst.importDataString("A");
 		Assert.assertEquals("A", inst.exportDataString());
 
 		inst.importDataString("B");
 		Assert.assertNotEquals("b", inst.exportDataString());
+
+		try {
+			inst.importDataString("ABCDEFGHIJ");
+			fail("too long data should not be imported");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		inst.importDataString("");
+		Assert.assertEquals("00", inst.exportHex());
 	}
 
 	@Test
@@ -42,6 +63,9 @@ public class CharArrayItemTest {
 		inst2.importDataString("ABC");
 		Assert.assertEquals("41 42 43 00 00 00 00 00", inst2.exportHex());
 
+		inst2.importDataString("");
+		Assert.assertEquals("00 00 00 00 00 00 00 00", inst2.exportHex());
+
 		try {
 			inst2.importDataString("ABCDEFGHIJ");
 			// Assert.assertEquals("41 42 43 44 45 46 47 48",inst2.exportHex());
@@ -49,5 +73,6 @@ public class CharArrayItemTest {
 		} catch (DataImportException e) {
 			// NOP
 		}
+
 	}
 }

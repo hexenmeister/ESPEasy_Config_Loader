@@ -36,6 +36,10 @@ public abstract class NumericItem extends DataItem {
 
 	@Override
 	public String importDataString(String data) throws DataImportException {
+		if (data == null) {
+			throw new DataImportException("invalid input data (null)");
+		}
+		
 		String token = data.trim();
 		String rest = null;
 

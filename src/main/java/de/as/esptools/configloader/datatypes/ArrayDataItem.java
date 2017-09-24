@@ -4,6 +4,8 @@ import de.as.esptools.configloader.datatypes.util.Util;
 
 public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataType {
 
+	static final int DEFAULT_HEX_PER_LINE = 16;
+
 	private DataItem[] array;
 	private byte[] data;
 	private int bytesPerItem;
@@ -73,7 +75,7 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
 
 	@Override
 	public String exportHex() {
-		return Util.bytesToHex(this.getData(), this.bytesPerItem, "\r\n\t");
+		return Util.bytesToHex(this.getData(), this.getHexPerLine(), this.getArrayDelimenter());
 	}
 
 	@Override
@@ -117,10 +119,10 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
 		return " ";
 	}
 
-	public String exportTypeAndDataString() {
-		return this.getTypeName()
-				+ DataItem.EMPTY.substring(0, Math.max(0, DataItem.INTENT - this.getTypeName().length())) + " "
-				+ exportDataString();
+	public String exportTypeAndDataString(boolean indent) {
+		String indstr = indent ? DataItem.EMPTY.substring(0, Math.max(0, DataItem.INDENT - this.getTypeName().length()))
+				: "";
+		return this.getTypeName() + "[" + this.getArrayLength() + "]" + " :" + indstr + " " + exportDataString();
 	}
 
 	/**
@@ -141,5 +143,13 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
 	 */
 	protected boolean allowLongDataImport() {
 		return false;
+	}
+
+	public int getBytesPerItem() {
+		return bytesPerItem;
+	}
+
+	protected int getHexPerLine() {
+		return DEFAULT_HEX_PER_LINE;
 	}
 }

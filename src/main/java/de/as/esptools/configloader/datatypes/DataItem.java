@@ -60,15 +60,15 @@ public abstract class DataItem implements IDataType {
 	}
 
 	static final String EMPTY = "                             ";
-	static final int INTENT = 13;
+	static final int INDENT = 13;
 
-	public String exportTypeAndDataString() {
-		return this.getTypeName() + EMPTY.substring(0, Math.max(0, INTENT - this.getTypeName().length())) + " "
-				+ exportDataString();
+	public String exportTypeAndDataString(boolean indent) {
+		String indstr = indent ? EMPTY.substring(0, Math.max(0, INDENT - this.getTypeName().length())) : "";
+		return this.getTypeName() + " :" + indstr + " " + exportDataString();
 	}
 
 	protected byte[] getData() {
-		if (this.offset == 0) {
+		if (this.offset == 0 && this.length == this.data.length) {
 			return this.data;
 		}
 

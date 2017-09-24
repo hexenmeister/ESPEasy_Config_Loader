@@ -22,6 +22,18 @@ public class BooleanItemTest {
 	public void testName() {
 		Assert.assertEquals("boolean", inst.getTypeName());
 	}
+	
+	@Test
+	public void testTypeExport() throws DataImportException {
+		// TODO
+//		inst.importDataString("A");
+//		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
+//		Assert.assertEquals("char[1] :          A", inst.exportTypeAndDataString(true));
+//
+//		inst2.importDataString("A");
+//		Assert.assertEquals("char[8] : A", inst.exportTypeAndDataString(false));
+//		Assert.assertEquals("char[8] :          A", inst.exportTypeAndDataString(true));
+	}
 
 	@Test
 	public void testImportExportString() throws DataImportException {

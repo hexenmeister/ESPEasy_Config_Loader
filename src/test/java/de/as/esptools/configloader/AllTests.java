@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ UtilTest.class, DataItemTest.class, ByteArrayItemTest.class, ByteItemTest.class,
-		CharArrayItemTest.class, NumericItemTest.class, BooleanItemTest.class, BooleanArrayItemTest.class,
+	CharArrayItemTest.class, CharItemTest.class, NumericItemTest.class, BooleanItemTest.class, BooleanArrayItemTest.class,
 		DataItemFactoryTest.class })
 public class AllTests {
 

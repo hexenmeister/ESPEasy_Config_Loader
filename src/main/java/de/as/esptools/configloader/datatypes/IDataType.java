@@ -30,7 +30,7 @@ public interface IDataType {
 
 	public String exportDataString();
 
-	public String exportTypeAndDataString();
+	public String exportTypeAndDataString(boolean indent);
 	
 //	public boolean isInArray();
 	
