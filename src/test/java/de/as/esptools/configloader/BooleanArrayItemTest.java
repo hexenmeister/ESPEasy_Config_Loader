@@ -2,12 +2,9 @@ package de.as.esptools.configloader;
 
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.BooleanArrayItem;
@@ -29,14 +26,41 @@ public class BooleanArrayItemTest {
 
 	@Test
 	public void testTypeExport() throws DataImportException {
-		// TODO
-//		inst.importDataString("A");
-//		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
-//		Assert.assertEquals("char[1] :          A", inst.exportTypeAndDataString(true));
-//
-//		inst2.importDataString("A");
-//		Assert.assertEquals("char[8] : A", inst.exportTypeAndDataString(false));
-//		Assert.assertEquals("char[8] :          A", inst.exportTypeAndDataString(true));
+		// TODO :Test
+		inst.importDataString("1 1 1 1 1 1 1 1 1 1");
+		Assert.assertEquals("boolean[10] : 1 1 1 1 1 1 1 1 1 1", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("0 0 0 0 0 0 0 0 0 0");
+		Assert.assertEquals("boolean[10] : 0 0 0 0 0 0 0 0 0 0", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("0 1 0 1 0 1 0 1 0 1");
+		Assert.assertEquals("boolean[10] : 0 1 0 1 0 1 0 1 0 1", inst.exportTypeAndDataString(false));
+
+		try {
+			// to short
+			inst.importDataString("1 1 1 1 1 1 1 1 1 1");
+			Assert.assertEquals("boolean[10] : 0 1 1 1 1 1 1 1 1 1", inst.exportTypeAndDataString(false));
+			fail("invalid check");
+		} catch (ComparisonFailure e) {
+			// NOP
+		}
+
+		try {
+			// to short
+			inst.importDataString("0 0 0 0 0 ");
+			fail("to short data should not be imported");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			// to long
+			inst.importDataString("0 0 0 0 0 0 0 0 0 0 0 0");
+			fail("to short data should not be imported");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
 	}
 
 	@Test

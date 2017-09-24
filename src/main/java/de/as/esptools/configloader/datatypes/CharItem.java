@@ -1,7 +1,5 @@
 package de.as.esptools.configloader.datatypes;
 
-import de.as.esptools.configloader.datatypes.util.Util;
-
 public class CharItem extends DataItem {
 
 	public static final String NAME = "char";

@@ -25,7 +25,7 @@ public class BooleanItemTest {
 	
 	@Test
 	public void testTypeExport() throws DataImportException {
-		// TODO
+		// TODO Test
 //		inst.importDataString("A");
 //		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
 //		Assert.assertEquals("char[1] :          A", inst.exportTypeAndDataString(true));

@@ -1,5 +1,8 @@
 package de.as.esptools.configloader.datatypes;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import de.as.esptools.configloader.datatypes.util.Util;
 
 public class FloatItem extends DataItem {
@@ -40,9 +43,15 @@ public class FloatItem extends DataItem {
 		return rest;
 	}
 	
+	private static final NumberFormat NF = NumberFormat.getNumberInstance(Locale.US);
+	static{
+		NF.setGroupingUsed(false);
+		NF.setMinimumIntegerDigits(1);
+	}
+	
 	@Override
 	public String exportDataString() {
-		return Float.toString(this.getFloat());
+		return NF.format(this.getFloat());
 	}
 	
 	/**

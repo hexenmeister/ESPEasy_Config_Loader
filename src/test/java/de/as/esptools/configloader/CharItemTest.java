@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.as.esptools.configloader.datatypes.CharArrayItem;
 import de.as.esptools.configloader.datatypes.CharItem;
 import de.as.esptools.configloader.datatypes.DataImportException;
 

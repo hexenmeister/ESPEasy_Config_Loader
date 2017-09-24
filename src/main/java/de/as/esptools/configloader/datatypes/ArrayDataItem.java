@@ -84,12 +84,6 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
 			data = this.array[i].importDataString(data);
 		}
 
-		// if (!this.array[0].isInArray() &&
-		// !this.array[0].allowLongDataImport() && data != null &&
-		// !data.trim().isEmpty()) {
-		// throw new DataImportException("data to long");
-		// }
-
 		if (!this.array[0].allowLongDataImport() && data != null && !data.trim().isEmpty()) {
 			throw new DataImportException("data to long");
 		}
