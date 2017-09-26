@@ -148,18 +148,10 @@ public abstract class DataItem implements IDataType {
 	@Override
 	public void importHex(String data) throws DataImportException {
 		if (!this.isInArray()) {
-			try {
-				Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
-			} catch (NumberFormatException e) {
-				throw new DataImportException("invalid data: " + e.getMessage());
-			}
+			Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
 		} else {
 			byte[] pData = new byte[this.length];
-			try {
-				Util.hexToBytes(pData, data, this.allowShortDataImport(), this.allowLongDataImport());
-			} catch (NumberFormatException e) {
-				throw new DataImportException("invalid data: " + e.getMessage());
-			}
+			Util.hexToBytes(pData, data, this.allowShortDataImport(), this.allowLongDataImport());
 			System.arraycopy(pData, 0, this.data, this.offset, this.length);
 		}
 	}

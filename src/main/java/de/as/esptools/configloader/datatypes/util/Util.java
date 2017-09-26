@@ -76,7 +76,16 @@ public final class Util {
 					throw new DataImportException("import string to long");
 				}
 			}
-			bytes[cnt++] = (byte) Integer.parseInt(s, 16);
+			int val;
+			try {
+				val = Integer.parseInt(s, 16);
+			} catch (NumberFormatException e) {
+				throw new DataImportException("invalid input. data must be a hex number");
+			}
+			if (val > 255 || val < 0) {
+				throw new DataImportException("invalid inpit. data must be in range from 00 to FF");
+			}
+			bytes[cnt++] = (byte) val;
 		}
 		if (allowShort) {
 			for (int i = cnt, n = bytes.length; i < n; i++) {

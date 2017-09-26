@@ -17,6 +17,26 @@ public class FloatItemTest {
 	}
 
 	@Test
+	public void testName() {
+		Assert.assertEquals("float", inst.getTypeName());
+	}
+
+	@Test
+	public void testTypeExport() throws DataImportException {
+		inst.importDataString("1.01");
+		Assert.assertEquals("float : 1.01", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("1000.99");
+		Assert.assertEquals("float : 1000.99", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("1");
+		Assert.assertEquals("float : 1", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("0");
+		Assert.assertEquals("float : 0", inst.exportTypeAndDataString(false));
+	}
+
+	@Test
 	public void testImportString() throws DataImportException {
 		inst.importDataString("1234");
 		Assert.assertEquals(1234f, inst.getFloat(), 0.0);
@@ -75,7 +95,7 @@ public class FloatItemTest {
 
 		inst.setFloat(-0.101f);
 		Assert.assertEquals("-0.101", inst.exportDataString());
-		
+
 		inst.setFloat(1.101f);
 		Assert.assertEquals("1.101", inst.exportDataString());
 

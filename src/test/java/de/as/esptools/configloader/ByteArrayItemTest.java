@@ -27,18 +27,29 @@ public class ByteArrayItemTest {
 
 	@Test
 	public void testTypeExport() throws DataImportException {
-		// TODO Test
-		// inst.importDataString("A");
-		// Assert.assertEquals("char[1] : A",
-		// inst.exportTypeAndDataString(false));
-		// Assert.assertEquals("char[1] : A",
-		// inst.exportTypeAndDataString(true));
-		//
-		// inst2.importDataString("A");
-		// Assert.assertEquals("char[8] : A",
-		// inst.exportTypeAndDataString(false));
-		// Assert.assertEquals("char[8] : A",
-		// inst.exportTypeAndDataString(true));
+		inst.importDataString("00");
+		Assert.assertEquals("byte[1] : 00", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("01");
+		Assert.assertEquals("byte[1] : 01", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("DE");
+		Assert.assertEquals("byte[1] : DE", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("FF");
+		Assert.assertEquals("byte[1] : FF", inst.exportTypeAndDataString(false));
+
+		inst2.importDataString("00 00 00 00 00 00 00 00");
+		Assert.assertEquals("byte[8] : 00 00 00 00 00 00 00 00", inst2.exportTypeAndDataString(false));
+
+		inst2.importDataString("01 10 02 20 03 30 9A FF");
+		Assert.assertEquals("byte[8] : 01 10 02 20 03 30 9A FF", inst2.exportTypeAndDataString(false));
+
+		inst2.importDataString("DE AD BE EF 77 88 99 AA");
+		Assert.assertEquals("byte[8] : DE AD BE EF 77 88 99 AA", inst2.exportTypeAndDataString(false));
+
+		inst2.importDataString("FF FF FF FF FF FF FF FF");
+		Assert.assertEquals("byte[8] : FF FF FF FF FF FF FF FF", inst2.exportTypeAndDataString(false));
 	}
 
 	@Test
@@ -56,6 +67,27 @@ public class ByteArrayItemTest {
 			// to short
 			inst.importDataString("");
 			fail("invalid data should not be imported");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			inst.importDataString("100");
+			fail("invalid data");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			inst2.importDataString("100");
+			fail("invalid data");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			inst2.importDataString("00 100 00 11 22 33 44 55");
+			fail("invalid data");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -92,6 +124,13 @@ public class ByteArrayItemTest {
 
 		try {
 			inst.importDataString("test");
+			fail("invalid data should not be imported");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			inst.importDataString("00 XX 20 30 FF 50 60 DD");
 			fail("invalid data should not be imported");
 		} catch (DataImportException e) {
 			// NOP

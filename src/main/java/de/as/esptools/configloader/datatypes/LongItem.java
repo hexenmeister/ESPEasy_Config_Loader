@@ -9,7 +9,7 @@ public class LongItem extends NumericItem {
 	 */
 	static final int BYTES_PER_ITEM = 4;
 
-	protected LongItem(boolean signed) {
+	public LongItem(boolean signed) {
 		super(NAME, BYTES_PER_ITEM, signed);
 	}
 

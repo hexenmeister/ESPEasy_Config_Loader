@@ -26,7 +26,6 @@ public class BooleanArrayItemTest {
 
 	@Test
 	public void testTypeExport() throws DataImportException {
-		// TODO :Test
 		inst.importDataString("1 1 1 1 1 1 1 1 1 1");
 		Assert.assertEquals("boolean[10] : 1 1 1 1 1 1 1 1 1 1", inst.exportTypeAndDataString(false));
 
@@ -42,22 +41,6 @@ public class BooleanArrayItemTest {
 			Assert.assertEquals("boolean[10] : 0 1 1 1 1 1 1 1 1 1", inst.exportTypeAndDataString(false));
 			fail("invalid check");
 		} catch (ComparisonFailure e) {
-			// NOP
-		}
-
-		try {
-			// to short
-			inst.importDataString("0 0 0 0 0 ");
-			fail("to short data should not be imported");
-		} catch (DataImportException e) {
-			// NOP
-		}
-
-		try {
-			// to long
-			inst.importDataString("0 0 0 0 0 0 0 0 0 0 0 0");
-			fail("to short data should not be imported");
-		} catch (DataImportException e) {
 			// NOP
 		}
 
@@ -110,6 +93,30 @@ public class BooleanArrayItemTest {
 		try {
 			inst.importDataString("test 1 2 3 4 5 6 7 8 9");
 			fail("invalid data should not be imported");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			// to short
+			inst.importDataString("1 2 1 1 1 1 1 1 1 1");
+			fail("invalid data check");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			// to short
+			inst.importDataString("0 0 0 0 0 ");
+			fail("to short data should not be imported");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			// to long
+			inst.importDataString("0 0 0 0 0 0 0 0 0 0 0 0");
+			fail("to short data should not be imported");
 		} catch (DataImportException e) {
 			// NOP
 		}

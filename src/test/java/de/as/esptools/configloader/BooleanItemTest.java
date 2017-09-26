@@ -22,17 +22,21 @@ public class BooleanItemTest {
 	public void testName() {
 		Assert.assertEquals("boolean", inst.getTypeName());
 	}
-	
+
 	@Test
 	public void testTypeExport() throws DataImportException {
-		// TODO Test
-//		inst.importDataString("A");
-//		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
-//		Assert.assertEquals("char[1] :          A", inst.exportTypeAndDataString(true));
-//
-//		inst2.importDataString("A");
-//		Assert.assertEquals("char[8] : A", inst.exportTypeAndDataString(false));
-//		Assert.assertEquals("char[8] :          A", inst.exportTypeAndDataString(true));
+		inst.importDataString("0");
+		Assert.assertEquals("boolean : 0", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("1");
+		Assert.assertEquals("boolean : 1", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("true");
+		Assert.assertEquals("boolean : 1", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("false");
+		Assert.assertEquals("boolean : 0", inst.exportTypeAndDataString(false));
+
 	}
 
 	@Test
@@ -61,20 +65,35 @@ public class BooleanItemTest {
 		} catch (DataImportException e) {
 			// NOP
 		}
-		
+
 		try {
 			inst.importDataString("");
 			fail("to short data should not be imported");
 		} catch (DataImportException e) {
 			// NOP
 		}
-		
+
 		try {
 			inst.importDataString("00 00");
 			fail("to long data should not be imported");
 		} catch (DataImportException e) {
 			// NOP
 		}
+
+		try {
+			inst.importDataString("2");
+			fail("invalid data");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			inst.importDataString("10");
+			fail("invalid data");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
 	}
 
 }

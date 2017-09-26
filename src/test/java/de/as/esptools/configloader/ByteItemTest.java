@@ -1,5 +1,7 @@
 package de.as.esptools.configloader;
 
+import static org.junit.Assert.fail;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,16 +25,19 @@ public class ByteItemTest {
 
 	@Test
 	public void testTypeExport() throws DataImportException {
-		// TODO Test
-//		inst.importDataString("A");
-//		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
-//		Assert.assertEquals("char[1] :          A", inst.exportTypeAndDataString(true));
-//
-//		inst2.importDataString("A");
-//		Assert.assertEquals("char[8] : A", inst.exportTypeAndDataString(false));
-//		Assert.assertEquals("char[8] :          A", inst.exportTypeAndDataString(true));
+		inst.importDataString("00");
+		Assert.assertEquals("byte : 00", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("01");
+		Assert.assertEquals("byte : 01", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("DE");
+		Assert.assertEquals("byte : DE", inst.exportTypeAndDataString(false));
+
+		inst.importDataString("FF");
+		Assert.assertEquals("byte : FF", inst.exportTypeAndDataString(false));
 	}
-	
+
 	@Test
 	public void testImportExportString() throws DataImportException {
 		inst.importDataString("FF");
@@ -58,6 +63,14 @@ public class ByteItemTest {
 
 		inst.importDataString("87");
 		Assert.assertEquals("87", inst.exportDataString());
+
+		try {
+			inst.importDataString("100");
+			fail("invalid data");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
 	}
 
 }

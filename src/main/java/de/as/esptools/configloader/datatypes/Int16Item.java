@@ -9,7 +9,7 @@ public class Int16Item extends NumericItem {
 	 */
 	static final int BYTES_PER_ITEM = 2;
 
-	protected Int16Item(boolean signed) {
+	public Int16Item(boolean signed) {
 		super(NAME, BYTES_PER_ITEM, signed);
 	}
 
