@@ -9,7 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ByteItemTest.class, CharArrayItemTest.class, CharItemTest.class, NumericItemTest.class, BooleanItemTest.class,
 		BooleanArrayItemTest.class, DataItemFactoryTest.class, FloatItemTest.class, FloatArrayItemTest.class,
 		LongItemTest.class, LongArrayItemTest.class, IntItemTest.class, IntArrayItemTest.class, Int16ItemTest.class,
-		Int16ArrayItemTest.class, Int8ItemTest.class, Int8ArrayItemTest.class })
+		Int16ArrayItemTest.class, Int8ItemTest.class, Int8ArrayItemTest.class, DataStructureTest.class })
 public class AllTests {
 
 }
