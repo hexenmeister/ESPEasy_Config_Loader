@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class LongArrayItem extends ArrayDataItem<LongItem> {
+public class LongArrayItem extends ArrayDataItem<LongItem, Boolean> {
 
     private static final int BYTES_PER_ITEM = LongItem.BYTES_PER_ITEM;
 
@@ -9,8 +9,8 @@ public class LongArrayItem extends ArrayDataItem<LongItem> {
     }
 
     @Override
-    protected LongItem createType(byte[] data, int offset, Object additionalData) {
-        return new LongItem(data, offset, BYTES_PER_ITEM, ((Boolean) additionalData).booleanValue());
+    protected LongItem createType(byte[] data, int offset, Boolean additionalData) {
+        return new LongItem(data, offset, BYTES_PER_ITEM, additionalData.booleanValue());
     }
 
 }

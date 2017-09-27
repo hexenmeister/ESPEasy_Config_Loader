@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class ByteArrayItem extends ArrayDataItem<ByteItem> {
+public class ByteArrayItem extends ArrayDataItem<ByteItem, Void> {
 
 	private static final int BYTES_PER_ITEM = ByteItem.BYTES_PER_ITEM;
 
@@ -9,7 +9,7 @@ public class ByteArrayItem extends ArrayDataItem<ByteItem> {
 	}
 
 	@Override
-	protected ByteItem createType(byte[] data, int offset, Object ad) {
+	protected ByteItem createType(byte[] data, int offset, Void ad) {
 		return new ByteItem(data, offset);
 	}
 

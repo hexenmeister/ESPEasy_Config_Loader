@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class BooleanArrayItem extends ArrayDataItem<BooleanItem> {
+public class BooleanArrayItem extends ArrayDataItem<BooleanItem, Void> {
 
 	private static final int BYTES_PER_ITEM = BooleanItem.BYTES_PER_ITEM;
 
@@ -9,7 +9,7 @@ public class BooleanArrayItem extends ArrayDataItem<BooleanItem> {
 	}
 
 	@Override
-	protected BooleanItem createType(byte[] data, int offset, Object ad) {
+	protected BooleanItem createType(byte[] data, int offset, Void ad) {
 		return new BooleanItem(data, offset);
 	}
 

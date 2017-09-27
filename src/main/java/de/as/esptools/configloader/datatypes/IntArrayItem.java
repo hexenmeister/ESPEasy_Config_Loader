@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class IntArrayItem extends ArrayDataItem<IntItem> {
+public class IntArrayItem extends ArrayDataItem<IntItem, Boolean> {
 
     private static final int BYTES_PER_ITEM = IntItem.BYTES_PER_ITEM;
 
@@ -9,8 +9,8 @@ public class IntArrayItem extends ArrayDataItem<IntItem> {
     }
 
     @Override
-    protected IntItem createType(byte[] data, int offset, Object additionalData) {
-        return new IntItem(data, offset, BYTES_PER_ITEM, ((Boolean) additionalData).booleanValue());
+    protected IntItem createType(byte[] data, int offset, Boolean additionalData) {
+        return new IntItem(data, offset, BYTES_PER_ITEM, additionalData.booleanValue());
     }
 
 }

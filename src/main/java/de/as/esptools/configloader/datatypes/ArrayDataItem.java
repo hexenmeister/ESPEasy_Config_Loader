@@ -2,7 +2,7 @@ package de.as.esptools.configloader.datatypes;
 
 import de.as.esptools.configloader.datatypes.util.Util;
 
-public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataType {
+public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayDataType {
 
     static final int DEFAULT_HEX_PER_LINE = 16;
 
@@ -18,7 +18,7 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
         this(name, length, bytesPerItem, null);
     }
 
-    protected ArrayDataItem(String name, int length, int bytesPerItem, Object additionalData) {
+    protected ArrayDataItem(String name, int length, int bytesPerItem, V additionalData) {
         if (length <= 0) {
             throw new RuntimeException("empty array is not allowed");
         }
@@ -35,7 +35,7 @@ public abstract class ArrayDataItem<T extends DataItem> implements IArrayDataTyp
         return this.name;
     }
 
-    protected abstract T createType(byte[] data, int offset, Object additionalData);
+    protected abstract T createType(byte[] data, int offset, V additionalData);
 
     protected String getArrayDelimenter() {
         return "\r\n\t";
