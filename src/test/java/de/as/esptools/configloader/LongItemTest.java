@@ -70,6 +70,7 @@ public class LongItemTest {
 		try {
 			instu.importDataString("-1");
 			Assert.assertEquals("long : -1", instu.exportTypeAndDataString(false));
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -83,6 +84,7 @@ public class LongItemTest {
 		try {
 			instu.importDataString("-1316134913");
 			Assert.assertEquals("long : -1316134913", instu.exportTypeAndDataString(false));
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -96,6 +98,7 @@ public class LongItemTest {
 		try {
 			instu.importDataString("-2147483648");
 			Assert.assertEquals("long : -2147483648", instu.exportTypeAndDataString(false));
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -233,12 +236,14 @@ public class LongItemTest {
 
 		try {
 			insts.setNumber(2147483648l);
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		try {
 			insts.setNumber(-2147483649l);
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -252,6 +257,7 @@ public class LongItemTest {
 		try {
 			instu.setNumber(-1);
 			Assert.assertEquals("-1", instu.exportDataString());
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -262,6 +268,7 @@ public class LongItemTest {
 		try {
 			instu.setNumber(-567890);
 			Assert.assertEquals("-567890", instu.exportDataString());
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -275,6 +282,7 @@ public class LongItemTest {
 		try {
 			instu.setNumber(-0101);
 			Assert.assertEquals("-101", instu.exportDataString());
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
@@ -285,12 +293,14 @@ public class LongItemTest {
 		try {
 			instu.setNumber(-2147483648l);
 			Assert.assertEquals("-2147483648", instu.exportDataString());
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		try {
 			instu.setNumber(4294967296l);
+			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
