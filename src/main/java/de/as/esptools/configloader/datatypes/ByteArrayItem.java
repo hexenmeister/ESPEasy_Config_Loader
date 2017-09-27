@@ -9,7 +9,7 @@ public class ByteArrayItem extends ArrayDataItem<ByteItem> {
 	}
 
 	@Override
-	protected ByteItem createType(byte[] data, int offset) {
+	protected ByteItem createType(byte[] data, int offset, Object ad) {
 		return new ByteItem(data, offset);
 	}
 

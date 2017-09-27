@@ -24,7 +24,7 @@ public class ArrayDataItemTest {
 		}
 
 		@Override
-		protected DataItem createType(byte[] data, int offset) {
+		protected DataItem createType(byte[] data, int offset, Object ad) {
 			return new ByteItemTest(data, offset);
 		}
 

@@ -9,7 +9,7 @@ public class BooleanArrayItem extends ArrayDataItem<BooleanItem> {
 	}
 
 	@Override
-	protected BooleanItem createType(byte[] data, int offset) {
+	protected BooleanItem createType(byte[] data, int offset, Object ad) {
 		return new BooleanItem(data, offset);
 	}
 

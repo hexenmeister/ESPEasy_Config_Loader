@@ -2,17 +2,15 @@ package de.as.esptools.configloader.datatypes;
 
 public class IntArrayItem extends ArrayDataItem<IntItem> {
 
-	private static final int BYTES_PER_ITEM = IntItem.BYTES_PER_ITEM;
-	private boolean signed;
+    private static final int BYTES_PER_ITEM = IntItem.BYTES_PER_ITEM;
 
-	public IntArrayItem(int length, boolean signed) {
-		super(IntItem.NAME, length, BYTES_PER_ITEM);
-		this.signed = signed;
-	}
+    public IntArrayItem(int length, boolean signed) {
+        super(IntItem.NAME, length, BYTES_PER_ITEM, Boolean.valueOf(signed));
+    }
 
-	@Override
-	protected IntItem createType(byte[] data, int offset) {
-		return new IntItem(data, offset, BYTES_PER_ITEM, this.signed);
-	}
+    @Override
+    protected IntItem createType(byte[] data, int offset, Object additionalData) {
+        return new IntItem(data, offset, BYTES_PER_ITEM, ((Boolean) additionalData).booleanValue());
+    }
 
 }
