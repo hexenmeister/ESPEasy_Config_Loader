@@ -27,6 +27,12 @@ public class Int16ItemTest {
 	}
 
 	@Test
+	public void testBinLength() {
+		Assert.assertEquals(2, insts.getBinLength());
+		Assert.assertEquals(2, instu.getBinLength());
+	}
+
+	@Test
 	public void testIsSigned() {
 		Assert.assertEquals(true, insts.isSigned());
 		Assert.assertEquals(false, instu.isSigned());

@@ -24,7 +24,7 @@ public class DataItemTest {
 		}
 
 		@Override
-		public String importDataString(String data) throws DataImportException {
+		public String importDataStringIntern(String data) throws DataImportException {
 			return null;
 		}
 

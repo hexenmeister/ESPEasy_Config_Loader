@@ -20,7 +20,7 @@ public class BooleanItem extends DataItem {
 	}
 
 	@Override
-	public String importDataString(String data) throws DataImportException {
+	protected String importDataStringIntern(String data) throws DataImportException {
 		if (data == null) {
 			throw new DataImportException("invalid input data (null)");
 		}
@@ -40,10 +40,6 @@ public class BooleanItem extends DataItem {
 			setData(new byte[] { (byte) 0x00 });
 		} else
 			throw new DataImportException("unknown import format");
-
-		if (!this.isInArray() && !this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {
-			throw new DataImportException("data array to long");
-		}
 
 		return rest;
 	}

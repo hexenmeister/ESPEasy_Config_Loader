@@ -24,6 +24,11 @@ public class BooleanItemTest {
 	}
 
 	@Test
+	public void testBinLength() {
+		Assert.assertEquals(1, inst.getBinLength());
+	}
+
+	@Test
 	public void testTypeExport() throws DataImportException {
 		inst.importDataString("0");
 		Assert.assertEquals("boolean : 0", inst.exportTypeAndDataString(false));

@@ -22,7 +22,7 @@ public interface IDataType {
 	 * @throws DataImportException
 	 *             falls Proble3mebeim Import afgetreten sind
 	 */
-	public String importDataString(String data) throws DataImportException;
+	public void importDataString(String data) throws DataImportException;
 
 	public byte[] exportBin();
 
@@ -31,7 +31,7 @@ public interface IDataType {
 	public String exportDataString();
 
 	public String exportTypeAndDataString(boolean indent);
-	
-//	public boolean isInArray();
-	
+
+	// public boolean isInArray();
+
 }

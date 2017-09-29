@@ -28,7 +28,7 @@ public final class Util {
 	 *            falls >0, wird nach dieser Anzahl der verarbeiteten Bytes ein
 	 *            Delimeten eingefügt (i.d.R. eine neue Zeile)
 	 * @param delimeter
-	 *            Delimeter
+	 *            Line-Delimeter
 	 * @return Ausgabe
 	 */
 	public static final String bytesToHex(byte[] in, int bytePerLine, String delimeter) {

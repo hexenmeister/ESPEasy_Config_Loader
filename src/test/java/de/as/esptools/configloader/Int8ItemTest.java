@@ -25,7 +25,13 @@ public class Int8ItemTest {
 		Assert.assertEquals("int8", insts.getTypeName());
 		Assert.assertEquals("int8", instu.getTypeName());
 	}
-
+	
+	@Test
+	public void testBinLength() {
+		Assert.assertEquals(1, insts.getBinLength());
+		Assert.assertEquals(1, instu.getBinLength());
+	}
+	
 	@Test
 	public void testIsSigned() {
 		Assert.assertEquals(true, insts.isSigned());

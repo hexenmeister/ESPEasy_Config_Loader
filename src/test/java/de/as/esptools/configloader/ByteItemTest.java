@@ -24,6 +24,11 @@ public class ByteItemTest {
 	}
 
 	@Test
+	public void testBinLength() {
+		Assert.assertEquals(1, inst.getBinLength());
+	}
+
+	@Test
 	public void testTypeExport() throws DataImportException {
 		inst.importDataString("00");
 		Assert.assertEquals("byte : 00", inst.exportTypeAndDataString(false));

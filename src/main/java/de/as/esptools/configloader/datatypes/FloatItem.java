@@ -23,7 +23,7 @@ public class FloatItem extends DataItem {
 	}
 
 	@Override
-	public String importDataString(String data) throws DataImportException {
+	protected String importDataStringIntern(String data) throws DataImportException {
 		if (data == null) {
 			throw new DataImportException("invalid input data (null)");
 		}

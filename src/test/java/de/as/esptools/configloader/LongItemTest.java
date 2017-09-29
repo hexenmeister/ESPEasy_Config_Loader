@@ -27,6 +27,12 @@ public class LongItemTest {
 	}
 
 	@Test
+	public void testBinLength() {
+		Assert.assertEquals(4, insts.getBinLength());
+		Assert.assertEquals(4, instu.getBinLength());
+	}
+
+	@Test
 	public void testIsSigned() {
 		Assert.assertEquals(true, insts.isSigned());
 		Assert.assertEquals(false, instu.isSigned());

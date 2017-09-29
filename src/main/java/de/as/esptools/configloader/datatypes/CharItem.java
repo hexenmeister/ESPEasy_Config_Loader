@@ -29,7 +29,7 @@ public class CharItem extends DataItem {
 	}
 
 	@Override
-	public String importDataString(String data) throws DataImportException {
+	protected String importDataStringIntern(String data) throws DataImportException {
 		if (data == null || data.isEmpty()) {
 			this.setData(new byte[] { 0 });
 			return null;
@@ -44,38 +44,7 @@ public class CharItem extends DataItem {
 		}
 		this.setData(token.getBytes());
 
-		// if (!this.isInArray() && !this.allowLongDataImport() && rest != null)
-		// {
-		// throw new DataImportException("data array to long");
-		// }
-
-		if (!this.isInArray() && !this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {
-			throw new DataImportException("data array to long");
-		}
-
 		return rest;
-
-		// if (data == null) {
-		// throw new DataImportException("invalid input data (null)");
-		// }
-		//
-		// String token = data.trim();
-		// String rest = null;
-		//
-		// int pos = Util.searchTokenSplitPosition(token, " \t\r\n\f");
-		// if (pos > 0) {
-		// rest = token.substring(pos);
-		// token = token.substring(0, pos);
-		// }
-		//
-		// this.setData(token.getBytes());
-		//
-		// if (!this.isInArray() && !this.allowLongDataImport() && rest != null
-		// && !rest.trim().isEmpty()) {
-		// throw new DataImportException("data array to long");
-		// }
-		//
-		// return rest;
 	}
 
 	@Override

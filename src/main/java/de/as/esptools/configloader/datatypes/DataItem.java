@@ -161,4 +161,19 @@ public abstract class DataItem implements IDataType {
 		return Util.bytesToHex(this.getData());
 	}
 
+	@Override
+	public final void importDataString(String data) throws DataImportException {
+		// if (data == null) {
+		// throw new DataImportException("invalid input data (null)");
+		// }
+
+		String rest = this.importDataStringIntern(data);
+
+		if (!this.isInArray() && !this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {
+			throw new DataImportException("data array to long");
+		}
+	}
+
+	protected abstract String importDataStringIntern(String data) throws DataImportException;
+
 }

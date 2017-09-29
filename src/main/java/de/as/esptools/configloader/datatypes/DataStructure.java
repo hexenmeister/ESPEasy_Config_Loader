@@ -63,9 +63,9 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 	}
 
 	@Override
-	public String importDataString(String data) throws DataImportException {
+	public void importDataString(String data) throws DataImportException {
 		// TODO Auto-generated method stub
-		return null;
+		return;
 	}
 
 	@Override
@@ -90,8 +90,18 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 
 	@Override
 	public String exportHex() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		List<IDataType> l = this.getItems();
+		for (Iterator<IDataType> it = l.iterator(); it.hasNext();) {
+			IDataType item = it.next();
+			sb.append(item.exportHex());
+			if (it.hasNext()) {
+				// sb.append(this.getD)
+				sb.append(" ");
+			}
+		}
+		// TODO Output format
+		return sb.toString();
 	}
 
 	@Override

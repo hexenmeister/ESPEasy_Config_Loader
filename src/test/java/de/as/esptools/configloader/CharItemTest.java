@@ -24,6 +24,11 @@ public class CharItemTest {
 	}
 
 	@Test
+	public void testBinLength() {
+		Assert.assertEquals(1, inst.getBinLength());
+	}
+
+	@Test
 	public void testTypeExport() throws DataImportException {
 		inst.importDataString("A");
 		Assert.assertEquals("char : A", inst.exportTypeAndDataString(false));
