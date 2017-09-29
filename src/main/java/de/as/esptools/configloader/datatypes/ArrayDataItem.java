@@ -77,7 +77,10 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 
 	@Override
 	public void importHex(String data) throws DataImportException {
-		Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
+		String ret = Util.hexToBytes(this.getData(), data, this.allowShortDataImport());
+		if (ret != null && !this.allowLongDataImport()) {
+			throw new DataImportException("import string to long");
+		}
 	}
 
 	@Override

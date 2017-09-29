@@ -2,6 +2,8 @@ package de.as.esptools.configloader;
 
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,22 +91,68 @@ public class DataStructureTest {
 	}
 
 	@Test
-	public void testImportBinByteArray() {
-		// TODO
-		fail("Not yet implemented");
+	public void testImportBinOffset() throws DataImportException {
+		DataStructure struct = this.createBigStruct();
+		byte[] bytes = new byte[] { (byte) 0xFF, (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55, (byte) 0x91,
+				(byte) 0x02, (byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 };
+		struct.importBin(bytes, 1);
+		byte[] bytes2 = struct.exportBin();
+		byte[] bytesE = new byte[] { (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55, (byte) 0x91, (byte) 0x02,
+				(byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00 };
+		Assert.assertEquals(Arrays.toString(bytesE), Arrays.toString(bytes2));
+
+		try {
+			bytes = new byte[] { (byte) 0xFF, (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55,
+					(byte) 0x91, (byte) 0x02, (byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 };
+			struct.importBin(bytes, 1);
+			bytes2 = struct.exportBin();
+			Assert.assertEquals(Arrays.toString(bytesE), Arrays.toString(bytes2));
+			fail("too long");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			bytes = new byte[] { (byte) 0xFF, (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55,
+					(byte) 0x91, (byte) 0x02, (byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 };
+			struct.importBin(bytes, 1);
+			fail("too short");
+		} catch (DataImportException e) {
+			// NOP
+		}
 	}
 
 	@Test
-	public void testImportBinByteArrayInt() {
-		// TODO
-		fail("Not yet implemented");
+	public void testExportImportBin() throws DataImportException {
+		DataStructure struct = this.createBigStruct();
+		byte[] bytes = new byte[] { (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55, (byte) 0x91, (byte) 0x02,
+				(byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00 };
+		struct.importBin(bytes);
+		byte[] bytes2 = struct.exportBin();
+		Assert.assertEquals(Arrays.toString(bytes), Arrays.toString(bytes2));
+		// TODO :1 Item, No items, More items, too long/short data
 	}
 
-	// @Test
-	// public void testImportHex() {
-	// // TODO
-	// fail("Not yet implemented");
-	// }
+	@Test
+	public void testExportImportHex() throws DataImportException {
+		DataStructure struct = this.createBigStruct();
+		String data = "01 DE AD 00 00 00 00 12 34 88 23 55 91 02 93 94 00 00 00 00 00 00 00 00 00";
+		struct.importHex(data);
+		String export = struct.exportHex();
+		// System.out.println(export);
+		Assert.assertEquals(data, export);
+		// TODO :1 Item, No items, More items, too long/short data
+	}
 
 	@Test
 	public void testImportDataString() {
@@ -113,30 +161,27 @@ public class DataStructureTest {
 	}
 
 	@Test
-	public void testExportBin() {
-		// TODO
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testExportImportHex() throws DataImportException {
-		// TODO
+	public void testExportDataString() throws DataImportException {
 		DataStructure struct = this.createBigStruct();
-		String data = "01 DE AD 00 00 00 00 12 34 88 23 55 91 02 93 94 00 00 00 00 00 00 00 00 00";
+		String data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
+				+ "00 00 00 80 " + "FF FF FF FF";
 		struct.importHex(data);
-		String export = struct.exportHex();
-		System.out.println(export);
-		Assert.assertEquals(data, export);
-	}
 
-	@Test
-	public void testExportDataString() {
+		String export = struct.exportDataString();
+		System.out.println(export);
 		// TODO
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testExportTypeAndDataString() {
+	public void testExportTypeAndDataString() throws DataImportException {
+		DataStructure struct = this.createBigStruct();
+		String data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
+				+ "00 00 00 80 " + "FF FF FF FF";
+		struct.importHex(data);
+
+		String export = struct.exportTypeAndDataString(true);
+		System.out.println(export);
 		// TODO
 		fail("Not yet implemented");
 	}

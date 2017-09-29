@@ -1,7 +1,5 @@
 package de.as.esptools.configloader.datatypes.util;
 
-import java.util.StringTokenizer;
-
 import de.as.esptools.configloader.datatypes.DataImportException;
 
 public final class Util {
@@ -54,15 +52,12 @@ public final class Util {
 	 * @param allowShort
 	 *            gibt an, ob zu kurze Daten erlaub sein sollen (Rest wird mit
 	 *            Nulen gefüllt)
-	 * @param allowLong
-	 *            gibt an, ob zu lang Daten erlaub sein sollen (Überflüssiges
-	 *            wird verworfen)
 	 * @throws DataImportException
 	 *             Zeigt Import/Interpretationsprobleme an
+	 * @return Rest, der nach dem Import übrig blieb
 	 */
-	public static final void hexToBytes(byte[] bytes, String data, boolean allowShort, boolean allowLong)
-			throws DataImportException {
-		StringTokenizer st = new StringTokenizer(data);
+	public static final String hexToBytes(byte[] bytes, String data, boolean allowShort) throws DataImportException {
+		StringTokenizerEx st = new StringTokenizerEx(data);
 		int cnt = 0;
 		while (st.hasMoreTokens()) {
 			String s = st.nextToken();
@@ -70,11 +65,19 @@ public final class Util {
 			// Wenn die Länge!=2, dann in 2-Zeichen Strings aufteilen, wenn
 			// nicht teilbar => Fehler
 			if (cnt >= bytes.length) {
-				if (allowLong) {
-					break;
-				} else {
-					throw new DataImportException("import string to long");
-				}
+				return s + st.getRemainingString();
+				// StringBuilder sb = new StringBuilder(s);
+				// while (st.hasMoreTokens()) {
+				// sb.append(" ");
+				// sb.append(st.nextToken());
+				// }
+				// return sb.toString();
+
+				// if (allowLong) {
+				// break;
+				// } else {
+				// throw new DataImportException("import string to long");
+				// }
 			}
 			int val;
 			try {
@@ -94,6 +97,8 @@ public final class Util {
 		} else if (cnt < bytes.length) {
 			throw new DataImportException("import string to short");
 		}
+
+		return null;
 	}
 
 	/**

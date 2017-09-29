@@ -15,14 +15,14 @@ public interface IDataStructure {
 	 * @param item
 	 *            Element
 	 */
-	public void addItem(IDataType item);
+	public void addItem(DataItem item);
 
 	/**
 	 * Liefert Liste der Elemente.
 	 * 
 	 * @return Liste der Elemente
 	 */
-	public List<IDataType> getItems();
+	public List<DataItem> getItems();
 
 	/**
 	 * Liefern Anzahl der Elemente.

@@ -10,7 +10,6 @@ public abstract class DataItem implements IDataType {
 	private int offset = 0;
 	private int length = 0;
 	private String name;
-	private boolean isInArray = false;
 
 	/**
 	 * Erstellt ein XDataItem mit eigenem ByteArray in der (für ein Item)
@@ -24,8 +23,8 @@ public abstract class DataItem implements IDataType {
 	protected DataItem(String name, int length) {
 		this.name = name;
 		this.data = new byte[length];
+		this.offset = 0;
 		this.length = length;
-		this.isInArray = false;
 	}
 
 	/**
@@ -48,16 +47,16 @@ public abstract class DataItem implements IDataType {
 		this.data = data;
 		this.offset = offset;
 		this.length = length;
-		this.isInArray = true;
+		// this.isInArray = true;
 	}
 
 	public String getTypeName() {
 		return this.name;
 	}
 
-	public boolean isInArray() {
-		return this.isInArray;
-	}
+	// public boolean isInArray() {
+	// return this.isInArray;
+	// }
 
 	static final String EMPTY = "                             ";
 	static final int INDENT = 13;
@@ -146,14 +145,27 @@ public abstract class DataItem implements IDataType {
 	}
 
 	@Override
-	public void importHex(String data) throws DataImportException {
-		if (!this.isInArray()) {
-			Util.hexToBytes(this.getData(), data, this.allowShortDataImport(), this.allowLongDataImport());
+	public final void importHex(String data) throws DataImportException {
+		String ret = importHexIntern(data);
+		if (ret != null && !this.allowLongDataImport()) {
+			throw new DataImportException("import string to long");
+		}
+	}
+
+	protected String importHexIntern(String data) throws DataImportException {
+		String ret;
+		if (this.offset == 0 && this.length == this.data.length) {
+			ret = Util.hexToBytes(this.getData(), data, this.allowShortDataImport());
 		} else {
 			byte[] pData = new byte[this.length];
-			Util.hexToBytes(pData, data, this.allowShortDataImport(), this.allowLongDataImport());
+			ret = Util.hexToBytes(pData, data, this.allowShortDataImport());
 			System.arraycopy(pData, 0, this.data, this.offset, this.length);
+
 		}
+		// if (ret != null && !this.allowLongDataImport()) {
+		// throw new DataImportException("import string to long");
+		// }
+		return ret;
 	}
 
 	@Override
@@ -163,13 +175,9 @@ public abstract class DataItem implements IDataType {
 
 	@Override
 	public final void importDataString(String data) throws DataImportException {
-		// if (data == null) {
-		// throw new DataImportException("invalid input data (null)");
-		// }
-
 		String rest = this.importDataStringIntern(data);
 
-		if (!this.isInArray() && !this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {
+		if (!this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {
 			throw new DataImportException("data array to long");
 		}
 	}

@@ -7,20 +7,20 @@ import java.util.List;
 public class DataStructure implements IArrayDataType, IDataStructure {
 
 	private String name;
-	private List<IDataType> items;
+	private List<DataItem> items;
 
 	public DataStructure(String name) {
 		this.name = name;
-		this.items = new ArrayList<IDataType>();
+		this.items = new ArrayList<DataItem>();
 	}
 
 	@Override
-	public void addItem(IDataType item) {
+	public void addItem(DataItem item) {
 		this.items.add(item);
 	}
 
 	@Override
-	public List<IDataType> getItems() {
+	public List<DataItem> getItems() {
 		return this.items;
 	}
 
@@ -37,8 +37,8 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 	@Override
 	public int getBinLength() {
 		int ret = 0;
-		List<IDataType> l = this.getItems();
-		for (Iterator<IDataType> it = l.iterator(); it.hasNext();) {
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
 			ret += it.next().getBinLength();
 		}
 		return ret;
@@ -46,35 +46,45 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 
 	@Override
 	public void importBin(byte[] data) throws DataImportException {
-		// TODO Auto-generated method stub
-
+		this.importBin(data, 0);
 	}
 
 	@Override
 	public void importBin(byte[] data, int offset) throws DataImportException {
-		// TODO Auto-generated method stub
+		int pos = offset;
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
+			item.importBin(data, pos);
+			pos += item.getBinLength();
+		}
 
+		if (pos < data.length) {
+			throw new DataImportException("import string to long");
+		}
 	}
 
 	@Override
 	public void importHex(String data) throws DataImportException {
-		// TODO Auto-generated method stub
+		String ret = data;
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
+			ret = item.importHexIntern(ret);
+		}
 
-	}
-
-	@Override
-	public void importDataString(String data) throws DataImportException {
-		// TODO Auto-generated method stub
-		return;
+		if (ret != null /* && !this.allowLongDataImport() */) {
+			throw new DataImportException("import string to long");
+		}
 	}
 
 	@Override
 	public byte[] exportBin() {
 		byte[] bytes = new byte[this.getBinLength()];
 		int pos = 0;
-		List<IDataType> l = this.getItems();
-		for (Iterator<IDataType> it = l.iterator(); it.hasNext();) {
-			IDataType item = it.next();
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
 			byte[] itemBytes = item.exportBin();
 			int itemLength = item.getBinLength();
 			if (itemBytes.length != itemLength) {
@@ -91,9 +101,9 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 	@Override
 	public String exportHex() {
 		StringBuilder sb = new StringBuilder();
-		List<IDataType> l = this.getItems();
-		for (Iterator<IDataType> it = l.iterator(); it.hasNext();) {
-			IDataType item = it.next();
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
 			sb.append(item.exportHex());
 			if (it.hasNext()) {
 				// sb.append(this.getD)
@@ -105,15 +115,46 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 	}
 
 	@Override
-	public String exportDataString() {
+	public void importDataString(String data) throws DataImportException {
 		// TODO Auto-generated method stub
-		return null;
+		return;
+	}
+
+	@Override
+	public String exportDataString() {
+		StringBuilder sb = new StringBuilder();
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
+			sb.append(item.exportDataString());
+			sb.append(this.getExportDelimeter());
+		}
+
+		return sb.toString();
+		// XXX
 	}
 
 	@Override
 	public String exportTypeAndDataString(boolean indent) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
+			sb.append(item.exportTypeAndDataString(indent));
+			sb.append(this.getExportDelimeter());
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 * Lieefert Zeichenkette, die als Trenner zw. den Daten einzelnen Items beim
+	 * Export fungiert.
+	 * 
+	 * @return Trenner-String
+	 */
+	protected String getExportDelimeter() {
+		return "\r\n";
 	}
 
 	@Override
@@ -121,7 +162,5 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 		// Strukture gleichzeitig als Array verwendbar
 		return this.getItemCount();
 	}
-
-	// TODO implement
 
 }
