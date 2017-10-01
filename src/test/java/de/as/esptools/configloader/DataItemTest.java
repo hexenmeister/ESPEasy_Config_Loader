@@ -29,7 +29,7 @@ public class DataItemTest {
 		}
 
 		@Override
-		public String exportDataString() {
+		public String exportDataStringIntern() {
 			return null;
 		}
 	}

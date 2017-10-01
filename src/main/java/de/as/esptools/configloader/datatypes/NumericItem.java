@@ -70,7 +70,7 @@ public abstract class NumericItem extends DataItem {
 	}
 
 	@Override
-	public String exportDataString() {
+	protected String exportDataStringIntern() {
 		return Long.toString(this.getNumber());
 	}
 
@@ -130,8 +130,6 @@ public abstract class NumericItem extends DataItem {
 			for (int i = 0; i < n - 1; i++) {
 				ta[i] = (byte) 0x00;
 			}
-			// ta[ta.length - 1] = this.isSigned() ? (byte) 0x80 : 00;
-			// return Util.reverseByteArrayToLong(ta, isSigned());
 			ta[ta.length - 1] = (byte) 0x80;
 			return Util.reverseByteArrayToLong(ta, true);
 		} else {

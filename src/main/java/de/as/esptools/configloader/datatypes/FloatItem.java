@@ -56,7 +56,7 @@ public class FloatItem extends DataItem {
 	}
 
 	@Override
-	public String exportDataString() {
+	protected String exportDataStringIntern() {
 		return NF.format(this.getFloat());
 	}
 

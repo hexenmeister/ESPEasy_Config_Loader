@@ -37,6 +37,9 @@ public class CharItemTest {
 
 	@Test
 	public void testImportExportString() throws DataImportException {
+		inst.importDataString("\"A\"");
+		Assert.assertEquals("A", inst.exportDataString());
+
 		inst.importDataString("A");
 		Assert.assertEquals("A", inst.exportDataString());
 
@@ -44,6 +47,9 @@ public class CharItemTest {
 		Assert.assertNotEquals("b", inst.exportDataString());
 
 		inst.importDataString("");
+		Assert.assertEquals("00", inst.exportHex());
+
+		inst.importDataString("\"\"");
 		Assert.assertEquals("00", inst.exportHex());
 
 		try {

@@ -47,16 +47,11 @@ public abstract class DataItem implements IDataType {
 		this.data = data;
 		this.offset = offset;
 		this.length = length;
-		// this.isInArray = true;
 	}
 
 	public String getTypeName() {
 		return this.name;
 	}
-
-	// public boolean isInArray() {
-	// return this.isInArray;
-	// }
 
 	static final String EMPTY = "                             ";
 	static final int INDENT = 13;
@@ -162,9 +157,6 @@ public abstract class DataItem implements IDataType {
 			System.arraycopy(pData, 0, this.data, this.offset, this.length);
 
 		}
-		// if (ret != null && !this.allowLongDataImport()) {
-		// throw new DataImportException("import string to long");
-		// }
 		return ret;
 	}
 
@@ -174,7 +166,7 @@ public abstract class DataItem implements IDataType {
 	}
 
 	@Override
-	public final void importDataString(String data) throws DataImportException {
+	public void importDataString(String data) throws DataImportException {
 		String rest = this.importDataStringIntern(data);
 
 		if (!this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {
@@ -183,5 +175,12 @@ public abstract class DataItem implements IDataType {
 	}
 
 	protected abstract String importDataStringIntern(String data) throws DataImportException;
+
+	@Override
+	public String exportDataString() {
+		return exportDataStringIntern();
+	}
+
+	protected abstract String exportDataStringIntern();
 
 }

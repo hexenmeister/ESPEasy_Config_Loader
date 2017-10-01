@@ -132,58 +132,272 @@ public class DataStructureTest {
 
 	@Test
 	public void testExportImportBin() throws DataImportException {
-		DataStructure struct = this.createBigStruct();
-		byte[] bytes = new byte[] { (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00, (byte) 0x00,
-				(byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55, (byte) 0x91, (byte) 0x02,
-				(byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
-				(byte) 0x00, (byte) 0x00, (byte) 0x00 };
+		DataStructure struct = this.createSmallStruct();
+		byte[] bytes = new byte[] { (byte) 0x01 };
 		struct.importBin(bytes);
 		byte[] bytes2 = struct.exportBin();
 		Assert.assertEquals(Arrays.toString(bytes), Arrays.toString(bytes2));
-		// TODO :1 Item, No items, More items, too long/short data
+
+		struct = this.createBigStruct();
+		bytes = new byte[] { (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55, (byte) 0x91, (byte) 0x02, (byte) 0x93,
+				(byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00 };
+		struct.importBin(bytes);
+		bytes2 = struct.exportBin();
+		Assert.assertEquals(Arrays.toString(bytes), Arrays.toString(bytes2));
+
+		try {
+			struct = this.createBigStruct();
+			bytes = new byte[] { (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55, (byte) 0x91,
+					(byte) 0x02, (byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 };
+			struct.importBin(bytes);
+			fail("too short");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			struct = this.createBigStruct();
+			bytes = new byte[] { (byte) 0x01, (byte) 0xDE, (byte) 0xAD, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x12, (byte) 0x34, (byte) 0x88, (byte) 0x23, (byte) 0x55, (byte) 0x91,
+					(byte) 0x02, (byte) 0x93, (byte) 0x94, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+					(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 };
+			struct.importBin(bytes);
+			fail("too long");
+		} catch (DataImportException e) {
+			// NOP
+		}
 	}
 
 	@Test
 	public void testExportImportHex() throws DataImportException {
-		DataStructure struct = this.createBigStruct();
-		String data = "01 DE AD 00 00 00 00 12 34 88 23 55 91 02 93 94 00 00 00 00 00 00 00 00 00";
+		DataStructure struct = this.createSmallStruct();
+		String data = "01";
 		struct.importHex(data);
 		String export = struct.exportHex();
-		// System.out.println(export);
 		Assert.assertEquals(data, export);
-		// TODO :1 Item, No items, More items, too long/short data
+
+		struct = this.createBigStruct();
+		data = "01 DE AD 00 00 00 00 12 34 88 23 55 91 02 93 94 00 00 00 00 00 00 00 00 00";
+		struct.importHex(data);
+		export = struct.exportHex();
+		Assert.assertEquals(data, export);
+
+		try {
+			struct = this.createBigStruct();
+			data = "01 DE AD 00 00 00 00 12 34 88 23 55 91 02 93 94 00 00 00 00 00 00 00 00";
+			struct.importHex(data);
+			fail("too short");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			struct = this.createBigStruct();
+			data = "01 DE AD 00 00 00 00 12 34 88 23 55 91 02 93 94 00 00 00 00 00";
+			struct.importHex(data);
+			fail("too short");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			struct = this.createBigStruct();
+			data = "01 DE AD 00 00 00 00 12 34 88 23 55 91 02 93 94 00 00 00 00 00 00 00 00 00 FF";
+			struct.importHex(data);
+			fail("too long");
+		} catch (DataImportException e) {
+			// NOP
+		}
 	}
 
 	@Test
-	public void testImportDataString() {
-		// TODO
-		fail("Not yet implemented");
+	public void testImportDataString() throws DataImportException {
+		DataStructure struct = this.createSmallStruct();
+		String data = /* boolean */ "01";
+		struct.importDataString(data);
+		String export = struct.exportDataString();
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1", export);
+
+		struct = this.createBigStruct();
+		data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "H " + /* float */ "1.01 "
+				+ /* int16 signed */ "13330 " + /* int16 unsigned */ "9096 "
+				+ /* int8 signed */ "85 " + /* int8 unsigned */ "145 "
+				+ /* int signed */ "-27902 " + /* int unsigned */ "148 "
+				+ /* long signed */ "-2147483648 " + /* int unsigned */ "4294967295";
+		struct.importDataString(data);
+		export = struct.exportDataString();
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1|DE|H|1.01|13330|9096|85|145|-27902|148|-2147483648|4294967295", export);
+
+		struct = this.createBigStruct();
+		data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "\"H\" " + /* float */ "1.01 "
+				+ /* int16 signed */ "13330 " + /* int16 unsigned */ "9096 "
+				+ /* int8 signed */ "85 " + /* int8 unsigned */ "145 "
+				+ /* int signed */ "-27902 " + /* int unsigned */ "148 "
+				+ /* long signed */ "-2147483648 " + /* int unsigned */ "4294967295";
+		struct.importDataString(data);
+		export = struct.exportDataString();
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1|DE|H|1.01|13330|9096|85|145|-27902|148|-2147483648|4294967295", export);
+
+		struct = this.createBigStruct();
+		data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "\" \" " + /* float */ "1.01 "
+				+ /* int16 signed */ "13330 " + /* int16 unsigned */ "9096 "
+				+ /* int8 signed */ "85 " + /* int8 unsigned */ "145 "
+				+ /* int signed */ "-27902 " + /* int unsigned */ "148 "
+				+ /* long signed */ "-2147483648 " + /* int unsigned */ "4294967295";
+		struct.importDataString(data);
+		export = struct.exportDataString();
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1|DE|\"|\"|1.01|13330|9096|85|145|-27902|148|-2147483648|4294967295", export);
+
+		try {
+			struct = this.createBigStruct();
+			data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "\" \" " + /* float */ "1.01 "
+					+ /* int16 signed */ "13330 " + /* int16 unsigned */ "9096 "
+					+ /* int8 signed */ "85 " + /* int8 unsigned */ "145 "
+					+ /* int signed */ "-27902 " + /* int unsigned */ "148 "
+					+ /* long signed */ "-2147483648 ";
+			struct.importDataString(data);
+			fail("too short");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			struct = this.createBigStruct();
+			data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "\" \" " + /* float */ "1.01 "
+					+ /* int16 signed */ "13330 " + /* int16 unsigned */ "9096 "
+					+ /* int8 signed */ "85 " + /* int8 unsigned */ "145 "
+					+ /* int signed */ "-27902 " + /* int unsigned */ "148 "
+					+ /* long signed */ "-2147483648 " + /* int unsigned */ "4294967295" + /* fill */ "X";
+			struct.importDataString(data);
+			fail("too long");
+		} catch (DataImportException e) {
+			// NOP
+		}
 	}
 
 	@Test
 	public void testExportDataString() throws DataImportException {
-		DataStructure struct = this.createBigStruct();
-		String data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
-				+ "00 00 00 80 " + "FF FF FF FF";
+		DataStructure struct = this.createSmallStruct();
+		String data = /* boolean */ "01";
 		struct.importHex(data);
-
 		String export = struct.exportDataString();
-		System.out.println(export);
-		// TODO
-		fail("Not yet implemented");
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1", export);
+
+		struct = this.createBigStruct();
+		data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "48 " + /* float */ "3F 81 47 AE "
+				+ /* int16 signed */ "12 34 " + /* int16 unsigned */ "88 23 "
+				+ /* int8 signed */ "55 " + /* int8 unsigned */ "91 "
+				+ /* int signed */ "02 93 " + /* int unsigned */ "94 00 "
+				+ /* long signed */ "00 00 00 80 " + /* long unsigned */ "FF FF FF FF";
+		struct.importHex(data);
+		export = struct.exportDataString();
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1|DE|H|1.01|13330|9096|85|145|-27902|148|-2147483648|4294967295", export);
+
+		try {
+			struct = this.createBigStruct();
+			data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "48 " + /* float */ "3F 81 47 AE "
+					+ /* int16 signed */ "12 34 " + /* int16 unsigned */ "88 23 "
+					+ /* int8 signed */ "55 " + /* int8 unsigned */ "91 "
+					+ /* int signed */ "02 93 " + /* int unsigned */ "94 00 "
+					+ /* long signed */ "00 00 00 80 ";
+			struct.importHex(data);
+			fail("too short");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			struct = this.createBigStruct();
+			data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "48 " + /* float */ "3F 81 47 AE "
+					+ /* int16 signed */ "12 34 " + /* int16 unsigned */ "88 23 "
+					+ /* int8 signed */ "55 " + /* int8 unsigned */ "91 "
+					+ /* int signed */ "02 93 " + /* int unsigned */ "94 00 "
+					+ /* long signed */ "00 00 00 80 " + /* corrupt */ "FF FF FF";
+			struct.importHex(data);
+			fail("too short (element)");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			struct = this.createBigStruct();
+			data = /* boolean */ "01 " + /* byte */ "DE " + /* char */ "48 " + /* float */ "3F 81 47 AE "
+					+ /* int16 signed */ "12 34 " + /* int16 unsigned */ "88 23 "
+					+ /* int8 signed */ "55 " + /* int8 unsigned */ "91 "
+					+ /* int signed */ "02 93 " + /* int unsigned */ "94 00 "
+					+ /* long signed */ "00 00 00 80 " + /* long unsigned */ "FF FF FF FF" + /* fill */ "FF";
+			struct.importHex(data);
+			fail("too long");
+		} catch (DataImportException e) {
+			// NOP
+		}
 	}
 
 	@Test
 	public void testExportTypeAndDataString() throws DataImportException {
-		DataStructure struct = this.createBigStruct();
-		String data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
+		DataStructure struct = this.createSmallStruct();
+		String data = "01 ";
+		struct.importHex(data);
+
+		String export = struct.exportTypeAndDataString(false);
+		export = export.replaceAll("\n+", "|");
+		export = export.replaceAll("\r+", "");
+		export = export.replaceAll("\\s+", "");
+		System.out.println(export);
+		Assert.assertEquals("boolean:1", export);
+
+		struct = this.createBigStruct();
+		data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
 				+ "00 00 00 80 " + "FF FF FF FF";
 		struct.importHex(data);
 
-		String export = struct.exportTypeAndDataString(true);
+		export = struct.exportTypeAndDataString(false);
+		export = export.replaceAll("\n+", "|");
+		export = export.replaceAll("\r+", "");
+		export = export.replaceAll("\\s+", "");
 		System.out.println(export);
-		// TODO
-		fail("Not yet implemented");
+		Assert.assertEquals(
+				"boolean:1|byte:DE|char:H|float:1.01|int16:13330|int16:9096|int8:85|int8:145|int:-27902|int:148|long:-2147483648|long:4294967295",
+				export);
+
+		try {
+			struct = this.createBigStruct();
+			data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
+					+ "00 00 00 80 ";
+			struct.importHex(data);
+			fail("too short");
+		} catch (DataImportException e) {
+			// NOP
+		}
+		try {
+			struct = this.createBigStruct();
+			data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
+					+ "00 00 00 80 " + "FF FF FF";
+			struct.importHex(data);
+			fail("too short (element)");
+		} catch (DataImportException e) {
+			// NOP
+		}
+
+		try {
+			struct = this.createBigStruct();
+			data = "01 " + "DE " + "48 " + "3F 81 47 AE " + "12 34 " + "88 23 " + "55 " + "91 " + "02 93 " + "94 00 "
+					+ "00 00 00 80 " + "FF FF FF FF" + " DD";
+			struct.importHex(data);
+			fail("too long");
+		} catch (DataImportException e) {
+			// NOP
+		}
 	}
 
 }

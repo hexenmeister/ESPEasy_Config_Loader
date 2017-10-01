@@ -96,7 +96,7 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 		return bytes;
 	}
 
-	// TODO: Stream Im/Export?
+	// XXX: Stream Im/Export?
 
 	@Override
 	public String exportHex() {
@@ -106,17 +106,30 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 			DataItem item = it.next();
 			sb.append(item.exportHex());
 			if (it.hasNext()) {
-				// sb.append(this.getD)
+				// sb.append(this.getDelimeter)
 				sb.append(" ");
 			}
 		}
-		// TODO Output format
+		// TODO Output format: Blockweise, 16 Hex-Zahlen pro Zeile
 		return sb.toString();
 	}
 
 	@Override
 	public void importDataString(String data) throws DataImportException {
-		// TODO Auto-generated method stub
+		String ret = data;
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
+			ret = item.importDataStringIntern(ret);
+			if (ret != null) {
+				ret = ret.trim();
+			}
+		}
+
+		if (ret != null /* && !this.allowLongDataImport() */) {
+			throw new DataImportException("import string to long");
+		}
+
 		return;
 	}
 
@@ -127,11 +140,12 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
 			DataItem item = it.next();
 			sb.append(item.exportDataString());
-			sb.append(this.getExportDelimeter());
+			if (it.hasNext()) {
+				sb.append(this.getExportDelimeter());
+			}
 		}
 
 		return sb.toString();
-		// XXX
 	}
 
 	@Override
@@ -141,7 +155,9 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
 			DataItem item = it.next();
 			sb.append(item.exportTypeAndDataString(indent));
-			sb.append(this.getExportDelimeter());
+			if (it.hasNext()) {
+				sb.append(this.getExportDelimeter());
+			}
 		}
 
 		return sb.toString();

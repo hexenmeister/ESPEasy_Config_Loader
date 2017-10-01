@@ -37,27 +37,75 @@ public class CharItem extends DataItem {
 
 		String token = data;
 		String rest = null;
-		int pos = this.getBinLength();
-		if (pos < token.length()) {
-			rest = token.substring(pos);
-			token = token.substring(0, pos);
+
+		if (data.trim().startsWith("\"")) {
+			token = data.trim();
+			int pp = token.indexOf("\"");
+			int pa = pp;
+			while ((pp = token.indexOf("\"", pp + 1)) >= 0) {
+				if (token.charAt(pp - 1) != '\\') {
+					if (pp + 1 <= token.length()) {
+						rest = token.substring(pp + 1);
+					}
+					token = token.substring(pa + 1, pp);
+					token = token.replaceAll("\\\\\"", "\"");
+					break;
+				}
+			}
+			if (pp < 0) {
+				throw new DataImportException("missing closing quotation");
+			}
+			if (token.length() > this.getBinLength()) {
+				throw new DataImportException("data too long");
+			}
+		} else {
+			int pos = this.getBinLength();
+			int pa = 0;
+			if (pos < token.length()) {
+				if (pos < token.length() - 1) {
+					if (token.startsWith("\\")) {
+						pa++;
+						pos++;
+					}
+				}
+				rest = token.substring(pos);
+				token = token.substring(pa, pos);
+			}
 		}
+
 		this.setData(token.getBytes());
 
 		return rest;
 	}
 
 	@Override
-	public String exportDataString() {
+	protected String exportDataStringIntern() {
+		String ret;
 		if (this.isNullterminated()) {
 			byte[] d = this.getData();
 			int pos = 0;
 			while (pos < d.length && d[pos] != 0) {
 				pos++;
 			}
-			return new String(d, 0, pos);
+			ret = new String(d, 0, pos);
+		} else {
+			ret = new String(this.getData());
 		}
-		return new String(this.getData());
+		return ret;
+	}
+
+	@Override
+	public String exportDataString() {
+		String ret = exportDataStringIntern();
+		return quoteWhenNonPrinteable(ret);
+	}
+
+	static String quoteWhenNonPrinteable(String data) {
+		if (data.matches(".*\\s+.*")) {
+			data = data.replaceAll("\"", "\\\"");
+			data = "\"" + data + "\"";
+		}
+		return data;
 	}
 
 	protected boolean isNullterminated() {

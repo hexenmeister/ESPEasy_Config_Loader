@@ -45,7 +45,7 @@ public class BooleanItem extends DataItem {
 	}
 
 	@Override
-	public String exportDataString() {
+	protected String exportDataStringIntern() {
 		byte b = getData()[0];
 		return b != 0 ? "1" : "0";
 	}

@@ -29,7 +29,6 @@ public class FloatItemTest {
 	@Test
 	public void testTypeExport() throws DataImportException {
 		inst.importDataString("1.01");
-		// System.out.println(inst.exportHex());
 		Assert.assertEquals("float : 1.01", inst.exportTypeAndDataString(false));
 
 		inst.importDataString("1000.99");

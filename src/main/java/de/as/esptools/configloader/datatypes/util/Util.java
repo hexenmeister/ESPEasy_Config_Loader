@@ -57,38 +57,29 @@ public final class Util {
 	 * @return Rest, der nach dem Import übrig blieb
 	 */
 	public static final String hexToBytes(byte[] bytes, String data, boolean allowShort) throws DataImportException {
-		StringTokenizerEx st = new StringTokenizerEx(data);
+		StringTokenizerEx st;
 		int cnt = 0;
-		while (st.hasMoreTokens()) {
-			String s = st.nextToken();
-			// TODO (Verbesserung):
-			// Wenn die Länge!=2, dann in 2-Zeichen Strings aufteilen, wenn
-			// nicht teilbar => Fehler
-			if (cnt >= bytes.length) {
-				return s + st.getRemainingString();
-				// StringBuilder sb = new StringBuilder(s);
-				// while (st.hasMoreTokens()) {
-				// sb.append(" ");
-				// sb.append(st.nextToken());
-				// }
-				// return sb.toString();
-
-				// if (allowLong) {
-				// break;
-				// } else {
-				// throw new DataImportException("import string to long");
-				// }
+		if (data != null) {
+			st = new StringTokenizerEx(data);
+			while (st.hasMoreTokens()) {
+				String s = st.nextToken();
+				// TODO (Verbesserung):
+				// Wenn die Länge!=2, dann in 2-Zeichen Strings aufteilen, wenn
+				// nicht teilbar => Fehler
+				if (cnt >= bytes.length) {
+					return s + st.getRemainingString();
+				}
+				int val;
+				try {
+					val = Integer.parseInt(s, 16);
+				} catch (NumberFormatException e) {
+					throw new DataImportException("invalid input. data must be a hex number");
+				}
+				if (val > 255 || val < 0) {
+					throw new DataImportException("invalid inpit. data must be in range from 00 to FF");
+				}
+				bytes[cnt++] = (byte) val;
 			}
-			int val;
-			try {
-				val = Integer.parseInt(s, 16);
-			} catch (NumberFormatException e) {
-				throw new DataImportException("invalid input. data must be a hex number");
-			}
-			if (val > 255 || val < 0) {
-				throw new DataImportException("invalid inpit. data must be in range from 00 to FF");
-			}
-			bytes[cnt++] = (byte) val;
 		}
 		if (allowShort) {
 			for (int i = cnt, n = bytes.length; i < n; i++) {

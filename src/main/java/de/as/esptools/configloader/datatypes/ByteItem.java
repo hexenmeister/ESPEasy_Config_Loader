@@ -40,7 +40,7 @@ public class ByteItem extends DataItem {
 	}
 
 	@Override
-	public String exportDataString() {
+	protected String exportDataStringIntern() {
 		return this.exportHex();
 	}
 

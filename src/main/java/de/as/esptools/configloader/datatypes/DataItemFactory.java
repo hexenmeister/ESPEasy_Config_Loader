@@ -12,7 +12,7 @@ public class DataItemFactory {
 	private DataItemFactory() {
 	}
 
-	private static final Pattern pattern = Pattern.compile("(\\w+)\\s*(\\[([0-9]{1,})\\])?"); // suchen
+	private static final Pattern PATTERN = Pattern.compile("(\\w+)\\s*(\\[([0-9]{1,})\\])?"); // suchen
 																								// nach
 																								// Muster:
 																								// xxx[num]
@@ -29,7 +29,7 @@ public class DataItemFactory {
 				return null;
 			}
 
-			Matcher matcher = pattern.matcher(typeDef);
+			Matcher matcher = PATTERN.matcher(typeDef);
 			String typeName = null;
 			String arrayCardinality = null;
 			boolean array = typeDef.matches(".*\\[.*\\].*");

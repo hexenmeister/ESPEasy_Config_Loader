@@ -94,12 +94,7 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 			throw new DataImportException("invalid input data (null)");
 		}
 
-		String rest = this.importDataStringIntern(data);
-
-		// if (!this.isInArray() && !this.allowLongDataImport() && rest != null
-		// && !rest.trim().isEmpty()) {
-		// throw new DataImportException("data array to long");
-		// }
+		this.importDataStringIntern(data);
 	}
 
 	protected String importDataStringIntern(String data) throws DataImportException {
@@ -122,7 +117,7 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 	public String exportDataString() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0, n = this.array.length; i < n; i++) {
-			sb.append(this.array[i].exportDataString());
+			sb.append(this.array[i].exportDataStringIntern());
 			if (i < n - 1) {
 				sb.append(this.getExportDelimeter());
 			}
