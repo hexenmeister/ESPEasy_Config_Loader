@@ -23,7 +23,7 @@ public class Int16ItemTest {
 	@Test
 	public void testName() {
 		Assert.assertEquals("int16", insts.getTypeName());
-		Assert.assertEquals("int16", instu.getTypeName());
+		Assert.assertEquals("uint16", instu.getTypeName());
 	}
 
 	@Test
@@ -79,32 +79,32 @@ public class Int16ItemTest {
 	@Test
 	public void testTypeExportUnsigned() throws DataImportException {
 		instu.importDataString("0");
-		Assert.assertEquals("int16 : 0", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint16 : 0", instu.exportTypeAndDataString(false));
 
 		instu.importDataString("1");
-		Assert.assertEquals("int16 : 1", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint16 : 1", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("-1");
-			Assert.assertEquals("int16 : -1", instu.exportTypeAndDataString(false));
+			Assert.assertEquals("uint16 : -1", instu.exportTypeAndDataString(false));
 			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		instu.importDataString("127");
-		Assert.assertEquals("int16 : 127", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint16 : 127", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("-128");
-			Assert.assertEquals("int16 : -128", instu.exportTypeAndDataString(false));
+			Assert.assertEquals("uint16 : -128", instu.exportTypeAndDataString(false));
 			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		instu.importDataString("65535");
-		Assert.assertEquals("int16 : 65535", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint16 : 65535", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("65536");

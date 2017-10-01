@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class IntItem extends NumericItem {
+public class IntItem extends NumericIntegerItem {
 
 	public static final String NAME = "int";
 

@@ -1,6 +1,6 @@
 package de.as.esptools.configloader.datatypes;
 
-public class LongItem extends NumericItem {
+public class LongItem extends NumericIntegerItem {
 
 	public static final String NAME = "long";
 

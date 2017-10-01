@@ -22,7 +22,7 @@ public class ByteArrayItemTest {
 
 	@Test
 	public void testName() {
-		Assert.assertEquals("byte", inst.getTypeName());
+		Assert.assertEquals("byte[1]", inst.getTypeName());
 	}
 
 	@Test

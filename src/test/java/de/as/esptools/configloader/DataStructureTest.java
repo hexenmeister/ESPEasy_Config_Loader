@@ -215,6 +215,29 @@ public class DataStructureTest {
 	}
 
 	@Test
+	public void testImportTypeAndDataString() throws DataImportException {
+		DataStructure struct = this.createSmallStruct();
+		String data = /* boolean */ "boolean: 01";
+		struct.importTypeAndDataString(data);
+		String export = struct.exportDataString();
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1", export);
+
+		struct = this.createBigStruct();
+		data = "boolean : 01 " + "byte : DE " + "char :H " + "float : 1.01 " + "int16 : 13330 " + "uint16 : 9096 "
+				+ "int8 : 85 " + "uint8 : 145 " + "int : -27902 " + "uint : 148 " + "long : -2147483648 "
+				+ "ulong : 4294967295";
+		struct.importTypeAndDataString(data);
+		export = struct.exportDataString();
+		export = export.replaceAll("\\s+", "|");
+		Assert.assertEquals("1|DE|H|1.01|13330|9096|85|145|-27902|148|-2147483648|4294967295", export);
+
+		// TODO: rrays
+
+		fail("todo");
+	}
+
+	@Test
 	public void testImportDataString() throws DataImportException {
 		DataStructure struct = this.createSmallStruct();
 		String data = /* boolean */ "01";
@@ -367,7 +390,7 @@ public class DataStructureTest {
 		export = export.replaceAll("\\s+", "");
 		System.out.println(export);
 		Assert.assertEquals(
-				"boolean:1|byte:DE|char:H|float:1.01|int16:13330|int16:9096|int8:85|int8:145|int:-27902|int:148|long:-2147483648|long:4294967295",
+				"boolean:1|byte:DE|char:H|float:1.01|int16:13330|uint16:9096|int8:85|uint8:145|int:-27902|uint:148|long:-2147483648|ulong:4294967295",
 				export);
 
 		try {

@@ -23,7 +23,7 @@ public class LongItemTest {
 	@Test
 	public void testName() {
 		Assert.assertEquals("long", insts.getTypeName());
-		Assert.assertEquals("long", instu.getTypeName());
+		Assert.assertEquals("ulong", instu.getTypeName());
 	}
 
 	@Test
@@ -68,42 +68,42 @@ public class LongItemTest {
 	@Test
 	public void testTypeExportUnsigned() throws DataImportException {
 		instu.importDataString("0");
-		Assert.assertEquals("long : 0", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("ulong : 0", instu.exportTypeAndDataString(false));
 
 		instu.importDataString("1");
-		Assert.assertEquals("long : 1", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("ulong : 1", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("-1");
-			Assert.assertEquals("long : -1", instu.exportTypeAndDataString(false));
+			Assert.assertEquals("ulong : -1", instu.exportTypeAndDataString(false));
 			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		instu.importDataString("1316134912");
-		Assert.assertEquals("long : 1316134912", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("ulong : 1316134912", instu.exportTypeAndDataString(false));
 
 		instu.importDataString("1316134913");
-		Assert.assertEquals("long : 1316134913", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("ulong : 1316134913", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("-1316134913");
-			Assert.assertEquals("long : -1316134913", instu.exportTypeAndDataString(false));
+			Assert.assertEquals("ulong : -1316134913", instu.exportTypeAndDataString(false));
 			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		instu.importDataString("2147483647");
-		Assert.assertEquals("long : 2147483647", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("ulong : 2147483647", instu.exportTypeAndDataString(false));
 
 		instu.importDataString("4294967295");
-		Assert.assertEquals("long : 4294967295", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("ulong : 4294967295", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("-2147483648");
-			Assert.assertEquals("long : -2147483648", instu.exportTypeAndDataString(false));
+			Assert.assertEquals("ulong : -2147483648", instu.exportTypeAndDataString(false));
 			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP

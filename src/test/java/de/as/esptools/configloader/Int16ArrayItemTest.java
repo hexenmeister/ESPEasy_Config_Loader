@@ -23,8 +23,8 @@ public class Int16ArrayItemTest {
 
 	@Test
 	public void testName() {
-		Assert.assertEquals("int16", insts.getTypeName());
-		Assert.assertEquals("int16", instu.getTypeName());
+		Assert.assertEquals("int16[4]", insts.getTypeName());
+		Assert.assertEquals("int16[4]", instu.getTypeName());
 	}
 
 	@Test

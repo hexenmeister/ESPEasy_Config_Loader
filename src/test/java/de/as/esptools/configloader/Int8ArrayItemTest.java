@@ -22,8 +22,8 @@ public class Int8ArrayItemTest {
 
 	@Test
 	public void testName() {
-		Assert.assertEquals("int8", insts.getTypeName());
-		Assert.assertEquals("int8", instu.getTypeName());
+		Assert.assertEquals("int8[4]", insts.getTypeName());
+		Assert.assertEquals("int8[4]", instu.getTypeName());
 	}
 
 	@Test
@@ -56,7 +56,6 @@ public class Int8ArrayItemTest {
 
 		instu.importDataString("255 255 255 255");
 		Assert.assertEquals("int8[4] : 255 255 255 255", instu.exportTypeAndDataString(false));
-
 
 		try {
 			instu.importDataString("-123 56 -89 098");

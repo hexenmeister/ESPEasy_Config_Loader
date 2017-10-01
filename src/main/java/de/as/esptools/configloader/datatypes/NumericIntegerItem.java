@@ -2,19 +2,19 @@ package de.as.esptools.configloader.datatypes;
 
 import de.as.esptools.configloader.datatypes.util.Util;
 
-public abstract class NumericItem extends DataItem {
+public abstract class NumericIntegerItem extends DataItem {
 
 	private boolean signed = true;
 	private int bytesPerItem;
 	private long maxValue;
 	private long minValue;
 
-	protected NumericItem(String name, int bytesPerItem, boolean singned) {
+	protected NumericIntegerItem(String name, int bytesPerItem, boolean singned) {
 		super(name, bytesPerItem);
 		init(bytesPerItem, singned);
 	}
 
-	protected NumericItem(String name, byte[] data, int offset, int bytesPerItem, boolean singned) {
+	protected NumericIntegerItem(String name, byte[] data, int offset, int bytesPerItem, boolean singned) {
 		super(name, data, offset, bytesPerItem);
 		init(bytesPerItem, singned);
 	}
@@ -28,6 +28,12 @@ public abstract class NumericItem extends DataItem {
 
 	public boolean isSigned() {
 		return this.signed;
+	}
+
+	@Override
+	public String getTypeName() {
+		String name = super.getTypeName();
+		return (this.isSigned() ? "" : "u") + name;
 	}
 
 	/**

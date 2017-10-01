@@ -21,7 +21,7 @@ public class BooleanArrayItemTest {
 
 	@Test
 	public void testName() {
-		Assert.assertEquals("boolean", inst.getTypeName());
+		Assert.assertEquals("boolean[10]", inst.getTypeName());
 	}
 
 	@Test

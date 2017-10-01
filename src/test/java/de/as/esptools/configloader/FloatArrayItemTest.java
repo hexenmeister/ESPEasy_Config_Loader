@@ -20,7 +20,7 @@ public class FloatArrayItemTest {
 
 	@Test
 	public void testName() {
-		Assert.assertEquals("float", inst.getTypeName());
+		Assert.assertEquals("float[4]", inst.getTypeName());
 	}
 
 	@Test

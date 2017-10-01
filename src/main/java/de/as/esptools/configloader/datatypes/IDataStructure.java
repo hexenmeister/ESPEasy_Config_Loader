@@ -31,4 +31,15 @@ public interface IDataStructure {
 	 */
 	public int getItemCount();
 
+	/**
+	 * Importiert den gegebenen String, überprüft die angegebenen Typen und
+	 * überführt Daten in seine interne Darstellung.
+	 * 
+	 * @param data
+	 *            Eingabe-String
+	 * @return Restder Zeichenkette, falls weitere Daten enthalten sind
+	 * @throws DataImportException
+	 *             falls Proble3mebeim Import afgetreten sind
+	 */
+	public void importTypeAndDataString(String data) throws DataImportException;
 }

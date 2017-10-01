@@ -32,7 +32,7 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 	}
 
 	public String getTypeName() {
-		return this.name;
+		return this.name + "[" + this.getArrayLength() + "]";
 	}
 
 	protected abstract T createType(byte[] data, int offset, V additionalData);
@@ -138,7 +138,9 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 	public String exportTypeAndDataString(boolean indent) {
 		String indstr = indent ? DataItem.EMPTY.substring(0, Math.max(0, DataItem.INDENT - this.getTypeName().length()))
 				: "";
-		return this.getTypeName() + "[" + this.getArrayLength() + "]" + " :" + indstr + " " + exportDataString();
+		// return this.getTypeName() + "[" + this.getArrayLength() + "]" + " :"
+		// + indstr + " " + exportDataString();
+		return this.getTypeName() + " :" + indstr + " " + exportDataString();
 	}
 
 	/**

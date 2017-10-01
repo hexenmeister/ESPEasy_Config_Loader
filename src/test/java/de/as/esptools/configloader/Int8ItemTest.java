@@ -23,15 +23,15 @@ public class Int8ItemTest {
 	@Test
 	public void testName() {
 		Assert.assertEquals("int8", insts.getTypeName());
-		Assert.assertEquals("int8", instu.getTypeName());
+		Assert.assertEquals("uint8", instu.getTypeName());
 	}
-	
+
 	@Test
 	public void testBinLength() {
 		Assert.assertEquals(1, insts.getBinLength());
 		Assert.assertEquals(1, instu.getBinLength());
 	}
-	
+
 	@Test
 	public void testIsSigned() {
 		Assert.assertEquals(true, insts.isSigned());
@@ -73,32 +73,32 @@ public class Int8ItemTest {
 	@Test
 	public void testTypeExportUnsigned() throws DataImportException {
 		instu.importDataString("0");
-		Assert.assertEquals("int8 : 0", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint8 : 0", instu.exportTypeAndDataString(false));
 
 		instu.importDataString("1");
-		Assert.assertEquals("int8 : 1", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint8 : 1", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("-1");
-			Assert.assertEquals("int8 : -1", instu.exportTypeAndDataString(false));
+			Assert.assertEquals("uint8 : -1", instu.exportTypeAndDataString(false));
 			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		instu.importDataString("127");
-		Assert.assertEquals("int8 : 127", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint8 : 127", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("-128");
-			Assert.assertEquals("int8 : -128", instu.exportTypeAndDataString(false));
+			Assert.assertEquals("uint8 : -128", instu.exportTypeAndDataString(false));
 			fail("invalid");
 		} catch (DataImportException e) {
 			// NOP
 		}
 
 		instu.importDataString("255");
-		Assert.assertEquals("int8 : 255", instu.exportTypeAndDataString(false));
+		Assert.assertEquals("uint8 : 255", instu.exportTypeAndDataString(false));
 
 		try {
 			instu.importDataString("256");

@@ -166,7 +166,7 @@ public abstract class DataItem implements IDataType {
 	}
 
 	@Override
-	public void importDataString(String data) throws DataImportException {
+	public final void importDataString(String data) throws DataImportException {
 		String rest = this.importDataStringIntern(data);
 
 		if (!this.allowLongDataImport() && rest != null && !rest.trim().isEmpty()) {

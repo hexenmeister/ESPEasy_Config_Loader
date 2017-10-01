@@ -7,14 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.DataImportException;
-import de.as.esptools.configloader.datatypes.NumericItem;
+import de.as.esptools.configloader.datatypes.NumericIntegerItem;
 
 public class NumericItemTest {
 
 	NumericArrayItemInst inst14s;
 	NumericArrayItemInst inst14u;
 
-	static class NumericArrayItemInst extends NumericItem {
+	static class NumericArrayItemInst extends NumericIntegerItem {
 
 		protected NumericArrayItemInst(int bytesPerItem, boolean singned) {
 			super("NUMERIC_TEST", bytesPerItem, singned);

@@ -129,8 +129,41 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 		if (ret != null /* && !this.allowLongDataImport() */) {
 			throw new DataImportException("import string to long");
 		}
+	}
 
-		return;
+	@Override
+	public void importTypeAndDataString(String data) throws DataImportException {
+		String ret = data;
+		List<DataItem> l = this.getItems();
+		for (Iterator<DataItem> it = l.iterator(); it.hasNext();) {
+			DataItem item = it.next();
+			int posd = ret.indexOf(":");
+			// int pos = ret.indexOf(item.getTypeName());
+			// if (pos < 0 || pos > posd) {
+			// String addInfo = "";
+			// if (posd >= 0) {
+			// addInfo = " : " + ret.substring(0, posd);
+			// }
+			// throw new DataImportException("unexpected type" + addInfo +
+			// ".expected: " + item.getTypeName());
+			// }
+			if (posd < 0) {
+				throw new DataImportException("no typefound. expected type: " + item.getTypeName());
+			}
+			String type = ret.substring(0, posd).trim();
+			if (!type.equalsIgnoreCase(item.getTypeName())) {
+				throw new DataImportException("unexpected type " + type + ".expected: " + item.getTypeName());
+			}
+			ret = ret.substring(posd + 1);
+			ret = item.importDataStringIntern(ret);
+			if (ret != null) {
+				ret = ret.trim();
+			}
+		}
+		// TODO: prüfen
+		if (ret != null /* && !this.allowLongDataImport() */) {
+			throw new DataImportException("import string to long");
+		}
 	}
 
 	@Override

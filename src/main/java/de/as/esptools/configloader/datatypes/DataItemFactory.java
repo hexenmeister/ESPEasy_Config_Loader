@@ -12,10 +12,8 @@ public class DataItemFactory {
 	private DataItemFactory() {
 	}
 
-	private static final Pattern PATTERN = Pattern.compile("(\\w+)\\s*(\\[([0-9]{1,})\\])?"); // suchen
-																								// nach
-																								// Muster:
-																								// xxx[num]
+	// suchen nach Muster: xxx[num]
+	private static final Pattern PATTERN = Pattern.compile("(\\w+)\\s*(\\[([0-9]{1,})\\])?");
 
 	public static final DataItemFactory getInstance() {
 		return Holder.INSTANCE;
@@ -74,6 +72,18 @@ public class DataItemFactory {
 			}
 			if (LongItem.NAME.equals(typeName)) {
 				return array ? (new LongArrayItem(cardinality, true)) : (new LongItem(true));
+			}
+			if (("u" + IntItem.NAME).equals(typeName)) {
+				return array ? (new IntArrayItem(cardinality, true)) : (new IntItem(false));
+			}
+			if (("u" + Int8Item.NAME).equals(typeName)) {
+				return array ? (new Int8ArrayItem(cardinality, true)) : (new Int8Item(false));
+			}
+			if (("u" + Int16Item.NAME).equals(typeName)) {
+				return array ? (new Int16ArrayItem(cardinality, true)) : (new Int16Item(false));
+			}
+			if (("u" + LongItem.NAME).equals(typeName)) {
+				return array ? (new LongArrayItem(cardinality, true)) : (new LongItem(false));
 			}
 			throw new DataItemCreationException(" unknown type: " + typeDef);
 		}

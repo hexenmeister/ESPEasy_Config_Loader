@@ -54,8 +54,18 @@ public class DataItemFactoryTest {
 	}
 
 	@Test
+	public void testCreateULong() throws DataItemCreationException {
+		testCreateType("ulong", LongItem.class, LongArrayItem.class);
+	}
+
+	@Test
 	public void testCreateInt() throws DataItemCreationException {
 		testCreateType("int", IntItem.class, IntArrayItem.class);
+	}
+
+	@Test
+	public void testCreateUInt() throws DataItemCreationException {
+		testCreateType("uint", IntItem.class, IntArrayItem.class);
 	}
 
 	@Test
@@ -64,8 +74,18 @@ public class DataItemFactoryTest {
 	}
 
 	@Test
+	public void testCreateUInt8() throws DataItemCreationException {
+		testCreateType("uint8", Int8Item.class, Int8ArrayItem.class);
+	}
+
+	@Test
 	public void testCreateInt16() throws DataItemCreationException {
 		testCreateType("int16", Int16Item.class, Int16ArrayItem.class);
+	}
+
+	@Test
+	public void testCreateUInt16() throws DataItemCreationException {
+		testCreateType("uint16", Int16Item.class, Int16ArrayItem.class);
 	}
 
 	@Test
@@ -77,7 +97,7 @@ public class DataItemFactoryTest {
 			// NOP
 		}
 	}
-	
+
 	private void testCreateType(String type, Class<? extends IDataType> itemClass,
 			Class<? extends IArrayDataType> arrayClass) throws DataItemCreationException {
 
