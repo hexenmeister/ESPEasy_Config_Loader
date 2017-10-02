@@ -162,9 +162,16 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 				throw new DataImportException("no typefound. expected type: " + item.getTypeName());
 			}
 			String type = ret.substring(0, posd).trim();
+			String name = "";
+			int posn = type.indexOf(' ');
+			if (posn > 0) {
+				name = type.substring(posn).trim();
+				type = type.substring(0, posn);
+			}
 			if (!type.equalsIgnoreCase(item.getTypeName())) {
 				throw new DataImportException("unexpected type " + type + ".expected: " + item.getTypeName());
 			}
+			item.setName(name);
 			ret = ret.substring(posd + 1);
 			ret = item.importDataStringIntern(ret);
 			if (ret != null) {
