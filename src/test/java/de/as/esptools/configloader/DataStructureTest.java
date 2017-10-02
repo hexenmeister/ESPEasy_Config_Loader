@@ -232,7 +232,7 @@ public class DataStructureTest {
 		export = export.replaceAll("\\s+", "|");
 		Assert.assertEquals("1|DE|H|1.01|13330|9096|85|145|-27902|148|-2147483648|4294967295", export);
 
-		// TODO: rrays
+		// TODO: Arrays
 
 		fail("todo");
 	}
