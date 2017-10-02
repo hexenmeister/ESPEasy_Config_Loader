@@ -376,7 +376,7 @@ public class DataStructureTest {
 		export = export.replaceAll("\n+", "|");
 		export = export.replaceAll("\r+", "");
 		export = export.replaceAll("\\s+", "");
-		System.out.println(export);
+		// System.out.println(export);
 		Assert.assertEquals("boolean:1", export);
 
 		struct = this.createBigStruct();
@@ -388,7 +388,7 @@ public class DataStructureTest {
 		export = export.replaceAll("\n+", "|");
 		export = export.replaceAll("\r+", "");
 		export = export.replaceAll("\\s+", "");
-		System.out.println(export);
+		// System.out.println(export);
 		Assert.assertEquals(
 				"boolean:1|byte:DE|char:H|float:1.01|int16:13330|uint16:9096|int8:85|uint8:145|int:-27902|uint:148|long:-2147483648|ulong:4294967295",
 				export);
