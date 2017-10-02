@@ -7,10 +7,11 @@ import java.util.List;
 public class DataStructure implements IArrayDataType, IDataStructure {
 
 	private String name;
+	private String typeName;
 	private List<DataItem> items;
 
 	public DataStructure(String name) {
-		this.name = name;
+		this.typeName = name;
 		this.items = new ArrayList<DataItem>();
 	}
 
@@ -30,8 +31,18 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 	}
 
 	@Override
-	public String getTypeName() {
+	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getTypeName() {
+		return this.typeName;
 	}
 
 	@Override

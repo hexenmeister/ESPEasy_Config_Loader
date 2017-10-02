@@ -10,6 +10,7 @@ public abstract class DataItem implements IDataType {
 	private int offset = 0;
 	private int length = 0;
 	private String name;
+	private String typeName;
 
 	/**
 	 * Erstellt ein XDataItem mit eigenem ByteArray in der (für ein Item)
@@ -21,7 +22,7 @@ public abstract class DataItem implements IDataType {
 	 *            Länge der Item-Representation in Bytes
 	 */
 	protected DataItem(String name, int length) {
-		this.name = name;
+		this.typeName = name;
 		this.data = new byte[length];
 		this.offset = 0;
 		this.length = length;
@@ -43,14 +44,24 @@ public abstract class DataItem implements IDataType {
 	 *            Länge der Item-Representation in Bytes
 	 */
 	protected DataItem(String name, byte[] data, int offset, int length) {
-		this.name = name;
+		this.typeName = name;
 		this.data = data;
 		this.offset = offset;
 		this.length = length;
 	}
 
-	public String getTypeName() {
+	@Override
+	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTypeName() {
+		return this.typeName;
 	}
 
 	static final String EMPTY = "                             ";

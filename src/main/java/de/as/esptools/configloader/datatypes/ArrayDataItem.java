@@ -14,6 +14,8 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 
 	private String name;
 
+	private String typeName;
+
 	protected ArrayDataItem(String name, int length, int bytesPerItem) {
 		this(name, length, bytesPerItem, null);
 	}
@@ -22,7 +24,7 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 		if (length <= 0) {
 			throw new RuntimeException("empty array is not allowed");
 		}
-		this.name = name;
+		this.typeName = name;
 		this.array = new DataItem[length];
 		this.data = new byte[length * bytesPerItem];
 		this.bytesPerItem = bytesPerItem;
@@ -31,8 +33,18 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 		}
 	}
 
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getTypeName() {
-		return this.name + "[" + this.getArrayLength() + "]";
+		return this.typeName + "[" + this.getArrayLength() + "]";
 	}
 
 	protected abstract T createType(byte[] data, int offset, V additionalData);

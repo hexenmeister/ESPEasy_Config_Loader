@@ -2,6 +2,10 @@ package de.as.esptools.configloader.datatypes;
 
 public interface IDataType {
 
+	public String getName();
+
+	public void setName(String name);
+
 	public String getTypeName();
 
 	public int getBinLength();
