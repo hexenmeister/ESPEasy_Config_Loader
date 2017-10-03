@@ -265,7 +265,6 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 		private int address;
 		private int toAddress;
 
-		// TODO: Filler / FillUp => prüfen
 		public FillUp(int cAddr, int toAddr) {
 			super("fillup", toAddr - cAddr);
 			this.address = cAddr;
