@@ -7,4 +7,9 @@ public class ConfigLoader {
 
 	}
 
+	
+//	TODO:	Structure : importStructure(...)
+//	TODO:	DataItem/Structure(?) : importString()=> \HEX 00 FF 02 2D...
+//	TODO:	importString() => ignore comments: /* bla */ // bla
+
 }
