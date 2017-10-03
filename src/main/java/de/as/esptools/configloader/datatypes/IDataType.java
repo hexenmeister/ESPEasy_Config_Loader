@@ -16,6 +16,8 @@ public interface IDataType {
 
 	public void importHex(String data) throws DataImportException;
 
+	public String importHexIntern(String data) throws DataImportException;
+
 	/**
 	 * Importiert den gegebenen String und überführt in seine interne
 	 * Darstellung.
@@ -27,6 +29,8 @@ public interface IDataType {
 	 *             falls Proble3mebeim Import afgetreten sind
 	 */
 	public void importDataString(String data) throws DataImportException;
+
+	public String importDataStringIntern(String data) throws DataImportException;
 
 	public byte[] exportBin();
 

@@ -15,14 +15,14 @@ public interface IDataStructure {
 	 * @param item
 	 *            Element
 	 */
-	public void addItem(DataItem item);
+	public void addItem(IDataType item);
 
 	/**
 	 * Liefert Liste der Elemente.
 	 * 
 	 * @return Liste der Elemente
 	 */
-	public List<DataItem> getItems();
+	public List<IDataType> getItems();
 
 	/**
 	 * Liefern Anzahl der Elemente.
@@ -39,7 +39,27 @@ public interface IDataStructure {
 	 *            Eingabe-String
 	 * @return Restder Zeichenkette, falls weitere Daten enthalten sind
 	 * @throws DataImportException
-	 *             falls Proble3mebeim Import afgetreten sind
+	 *             falls Probleme beim Import afgetreten sind
 	 */
 	public void importTypeAndDataString(String data) throws DataImportException;
+
+	/**
+	 * Importiert Daten aus einer anderen Struktur.
+	 * 
+	 * @param data
+	 *            Strukture mit Daten
+	 * @throws DataImportException
+	 *             falls Probleme beim Import afgetreten sind
+	 */
+	public void importStructure(IDataStructure data) throws DataImportException;
+
+	/**
+	 * Füllt die Datenstruktur bis zu der gegebenen Adresse auf. Diese Adresse
+	 * wird die nächte freie Adresse.
+	 * 
+	 * @param toAddress
+	 *            Adresse, bis der aufgefüllt werden muss (also die nächte nach
+	 *            dem Filler)
+	 */
+	public void fillUp(int toAddress) throws DataItemCreationException;
 }

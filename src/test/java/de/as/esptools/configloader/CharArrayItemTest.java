@@ -29,19 +29,19 @@ public class CharArrayItemTest {
 	public void testTypeExport() throws DataImportException {
 		inst.importDataString("\"A\"");
 		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
-		Assert.assertEquals("char[1] :       A", inst.exportTypeAndDataString(true));
+		Assert.assertEquals("char[1] :            A", inst.exportTypeAndDataString(true));
 
 		inst.importDataString("A");
 		Assert.assertEquals("char[1] : A", inst.exportTypeAndDataString(false));
-		Assert.assertEquals("char[1] :       A", inst.exportTypeAndDataString(true));
+		Assert.assertEquals("char[1] :            A", inst.exportTypeAndDataString(true));
 
 		inst.importDataString("\" \"");
 		Assert.assertEquals("char[1] : \" \"", inst.exportTypeAndDataString(false));
-		Assert.assertEquals("char[1] :       \" \"", inst.exportTypeAndDataString(true));
+		Assert.assertEquals("char[1] :            \" \"", inst.exportTypeAndDataString(true));
 
 		inst2.importDataString("\"A\"");
 		Assert.assertEquals("char[8] : A", inst2.exportTypeAndDataString(false));
-		Assert.assertEquals("char[8] :       A", inst2.exportTypeAndDataString(true));
+		Assert.assertEquals("char[8] :            A", inst2.exportTypeAndDataString(true));
 	}
 
 	@Test

@@ -29,7 +29,7 @@ public class CharItem extends DataItem {
 	}
 
 	@Override
-	protected String importDataStringIntern(String data) throws DataImportException {
+	public String importDataStringIntern(String data) throws DataImportException {
 		if (data == null || data.isEmpty()) {
 			this.setData(new byte[] { 0 });
 			return null;

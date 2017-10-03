@@ -20,11 +20,11 @@ public class ByteItem extends DataItem {
 	}
 
 	@Override
-	protected String importDataStringIntern(String data) throws DataImportException {
+	public String importDataStringIntern(String data) throws DataImportException {
 		if (data == null) {
 			throw new DataImportException("invalid input data (null)");
 		}
-		
+
 		String token = data.trim();
 		String rest = null;
 

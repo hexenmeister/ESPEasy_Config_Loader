@@ -32,7 +32,7 @@ public class CharItemTest {
 	public void testTypeExport() throws DataImportException {
 		inst.importDataString("A");
 		Assert.assertEquals("char : A", inst.exportTypeAndDataString(false));
-		Assert.assertEquals("char :          A", inst.exportTypeAndDataString(true));
+		Assert.assertEquals("char :               A", inst.exportTypeAndDataString(true));
 	}
 
 	@Test

@@ -88,11 +88,17 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 	}
 
 	@Override
-	public void importHex(String data) throws DataImportException {
-		String ret = Util.hexToBytes(this.getData(), data, this.allowShortDataImport());
+	public final void importHex(String data) throws DataImportException {
+		String ret = importHexIntern(data);
 		if (ret != null && !this.allowLongDataImport()) {
 			throw new DataImportException("import string to long");
 		}
+	}
+
+	@Override
+	public String importHexIntern(String data) throws DataImportException {
+		String ret = Util.hexToBytes(this.getData(), data, this.allowShortDataImport());
+		return ret;
 	}
 
 	@Override
@@ -109,7 +115,7 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 		this.importDataStringIntern(data);
 	}
 
-	protected String importDataStringIntern(String data) throws DataImportException {
+	public String importDataStringIntern(String data) throws DataImportException {
 		if (data == null) {
 			throw new DataImportException("invalid input data (null)");
 		}
@@ -147,12 +153,21 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 		return " ";
 	}
 
+	// public String exportTypeAndDataString(boolean indent) {
+	// String indstr = indent ? DataItem.EMPTY.substring(0, Math.max(0,
+	// DataItem.INDENT - this.getTypeName().length()))
+	// : "";
+	// // return this.getTypeName() + "[" + this.getArrayLength() + "]" + " :"
+	// // + indstr + " " + exportDataString();
+	// return this.getTypeName() + " :" + indstr + " " + exportDataString();
+	// }
+
 	public String exportTypeAndDataString(boolean indent) {
-		String indstr = indent ? DataItem.EMPTY.substring(0, Math.max(0, DataItem.INDENT - this.getTypeName().length()))
-				: "";
-		// return this.getTypeName() + "[" + this.getArrayLength() + "]" + " :"
-		// + indstr + " " + exportDataString();
-		return this.getTypeName() + " :" + indstr + " " + exportDataString();
+		String name = this.getName();
+		name = (name != null ? (" " + name) : "");
+		String vname = this.getTypeName() + name;
+		String indstr = indent ? DataItem.EMPTY.substring(0, Math.max(0, DataItem.INDENT - vname.length())) : "";
+		return vname + " :" + indstr + " " + exportDataString();
 	}
 
 	/**
@@ -181,5 +196,11 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
 
 	protected int getHexPerLine() {
 		return DEFAULT_HEX_PER_LINE;
+	}
+
+	@Override
+	public String toString() {
+		return this.exportTypeAndDataString(false);
+		// return this.getTypeName();
 	}
 }

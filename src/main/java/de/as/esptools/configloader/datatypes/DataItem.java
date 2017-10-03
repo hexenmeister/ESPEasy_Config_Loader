@@ -16,13 +16,13 @@ public abstract class DataItem implements IDataType {
 	 * Erstellt ein XDataItem mit eigenem ByteArray in der (für ein Item)
 	 * notwendigen Länge.
 	 * 
-	 * @param name
+	 * @param typeName
 	 *            Typname
 	 * @param length
 	 *            Länge der Item-Representation in Bytes
 	 */
-	protected DataItem(String name, int length) {
-		this.typeName = name;
+	protected DataItem(String typeName, int length) {
+		this.typeName = typeName;
 		this.data = new byte[length];
 		this.offset = 0;
 		this.length = length;
@@ -64,12 +64,15 @@ public abstract class DataItem implements IDataType {
 		return this.typeName;
 	}
 
-	static final String EMPTY = "                             ";
-	static final int INDENT = 13;
+	static final String EMPTY = "                                                          ";
+	static final int INDENT = 18;
 
 	public String exportTypeAndDataString(boolean indent) {
-		String indstr = indent ? EMPTY.substring(0, Math.max(0, INDENT - this.getTypeName().length())) : "";
-		return this.getTypeName() + " :" + indstr + " " + exportDataString();
+		String name = this.getName();
+		name = (name != null ? (" " + name) : "");
+		String vname = this.getTypeName() + name;
+		String indstr = indent ? EMPTY.substring(0, Math.max(0, INDENT - vname.length())) : "";
+		return vname + " :" + indstr + " " + exportDataString();
 	}
 
 	protected byte[] getData() {
@@ -158,7 +161,8 @@ public abstract class DataItem implements IDataType {
 		}
 	}
 
-	protected String importHexIntern(String data) throws DataImportException {
+	@Override
+	public String importHexIntern(String data) throws DataImportException {
 		String ret;
 		if (this.offset == 0 && this.length == this.data.length) {
 			ret = Util.hexToBytes(this.getData(), data, this.allowShortDataImport());
@@ -185,7 +189,7 @@ public abstract class DataItem implements IDataType {
 		}
 	}
 
-	protected abstract String importDataStringIntern(String data) throws DataImportException;
+	public abstract String importDataStringIntern(String data) throws DataImportException;
 
 	@Override
 	public String exportDataString() {
@@ -193,5 +197,10 @@ public abstract class DataItem implements IDataType {
 	}
 
 	protected abstract String exportDataStringIntern();
+
+	@Override
+	public String toString() {
+		return this.exportTypeAndDataString(false);
+	}
 
 }
