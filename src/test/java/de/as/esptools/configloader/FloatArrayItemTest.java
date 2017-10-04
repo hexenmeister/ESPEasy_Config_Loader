@@ -78,6 +78,7 @@ public class FloatArrayItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst.importDataString("992 928 387 2");
         ArrayDataItem<FloatItem, Void> instClone = inst.clone();
+        inst.importDataString("0 928 387 2");
         Assert.assertEquals("992 928 387 2", instClone.exportDataString());
     }
 }

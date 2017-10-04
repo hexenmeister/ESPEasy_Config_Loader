@@ -179,6 +179,7 @@ public class Int16ArrayItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         instu.importDataString("992 928 387 2");
         ArrayDataItem<Int16Item, Boolean> instClone = instu.clone();
+        instu.importDataString("0 928 387 2");
         Assert.assertEquals("992 928 387 2", instClone.exportDataString());
     }
 }

@@ -148,6 +148,7 @@ public class Int8ArrayItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         instu.importDataString("92 28 87 2");
         ArrayDataItem<Int8Item, Boolean> instClone = instu.clone();
+        instu.importDataString("0 28 87 2");
         Assert.assertEquals("92 28 87 2", instClone.exportDataString());
     }
 

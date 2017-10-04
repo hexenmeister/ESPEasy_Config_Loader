@@ -682,6 +682,10 @@ public class DataStructureTest {
         struct.importTypeAndDataString(data);
         DataStructure instClone = (DataStructure) struct.clone();
         String export = instClone.exportTypeAndDataString(false);
+        data = "boolean bool1x: 00 " + "byte byte1x: EE " + "char char1:H " + "float float1: 1.01 "
+                + "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
+                + "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295";
+        struct.importTypeAndDataString(data);        
         export = export.replaceAll("\n+", "|");
         export = export.replaceAll("\r+", "");
         export = export.replaceAll("\\s+", " ");
@@ -698,6 +702,10 @@ public class DataStructureTest {
                 + "long long1: -2147483648 " + "ulong long2: 4294967295 " + "fillup fill1 : 100 " + "byte byte2: FF";
         struct.importTypeAndDataString(data);
         instClone = (DataStructure) struct.clone();
+        data = "boolean bool1x: 00 " + "byte byte1x: EE " + "char char1:H " + "float float1: 1.01 " + "int16 int1: 13330 "
+                + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 " + "int int5: -27902 " + "uint int6: 148 "
+                + "long long1: -2147483648 " + "ulong long2: 4294967295 " + "fillup fill1 : 100 " + "byte byte2: FF";
+        struct.importTypeAndDataString(data);
         export = instClone.exportTypeAndDataString(false);
         export = export.replaceAll("\n+", "|");
         export = export.replaceAll("\r+", "");

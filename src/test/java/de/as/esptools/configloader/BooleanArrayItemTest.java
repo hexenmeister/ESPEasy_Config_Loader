@@ -128,6 +128,7 @@ public class BooleanArrayItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst.importDataString("1 0 1 0 1 0 1 0 1 0");
         ArrayDataItem<BooleanItem, Void> instClone = inst.clone();
+        inst.importDataString("0 0 1 0 1 0 1 0 1 0");
         Assert.assertEquals("1 0 1 0 1 0 1 0 1 0", instClone.exportDataString());
     }
 }

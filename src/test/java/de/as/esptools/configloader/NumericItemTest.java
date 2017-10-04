@@ -131,6 +131,7 @@ public class NumericItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst14s.setNumber(75);
         DataItem instClone = inst14s.clone();
+        inst14s.setNumber(12);
         Assert.assertEquals("75", instClone.exportDataString());
     }
 }

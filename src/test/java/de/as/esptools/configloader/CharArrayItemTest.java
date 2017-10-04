@@ -112,7 +112,8 @@ public class CharArrayItemTest {
     @Test
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst2.importDataString("\"Test1234\"");
-        ArrayDataItem<CharItem, Boolean> instClone = inst2.clone();
+        ArrayDataItem<CharItem, Boolean> instClone = inst2.clone(); 
+        inst2.importDataString("A");
         Assert.assertEquals("Test1234", instClone.exportDataString());
     }
 

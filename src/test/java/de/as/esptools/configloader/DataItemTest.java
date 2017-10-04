@@ -162,6 +162,8 @@ public class DataItemTest {
         byte[] bytes = new byte[] {0x00, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, (byte) 0xFF };
         inst.importBin(bytes);
         DataItem instClone = inst.clone();
+        bytes = new byte[] {(byte) 0xDD, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, (byte) 0xFF };
+        inst.importBin(bytes);
         Assert.assertEquals("00 10 20 30 40 50 60 FF", instClone.exportHex());
     }
 }

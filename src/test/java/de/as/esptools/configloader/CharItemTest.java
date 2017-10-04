@@ -66,6 +66,7 @@ public class CharItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst.importDataString("\"A\"");
         DataItem instClone = inst.clone();
+        inst.importDataString("\"B\"");
         Assert.assertEquals("A", instClone.exportDataString());
     }
 

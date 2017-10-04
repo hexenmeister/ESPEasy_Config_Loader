@@ -40,6 +40,8 @@ public interface IDataType {
 
 	public String exportTypeAndDataString(boolean indent);
 
+	public IDataType clone() throws CloneNotSupportedException;
+	
 	// public boolean isInArray();
 
 }

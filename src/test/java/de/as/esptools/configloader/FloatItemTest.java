@@ -146,6 +146,7 @@ public class FloatItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst.setFloat(-0.1f);
         DataItem instClone = inst.clone();
+        inst.setFloat(-1f);
         Assert.assertEquals("-0.1", instClone.exportDataString());
     }
 	

@@ -82,6 +82,7 @@ public class ByteItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst.importDataString("0A");
         DataItem instClone = inst.clone();
+        inst.importDataString("0B");
         Assert.assertEquals("0A", instClone.exportDataString());
     }
 

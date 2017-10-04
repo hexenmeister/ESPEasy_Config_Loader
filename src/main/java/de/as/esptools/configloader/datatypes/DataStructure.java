@@ -302,10 +302,13 @@ public class DataStructure implements IArrayDataType, IDataStructure, Cloneable 
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
+    public DataStructure clone() throws CloneNotSupportedException {
         DataStructure ret = (DataStructure) super.clone();
-
-        // TODO Auto-generated method stub
+        ret.items = new ArrayList<IDataType>();
+        for (Iterator<IDataType> it = this.items.iterator(); it.hasNext();) {
+            IDataType item = (IDataType) it.next();
+            ret.items.add(item.clone());
+        }
         return ret;
     }
 

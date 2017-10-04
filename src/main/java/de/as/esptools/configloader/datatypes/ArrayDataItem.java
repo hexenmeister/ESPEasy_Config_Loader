@@ -205,6 +205,12 @@ public abstract class ArrayDataItem<T extends DataItem, V> implements IArrayData
     public ArrayDataItem<T, V> clone() throws CloneNotSupportedException {
         @SuppressWarnings("unchecked")
         ArrayDataItem<T, V> ret = (ArrayDataItem<T, V>) super.clone();
+        ret.data = new byte[this.data.length];
+        System.arraycopy(this.data, 0, ret.data, 0, this.data.length);
+        ret.array = new DataItem[this.array.length];
+        for (int i = 0, n = this.array.length; i < n; i++) {
+            ret.array[i] = this.array[i].clone();
+        }
         return ret;
     }
 

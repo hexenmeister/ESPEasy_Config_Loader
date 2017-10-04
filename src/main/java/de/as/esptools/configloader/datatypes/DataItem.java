@@ -200,6 +200,8 @@ public abstract class DataItem implements IDataType, Cloneable {
     @Override
     public DataItem clone() throws CloneNotSupportedException {
         DataItem ret = (DataItem) super.clone();
+        ret.data = new byte[this.data.length];
+        System.arraycopy(this.data, 0, ret.data, 0, this.data.length);
         return ret;
     }
 

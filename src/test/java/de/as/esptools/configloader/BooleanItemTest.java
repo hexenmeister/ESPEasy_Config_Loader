@@ -105,6 +105,7 @@ public class BooleanItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst.importDataString("true");
         DataItem instClone = inst.clone();
+        inst.importDataString("false");
         Assert.assertEquals("1", instClone.exportDataString());
     }
 	

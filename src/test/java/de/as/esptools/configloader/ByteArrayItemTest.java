@@ -144,6 +144,7 @@ public class ByteArrayItemTest {
     public void testClone() throws CloneNotSupportedException, DataImportException {
         inst2.importDataString("00 10 20 30 FF 50 60 DD");
         ArrayDataItem<ByteItem, Void> instClone = inst2.clone();
+        inst2.importDataString("FF 10 20 30 FF 50 60 DD");
         Assert.assertEquals("00 10 20 30 FF 50 60 DD", instClone.exportDataString());
     }
 }
