@@ -83,13 +83,13 @@ public class DataStructureTest {
 	}
 
 	@Test
-	public void testAddItemGetArrayLength() throws DataItemCreationException {
+	public void testAddItemGetItemCount() throws DataItemCreationException {
 		DataStructure struct = this.createSmallStruct();
-		Assert.assertEquals(1, struct.getArrayLength());
+		Assert.assertEquals(1, struct.getItemCount());
 		struct.addItem(new Int8Item(true));
-		Assert.assertEquals(2, struct.getArrayLength());
+		Assert.assertEquals(2, struct.getItemCount());
 		struct.fillUp(100);
-		Assert.assertEquals(3, struct.getArrayLength());
+		Assert.assertEquals(3, struct.getItemCount());
 	}
 
 	@Test

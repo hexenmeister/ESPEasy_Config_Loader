@@ -6,7 +6,7 @@ import java.util.List;
 
 import de.as.esptools.configloader.datatypes.util.Util;
 
-public class DataStructure implements IArrayDataType, IDataStructure, Cloneable {
+public class DataStructure implements IDataStructure, IDataType, Cloneable {
 
     private String name;
 
@@ -24,7 +24,7 @@ public class DataStructure implements IArrayDataType, IDataStructure, Cloneable 
         this.items.add(item);
     }
 
-    @Override
+//    @Override
     public List<IDataType> getItems() {
         return this.items;
     }
@@ -193,6 +193,13 @@ public class DataStructure implements IArrayDataType, IDataStructure, Cloneable 
             throw new DataImportException("import string to long");
         }
     }
+    
+
+    @Override
+    public void importTypeAndDataStringCreate(String data) throws DataImportException {
+        // TODO implement
+        
+    }
 
     @Override
     public String exportDataString() {
@@ -234,12 +241,6 @@ public class DataStructure implements IArrayDataType, IDataStructure, Cloneable 
     }
 
     @Override
-    public int getArrayLength() {
-        // Strukture gleichzeitig als Array verwendbar
-        return this.getItemCount();
-    }
-
-    @Override
     public String toString() {
         return this.exportTypeAndDataString(true);
         // return this.getTypeName();
@@ -248,7 +249,7 @@ public class DataStructure implements IArrayDataType, IDataStructure, Cloneable 
     @Override
     public void importStructure(IDataStructure data) throws DataImportException {
         // TODO import Structure
-
+        // Elemente nach deren Namen zuordnen und Daten übernehmen. Unbenannte Elemente werden nicht berücksichtigt.
     }
 
     @Override
@@ -311,5 +312,6 @@ public class DataStructure implements IArrayDataType, IDataStructure, Cloneable 
         }
         return ret;
     }
+
 
 }
