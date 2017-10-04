@@ -261,7 +261,8 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 	}
 
 	protected static class FillUp extends DataItem {
-		private int address;
+		@SuppressWarnings("unused")
+        private int address;
 		private int toAddress;
 
 		public FillUp(int cAddr, int toAddr) {

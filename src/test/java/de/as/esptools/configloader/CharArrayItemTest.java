@@ -10,7 +10,6 @@ import de.as.esptools.configloader.datatypes.ArrayDataItem;
 import de.as.esptools.configloader.datatypes.CharArrayItem;
 import de.as.esptools.configloader.datatypes.CharItem;
 import de.as.esptools.configloader.datatypes.DataImportException;
-import de.as.esptools.configloader.datatypes.DataItem;
 
 public class CharArrayItemTest {
 
