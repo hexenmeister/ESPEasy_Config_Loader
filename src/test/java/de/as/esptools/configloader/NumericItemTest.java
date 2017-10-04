@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.DataImportException;
+import de.as.esptools.configloader.datatypes.DataItem;
 import de.as.esptools.configloader.datatypes.NumericIntegerItem;
 
 public class NumericItemTest {
@@ -126,4 +127,10 @@ public class NumericItemTest {
 
 	}
 
+	@Test
+    public void testClone() throws CloneNotSupportedException, DataImportException {
+        inst14s.setNumber(75);
+        DataItem instClone = inst14s.clone();
+        Assert.assertEquals("75", instClone.exportDataString());
+    }
 }

@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.DataImportException;
+import de.as.esptools.configloader.datatypes.DataItem;
 import de.as.esptools.configloader.datatypes.FloatItem;
 
 public class FloatItemTest {
@@ -141,4 +142,11 @@ public class FloatItemTest {
 		Assert.assertEquals(-0.000000000000001f, inst.getFloat(), 0.0);
 	}
 
+	@Test
+    public void testClone() throws CloneNotSupportedException, DataImportException {
+        inst.setFloat(-0.1f);
+        DataItem instClone = inst.clone();
+        Assert.assertEquals("-0.1", instClone.exportDataString());
+    }
+	
 }

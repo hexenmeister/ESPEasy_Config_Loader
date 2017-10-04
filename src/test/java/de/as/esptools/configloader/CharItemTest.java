@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.CharItem;
 import de.as.esptools.configloader.datatypes.DataImportException;
+import de.as.esptools.configloader.datatypes.DataItem;
 
 public class CharItemTest {
 
@@ -59,7 +60,13 @@ public class CharItemTest {
 		} catch (DataImportException e) {
 			// NOP
 		}
-
 	}
+	
+	@Test
+    public void testClone() throws CloneNotSupportedException, DataImportException {
+        inst.importDataString("\"A\"");
+        DataItem instClone = inst.clone();
+        Assert.assertEquals("A", instClone.exportDataString());
+    }
 
 }

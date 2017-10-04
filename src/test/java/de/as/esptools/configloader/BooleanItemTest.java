@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.BooleanItem;
 import de.as.esptools.configloader.datatypes.DataImportException;
+import de.as.esptools.configloader.datatypes.DataItem;
 
 public class BooleanItemTest {
 
@@ -98,7 +99,13 @@ public class BooleanItemTest {
 		} catch (DataImportException e) {
 			// NOP
 		}
-
 	}
 
+	@Test
+    public void testClone() throws CloneNotSupportedException, DataImportException {
+        inst.importDataString("true");
+        DataItem instClone = inst.clone();
+        Assert.assertEquals("1", instClone.exportDataString());
+    }
+	
 }
