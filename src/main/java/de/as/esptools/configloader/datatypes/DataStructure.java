@@ -187,7 +187,6 @@ public class DataStructure implements IArrayDataType, IDataStructure {
 				ret = ret.trim();
 			}
 		}
-		// TODO: prüfen
 		if (ret != null /* && !this.allowLongDataImport() */) {
 			throw new DataImportException("import string to long");
 		}
