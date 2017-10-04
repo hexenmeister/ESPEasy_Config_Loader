@@ -42,6 +42,4 @@ public interface IDataType {
 
 	public IDataType clone() throws CloneNotSupportedException;
 	
-	// public boolean isInArray();
-
 }
