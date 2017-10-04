@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.as.esptools.configloader.datatypes.ArrayDataItem;
 import de.as.esptools.configloader.datatypes.BooleanArrayItem;
 import de.as.esptools.configloader.datatypes.BooleanItem;
 import de.as.esptools.configloader.datatypes.ByteArrayItem;
