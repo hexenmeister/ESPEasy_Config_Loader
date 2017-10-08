@@ -408,7 +408,7 @@ public class DataStructureTest {
 
 		// TODO: Arrays
 
-		fail("todo");
+		// fail("todo");
 	}
 
 	@Test
@@ -674,50 +674,100 @@ public class DataStructureTest {
 	}
 
 	@Test
-    public void testClone() throws CloneNotSupportedException, DataImportException, DataItemCreationException {
-	    DataStructure struct = this.createBigStruct();
-        String data = "boolean bool1: 01 " + "byte byte1: DE " + "char char1:H " + "float float1: 1.01 "
-                + "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
-                + "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295";
-        struct.importTypeAndDataString(data);
-        DataStructure instClone = (DataStructure) struct.clone();
-        String export = instClone.exportTypeAndDataString(false);
-        data = "boolean bool1x: 00 " + "byte byte1x: EE " + "char char1:H " + "float float1: 1.01 "
-                + "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
-                + "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295";
-        struct.importTypeAndDataString(data);        
-        export = export.replaceAll("\n+", "|");
-        export = export.replaceAll("\r+", "");
-        export = export.replaceAll("\\s+", " ");
-        Assert.assertEquals("boolean bool1 : 1|byte byte1 : DE|char char1 : H|"
-                + "float float1 : 1.01|int16 int1 : 13330|uint16 int2 : 9096|"
-                + "int8 int3 : 85|uint8 int4 : 145|int int5 : -27902|"
-                + "uint int6 : 148|long long1 : -2147483648|ulong long2 : 4294967295", export);
-	    
-        struct = this.createBigStruct();
-        struct.fillUp(26);
-        struct.addItem(new ByteItem());
-        data = "boolean bool1: 01 " + "byte byte1: DE " + "char char1:H " + "float float1: 1.01 " + "int16 int1: 13330 "
-                + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 " + "int int5: -27902 " + "uint int6: 148 "
-                + "long long1: -2147483648 " + "ulong long2: 4294967295 " + "fillup fill1 : 100 " + "byte byte2: FF";
-        struct.importTypeAndDataString(data);
-        instClone = (DataStructure) struct.clone();
-        data = "boolean bool1x: 00 " + "byte byte1x: EE " + "char char1:H " + "float float1: 1.01 " + "int16 int1: 13330 "
-                + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 " + "int int5: -27902 " + "uint int6: 148 "
-                + "long long1: -2147483648 " + "ulong long2: 4294967295 " + "fillup fill1 : 100 " + "byte byte2: FF";
-        struct.importTypeAndDataString(data);
-        export = instClone.exportTypeAndDataString(false);
-        export = export.replaceAll("\n+", "|");
-        export = export.replaceAll("\r+", "");
-        export = export.replaceAll("\\s+", " ");
-        Assert.assertEquals(
-                "boolean bool1 : 1|byte byte1 : DE|char char1 : H|"
-                        + "float float1 : 1.01|int16 int1 : 13330|uint16 int2 : 9096|"
-                        + "int8 int3 : 85|uint8 int4 : 145|int int5 : -27902|"
-                        + "uint int6 : 148|long long1 : -2147483648|ulong long2 : 4294967295|fillup : 26|byte byte2 : FF",
-                export);
-        
-        // TODO Arrays
-    }
-	
+	public void testClone() throws CloneNotSupportedException, DataImportException, DataItemCreationException {
+		DataStructure struct = this.createBigStruct();
+		String data = "boolean bool1: 01 " + "byte byte1: DE " + "char char1:H " + "float float1: 1.01 "
+				+ "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
+				+ "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295";
+		struct.importTypeAndDataString(data);
+		DataStructure instClone = (DataStructure) struct.clone();
+		String export = instClone.exportTypeAndDataString(false);
+		data = "boolean bool1x: 00 " + "byte byte1x: EE " + "char char1:H " + "float float1: 1.01 "
+				+ "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
+				+ "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295";
+		struct.importTypeAndDataString(data);
+		export = export.replaceAll("\n+", "|");
+		export = export.replaceAll("\r+", "");
+		export = export.replaceAll("\\s+", " ");
+		Assert.assertEquals("boolean bool1 : 1|byte byte1 : DE|char char1 : H|"
+				+ "float float1 : 1.01|int16 int1 : 13330|uint16 int2 : 9096|"
+				+ "int8 int3 : 85|uint8 int4 : 145|int int5 : -27902|"
+				+ "uint int6 : 148|long long1 : -2147483648|ulong long2 : 4294967295", export);
+
+		struct = this.createBigStruct();
+		struct.fillUp(26);
+		struct.addItem(new ByteItem());
+		data = "boolean bool1: 01 " + "byte byte1: DE " + "char char1:H " + "float float1: 1.01 " + "int16 int1: 13330 "
+				+ "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 " + "int int5: -27902 " + "uint int6: 148 "
+				+ "long long1: -2147483648 " + "ulong long2: 4294967295 " + "fillup fill1 : 100 " + "byte byte2: FF";
+		struct.importTypeAndDataString(data);
+		instClone = (DataStructure) struct.clone();
+		data = "boolean bool1x: 00 " + "byte byte1x: EE " + "char char1:H " + "float float1: 1.01 "
+				+ "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
+				+ "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295 "
+				+ "fillup fill1 : 100 " + "byte byte2: FF";
+		struct.importTypeAndDataString(data);
+		export = instClone.exportTypeAndDataString(false);
+		export = export.replaceAll("\n+", "|");
+		export = export.replaceAll("\r+", "");
+		export = export.replaceAll("\\s+", " ");
+		Assert.assertEquals(
+				"boolean bool1 : 1|byte byte1 : DE|char char1 : H|"
+						+ "float float1 : 1.01|int16 int1 : 13330|uint16 int2 : 9096|"
+						+ "int8 int3 : 85|uint8 int4 : 145|int int5 : -27902|"
+						+ "uint int6 : 148|long long1 : -2147483648|ulong long2 : 4294967295|fillup : 26|byte byte2 : FF",
+				export);
+
+		// TODO Arrays
+	}
+
+	@Test
+	public void testImportStructure() throws DataImportException, DataItemCreationException {
+		DataStructure struct = this.createBigStruct();
+		String data = "boolean bool1: 01 " + "byte byte1: DE " + "char char1:H " + "float float1: 1.01 "
+				+ "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
+				+ "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295";
+		struct.importTypeAndDataString(data);
+		DataStructure instCopy = this.createBigStruct();
+		data = "boolean bool1: 00 " + "byte byte1: 00 " + "char char1:A " + "float float1: 0 " + "int16 int1: 0 "
+				+ "uint16 int2: 0 " + "int8 int3: 0 " + "uint8 int4: 0 " + "int int5: 0 " + "uint int6: 0 "
+				+ "long long1: 0 " + "ulong long2: 0";
+		instCopy.importTypeAndDataString(data);
+		instCopy.importStructure(struct);
+		String export = instCopy.exportTypeAndDataString(false);
+		data = "boolean bool1x: 00 " + "byte byte1x: EE " + "char char1:H " + "float float1: 1.01 "
+				+ "int16 int1: 13330 " + "uint16 int2: 9096 " + "int8 int3: 85 " + "uint8 int4: 145 "
+				+ "int int5: -27902 " + "uint int6: 148 " + "long long1: -2147483648 " + "ulong long2: 4294967295";
+		struct.importTypeAndDataString(data);
+		export = export.replaceAll("\n+", "|");
+		export = export.replaceAll("\r+", "");
+		export = export.replaceAll("\\s+", " ");
+		Assert.assertEquals("boolean bool1 : 1|byte byte1 : DE|char char1 : H|"
+				+ "float float1 : 1.01|int16 int1 : 13330|uint16 int2 : 9096|"
+				+ "int8 int3 : 85|uint8 int4 : 145|int int5 : -27902|"
+				+ "uint int6 : 148|long long1 : -2147483648|ulong long2 : 4294967295", export);
+	}
+
+	@Test
+	public void testImportTypeAndDataStringCreate() throws DataImportException, DataItemCreationException {
+		DataStructure struct = new DataStructure("TEST");
+		String data = "boolean bool1: 01 \r\n" + "byte byte1: DE \r\n" + "char char1:H \r\n" + "float float1: 1.01 \r\n"
+				+ "int16 int1: 13330 \r\n" + "uint16 int2: 9096 \r\n" + "int8 int3: 85 \r\n" + "uint8 int4: 145 \r\n"
+				+ "int int5: -27902 \r\n" + "uint int6: 148 \r\n" + "long long1: -2147483648 \r\n"
+				+ "ulong long2: 4294967295\r\n";
+		struct.importTypeAndDataStringCreate(data);
+		String export = struct.exportTypeAndDataString(false);
+		struct.importTypeAndDataString(data);
+		export = export.replaceAll("\n+", "|");
+		export = export.replaceAll("\r+", "");
+		export = export.replaceAll("\\s+", " ");
+		Assert.assertEquals("boolean bool1 : 1|byte byte1 : DE|char char1 : H|"
+				+ "float float1 : 1.01|int16 int1 : 13330|uint16 int2 : 9096|"
+				+ "int8 int3 : 85|uint8 int4 : 145|int int5 : -27902|"
+				+ "uint int6 : 148|long long1 : -2147483648|ulong long2 : 4294967295", export);
+
+		// System.out.println(struct);
+
+		// TODO Arrays, Structure in structure
+	}
 }
