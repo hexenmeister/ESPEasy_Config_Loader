@@ -15,8 +15,11 @@ public class DataStructure implements IDataStructure, IDataType, Cloneable {
 
 	private List<IDataType> items;
 
+	public static final String NAME = "boolean";
+
 	public DataStructure(String name) {
-		this.typeName = name;
+		this.typeName = NAME;
+		this.name = name;
 		this.items = new ArrayList<IDataType>();
 	}
 
@@ -194,6 +197,8 @@ public class DataStructure implements IDataStructure, IDataType, Cloneable {
 			throw new DataImportException("import string to long");
 		}
 	}
+	
+	// TODO: ImportDataTypeStringIntern (recursive), Tests, Occurs, new ItemLineParser...
 
 	@Override
 	public void importTypeAndDataStringCreate(String data) throws DataImportException, DataItemCreationException {
@@ -242,6 +247,13 @@ public class DataStructure implements IDataStructure, IDataType, Cloneable {
 	@Override
 	public String exportTypeAndDataString(boolean indent) {
 		StringBuilder sb = new StringBuilder();
+		sb.append("struct ");
+		if (this.getName() != null && !this.getName().isEmpty()) {
+			sb.append(this.getName());
+			sb.append(" ");
+		}
+		sb.append("{\r\n");
+
 		List<IDataType> l = this.getItems();
 		for (Iterator<IDataType> it = l.iterator(); it.hasNext();) {
 			IDataType item = it.next();
@@ -251,6 +263,7 @@ public class DataStructure implements IDataStructure, IDataType, Cloneable {
 			}
 		}
 
+		sb.append("}\r\n");
 		return sb.toString();
 	}
 
