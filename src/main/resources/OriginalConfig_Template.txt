@@ -1,0 +1,113 @@
+#define TASKS_MAX                          24 // max 12!
+#define CONTROLLER_MAX                      3 // max 4!
+#define NOTIFICATION_MAX                    3 // max 4!
+#define PLUGIN_CONFIGVAR_MAX                8
+#define $PLUGIN_CONFIGFLOATVAR_MAX           4
+#define $PLUGIN_CONFIGLONGVAR_MAX            4
+#define PLUGIN_EXTRACONFIGVAR_MAX          16
+
+#define DAT_TASKS_SIZE                   2048
+#define DAT_TASKS_CUSTOM_OFFSET          1024
+#define DAT_CUSTOM_CONTROLLER_SIZE       1024
+#define DAT_OFFSET_TASKS                 4096  // each task = 2k, (1024 basic + 1024 bytes custom), 12 max
+#define DAT_OFFSET_CONTROLLER            DAT_OFFSET_TASKS + (DAT_TASKS_SIZE * TASKS_MAX)                        // each controller = 1k, 4 max
+#define DAT_OFFSET_CUSTOM_CONTROLLER     DAT_OFFSET_CONTROLLER + (DAT_CUSTOM_CONTROLLER_SIZE * CONTROLLER_MAX)  // each custom controller config = 1k, 4 max.
+
+struct SettingsStruct
+{
+  ulong         PID     :
+  int           Version :
+  int16         Build   :
+  byte[4]       IP      :
+  byte[4]       Gateway :
+  byte[4]       Subnet  :
+  byte[4]       DNS     :
+  byte          IP_Octet:
+  byte          Unit    :
+  char[26]      Name    :
+  char[64]      NTPHost :
+  ulong         Delay   :
+  int8          Pin_i2c_sda    :
+  int8          Pin_i2c_scl    :
+  int8          Pin_status_led :
+  int8          Pin_sd_cs      :
+  int8[17]      PinBootStates  :
+  byte[4]       Syslog_IP      :
+  uint          UDPPort        :
+  byte          SyslogLevel    :
+  byte          SerialLogLevel :
+  byte          WebLogLevel    :
+  byte          SDLogLevel     :
+  ulong         BaudRate       :
+  ulong         MessageDelay   :
+  byte          deepSleep      :
+  boolean       CustomCSS      :
+  boolean       DST            :
+  byte          WDI2CAddress   :
+  boolean       UseRules       :
+  boolean       UseSerial      :
+  boolean       UseSSDP        :
+  boolean       UseNTP         :
+  ulong         WireClockStretchLimit:
+  boolean       GlobalSync     :
+  ulong         ConnectionFailuresThreshold:
+  int16         TimeZone       :
+  boolean       MQTTRetainFlag :
+  boolean       InitSPI        :
+  byte          Protocol[$CONTROLLER_MAX]:
+  byte          Notification[$NOTIFICATION_MAX]:
+  byte          TaskDeviceNumber[$TASKS_MAX]:
+  uint          OLD_TaskDeviceID[$TASKS_MAX]:
+    int8        TaskDevicePin1[$TASKS_MAX]:
+    int8        TaskDevicePin2[$TASKS_MAX]:
+    int8        TaskDevicePin3[$TASKS_MAX]:
+    byte        TaskDevicePort[$TASKS_MAX]:
+  boolean       TaskDevicePin1PullUp[$TASKS_MAX]:
+  int16         TaskDevicePluginConfig[$TASKS_MAX][$PLUGIN_CONFIGVAR_MAX]:
+  boolean       TaskDevicePin1Inversed[$TASKS_MAX]:
+  float         TaskDevicePluginConfigFloat[$TASKS_MAX][$PLUGIN_CONFIGFLOATVAR_MAX]:
+  long          TaskDevicePluginConfigLong[$TASKS_MAX][$PLUGIN_CONFIGLONGVAR_MAX]:
+  boolean       OLD_TaskDeviceSendData[$TASKS_MAX]:
+  boolean       TaskDeviceGlobalSync[$TASKS_MAX]:
+  byte          TaskDeviceDataFeed[$TASKS_MAX]:
+  ulong         TaskDeviceTimer[$TASKS_MAX]:
+  boolean       TaskDeviceEnabled[$TASKS_MAX]:
+  boolean       ControllerEnabled[$CONTROLLER_MAX]:
+  boolean       NotificationEnabled[$NOTIFICATION_MAX]:
+  uint          TaskDeviceID[$CONTROLLER_MAX][$TASKS_MAX]:
+  boolean       TaskDeviceSendData[$CONTROLLER_MAX][$TASKS_MAX]:
+  boolean       Pin_status_led_Inversed:
+  boolean       deepSleepOnFail:
+  boolean       UseValueLogger:
+  fillup        : $DAT_OFFSET_TASKS
+  // TaskSettings
+  occur [$TASKS_MAX] {
+    byte    TaskIndex;
+    char[41]                         TaskDeviceName :
+    char[VARS_PER_TASK][41]          TaskDeviceFormula :
+    char[VARS_PER_TASK][41]          TaskDeviceValueNames :
+    long[PLUGIN_EXTRACONFIGVAR_MAX]  TaskDevicePluginConfigLong :
+    byte[VARS_PER_TASK]              TaskDeviceValueDecimals :
+    int16[PLUGIN_EXTRACONFIGVAR_MAX] TaskDevicePluginConfig :
+  }
+  fillup        : $DAT_OFFSET_TASKS+$DAT_TASKS_CUSTOM_OFFSET
+  // CustomTaskSettings
+  occur [$TASKS_MAX] {
+    byte[$TASKS_MAX][1024] customTaskSettings :
+  }
+  fillup        : $DAT_OFFSET_CONTROLLER
+  // ControllerSettings
+  occur [$CONTROLLER_MAX] {
+    boolean       UseDNS :
+    byte[4]       IP :
+    uint          Port :
+    char[65]      HostName :
+    char[129]     Publish :
+    char[129]     Subscribe :
+  }
+  fillup        : $DAT_OFFSET_CUSTOM_CONTROLLER
+  // CustomControllerSettings
+  occur [$CONTROLLER_MAX] {
+    byte[$CONTROLLER_MAX][1024] CustomControllerSettings : 
+  }
+}
