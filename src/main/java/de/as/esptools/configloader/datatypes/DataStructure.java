@@ -15,7 +15,7 @@ public class DataStructure implements IDataStructure, IDataType, Cloneable {
 
 	private List<IDataType> items;
 
-	public static final String NAME = "boolean";
+	public static final String NAME = "struct";
 
 	public DataStructure(String name) {
 		this.typeName = NAME;
