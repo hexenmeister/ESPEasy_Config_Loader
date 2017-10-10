@@ -1,6 +1,8 @@
 package de.as.esptools.configloader;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -146,6 +148,46 @@ public class UtilTest {
 		f = -0.1000000000000f;
 		bytes = Util.floatToByteArray(f);
 		Assert.assertEquals(f, Util.byteArrayToFloat(bytes), 0.0);
+	}
+
+	@Test
+	public void testSearchTokenForBraces() {
+		Assert.assertEquals("test", Util.searchTokenForBraces("{test}"));
+		Assert.assertEquals("test", Util.searchTokenForBraces("123{test}456"));
+		Assert.assertEquals(" test ", Util.searchTokenForBraces("123{ test }456"));
+		Assert.assertEquals(" test ", Util.searchTokenForBraces(" { test } "));
+		Assert.assertEquals("123 { test } 456", Util.searchTokenForBraces(" {123 { test } 456}"));
+		Assert.assertEquals(null, Util.searchTokenForBraces(" {123 { test } 456"));
+		Assert.assertEquals(null, Util.searchTokenForBraces(" {123 "));
+		Assert.assertEquals("{123 { test } 456}", Util.searchTokenForBraces(" {{123 { test } 456}}"));
+		Assert.assertEquals("{123 { test }{ttt} 456}", Util.searchTokenForBraces(" {{123 { test }{ttt} 456}}"));
+		Assert.assertEquals("{123 { test }sdfsdf{ttt} 456}",
+				Util.searchTokenForBraces(" {{123 { test }sdfsdf{ttt} 456}}"));
+	}
+
+	@Test
+	public void testSearchBracedBlock() {
+		String data = "test : test\r\n" + "}";
+		List<String> l = new ArrayList<String>();
+		String rest = Util.readBracedBlock(data, l);
+		String list = String.join("|", l);
+		Assert.assertEquals("", rest);
+		Assert.assertEquals("test : test", list);
+
+		data = "test : testN\r\n" + "test2:testN2\r\n" + "}\r\n" + "test3:testN3\r\n";
+		l = new ArrayList<String>();
+		rest = Util.readBracedBlock(data, l);
+		list = String.join("|", l);
+		Assert.assertEquals("test3:testN3\r\n", rest);
+		Assert.assertEquals("test : testN|test2:testN2", list);
+
+		data = "test : testN\r\n" + "struct b2 {\r\n" + " 2b : 2b\r\n" + " }\r\n" + "test2:testN2\r\n" + "}\r\n"
+				+ "test3:testN3";
+		l = new ArrayList<String>();
+		rest = Util.readBracedBlock(data, l);
+		list = String.join("|", l);
+		Assert.assertEquals("test3:testN3", rest);
+		Assert.assertEquals("test : testN|struct b2 {| 2b : 2b| }|test2:testN2", list);
 	}
 
 }

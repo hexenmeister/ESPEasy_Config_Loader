@@ -1,7 +1,9 @@
-package de.as.esptools.configloader.datatypes.util;
+package de.as.esptools.configloader;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import de.as.esptools.configloader.datatypes.util.TypeLineParser;
 
 public class TypeLineParserTest {
 

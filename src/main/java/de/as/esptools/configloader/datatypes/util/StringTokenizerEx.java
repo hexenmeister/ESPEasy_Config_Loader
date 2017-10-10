@@ -121,11 +121,27 @@ public class StringTokenizerEx {
 	private boolean delimsChanged;
 
 	/**
-	 * Returns the remaining string form the next token to the end.
+	 * Returns the remaining string form the next position to the end.
 	 * 
 	 * @return remaining
 	 */
 	public String getRemainingString() {
+		if (currentPosition >= maxPosition || currentPosition < 0) {
+			return "";
+		}
+		return str.substring(currentPosition);
+	}
+
+	/**
+	 * Returns the remaining string form the next token to the end.
+	 * 
+	 * @return remaining
+	 */
+	public String getRemainingStringSkipDelimeters() {
+		if (currentPosition >= maxPosition || currentPosition < 0) {
+			return "";
+		}
+		currentPosition = skipDelimiters(currentPosition);
 		return str.substring(currentPosition);
 	}
 
@@ -374,6 +390,17 @@ public class StringTokenizerEx {
 		int start = currentPosition;
 		currentPosition = scanToken(currentPosition);
 		return str.substring(start, currentPosition);
+	}
+
+	public String previewToken() {
+		int cPosition = (newPosition >= 0 && !delimsChanged) ? newPosition : skipDelimiters(currentPosition);
+
+		if (cPosition >= maxPosition)
+			// throw new NoSuchElementException();
+			return null;
+		int start = cPosition;
+		cPosition = scanToken(cPosition);
+		return str.substring(start, cPosition);
 	}
 
 	/**

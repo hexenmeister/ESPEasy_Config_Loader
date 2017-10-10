@@ -4,8 +4,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.as.esptools.configloader.datatypes.util.TypeLineParserTest;
-
 @RunWith(Suite.class)
 @SuiteClasses({ UtilTest.class, DataItemTest.class, ArrayDataItemTest.class, ByteArrayItemTest.class,
 		ByteItemTest.class, CharArrayItemTest.class, CharItemTest.class, NumericItemTest.class, BooleanItemTest.class,

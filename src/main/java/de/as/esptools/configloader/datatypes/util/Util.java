@@ -1,5 +1,7 @@
 package de.as.esptools.configloader.datatypes.util;
 
+import java.util.List;
+
 import de.as.esptools.configloader.datatypes.DataImportException;
 
 public final class Util {
@@ -206,5 +208,123 @@ public final class Util {
 			}
 		}
 		return ret;
+	}
+
+	/**
+	 * Sucht die passende schliesende geschweifte Klammer. Klammerpaare
+	 * innerhalb Blocks werden beachtet.
+	 * 
+	 * @param data
+	 *            Text
+	 * @return Block in Klammern
+	 */
+	public static int searchClosingBrace(String data) {
+		return searchClosingBrace(data, 0, '{', '}');
+	}
+
+	/**
+	 * Sucht die passende schliesende Klammer. Klammerpaare innerhalb Blocks
+	 * werden beachtet. Beispiel: { Das ist {ein} Test}
+	 * 
+	 * @param data
+	 *            Text
+	 * @param posFrom
+	 *            Position, ab der gesucht wird.
+	 * @param openingBrace
+	 *            Zeichen für "oeffnende Klammer"
+	 * @param closingBrace
+	 *            Zeichen für die schliessende Klammer
+	 * @return Block in Klammern
+	 */
+	public static int searchClosingBrace(String data, int posFrom, char openingBrace, char closingBrace) {
+		int pos = data.indexOf(closingBrace, posFrom);
+		if (pos < 0) {
+			return -1;
+		}
+		int posT = posFrom;
+		while ((posT = data.indexOf(openingBrace, posT + 1)) != -1 && posT < pos) {
+			pos = data.indexOf(closingBrace, pos + 1);
+			if (pos < 0) {
+				return -1;
+			}
+		}
+
+		return pos;
+	}
+
+	/**
+	 * Sucht die schliessende Klammer (unter Beachtung der Klammerpaare
+	 * innerhalb des Blocks) und liefert den umschlossenen Block zurück.
+	 * 
+	 * @param data
+	 *            Text
+	 * @return Block in Klammern
+	 */
+	public static String searchTokenForBraces(String data) {
+		return searchTokenForBraces(data, 0, '{', '}');
+	}
+
+	/**
+	 * Sucht die schliessende Klammer (unter Beachtung der Klammerpaare
+	 * innerhalb des Blocks) und liefert den umschlossenen Block zurück.
+	 * 
+	 * @param data
+	 *            Text
+	 * @param posFrom
+	 *            Position, ab der gesucht wird.
+	 * @param openingBrace
+	 *            Zeichen für "oeffnende Klammer"
+	 * @param closingBrace
+	 *            Zeichen für die schliessende Klammer
+	 * @return Block in Klammern
+	 */
+	public static String searchTokenForBraces(String data, int posFrom, char openingBrace, char closingBrace) {
+		int firstBracePos = data.indexOf(openingBrace, posFrom);
+		if (firstBracePos < 0) {
+			return null;
+		}
+
+		int lastBracePos = searchClosingBrace(data, firstBracePos, openingBrace, closingBrace);
+		if (lastBracePos < 0) {
+			return null;
+		}
+
+		return data.substring(firstBracePos + 1, lastBracePos);
+	}
+
+	/**
+	 * Sucht die schliessende Klammer, liefert den umschlossenen Block
+	 * zeilenweise in der übergebenen Liste und Rest nach dem Block als
+	 * Returnwert zurück. Als schliessende Klammer wird die Klammer am Anfang
+	 * der Zeile (Space-Zeichen werden ignoriert) angesehen. Klammern in den
+	 * Zeilen mit Werten der 'normalen' Elementen (z.B. CharItem) werden
+	 * ignoriert. Die öffnende Sequence (z.B. 'struct Test {') darf nicht mehr
+	 * enthalten sein. Der Rest wird ohne der schliessenden Klammer
+	 * zurückgegeben.
+	 * 
+	 * @param data
+	 *            Text
+	 * @param list
+	 *            Liste, wird mit den Zeilen aus dem Block gefüllt
+	 * @return Rest des Textes
+	 */
+	public static String readBracedBlock(String data, List<String> list) {
+		StringTokenizerEx st = new StringTokenizerEx(data, "\r\n");
+		int cnt = 1;
+		while (st.hasMoreTokens() && cnt > 0) {
+			String token = st.nextToken();
+			if (token.indexOf(':') < 0) {
+				if (token.trim().startsWith("}")) {
+					cnt--;
+				} else if (token.indexOf("{") >= 0) {
+					cnt++;
+				}
+			}
+			if (cnt > 0) {
+				list.add(token);
+			}
+		}
+
+		return st.getRemainingStringSkipDelimeters();
 	}
 }
