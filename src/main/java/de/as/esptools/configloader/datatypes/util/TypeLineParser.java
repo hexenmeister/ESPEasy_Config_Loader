@@ -8,20 +8,20 @@ import java.util.regex.Pattern;
 
 public class TypeLineParser {
 
-	public static void main(String[] a) {
-		// Pattern p =
-		// Pattern.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\s*:(.*)$");
-		Pattern p = Pattern.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*:(.*)$");
-		Matcher m = p.matcher("/* comment 1   */ type name : data  ww // comment2");
-		if (m.find()) {
-			for (int i = 0, n = m.groupCount(); i <= n; i++) {
-				System.out.println(i + ":" + m.group(i));
-			}
-		}
-	}
+//	public static void main(String[] a) {
+//		// Pattern p =
+//		// Pattern.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\s*:(.*)$");
+//		Pattern p = Pattern.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*:(.*)$");
+//		Matcher m = p.matcher("/* comment 1   */ type name : data  ww // comment2");
+//		if (m.find()) {
+//			for (int i = 0, n = m.groupCount(); i <= n; i++) {
+//				System.out.println(i + ":" + m.group(i));
+//			}
+//		}
+//	}
 
-	private List<TypeDef> items = new ArrayList<TypeDef>();
-	private int pos = -1;
+//	private List<TypeDef> items = new ArrayList<TypeDef>();
+//	private int pos = -1;
 
 	private static class TypeDef {
 		// suchen nach Muster: xxx[num]
@@ -78,24 +78,28 @@ public class TypeLineParser {
 		}
 	}
 
+	private StringTokenizerEx tokenizer;
+	private TypeDef typeDef;
+	private boolean found=false;
+	
 	public TypeLineParser(String data) {
 		if (data != null) {
-			StringTokenizer st = new StringTokenizer(data, "\n\r");
-			while (st.hasMoreTokens()) {
-				String token = st.nextToken();
-				TypeDef def = TypeDef.match(token);
-				if (def != null) {
-					if (def.isWrappedLine()) {
-						if (this.items.size() > 0) {
-							this.items.get(this.items.size() - 1).merge(def);
-						} else {
-							throw new IndexOutOfBoundsException("no previous element");
-						}
-					} else {
-						this.items.add(def);
-					}
-				}
-			}
+			tokenizer = new StringTokenizerEx(data, "\n\r");
+//			while (st.hasMoreTokens()) {
+//				String token = st.nextToken();
+//				TypeDef def = TypeDef.match(token);
+//				if (def != null) {
+//					if (def.isWrappedLine()) {
+//						if (this.items.size() > 0) {
+//							this.items.get(this.items.size() - 1).merge(def);
+//						} else {
+//							throw new IndexOutOfBoundsException("no previous element");
+//						}
+//					} else {
+//						this.items.add(def);
+//					}
+//				}
+//			}
 		} else {
 			throw new IllegalArgumentException("Data string maynot be null");
 		}
@@ -103,19 +107,44 @@ public class TypeLineParser {
 	}
 
 	public boolean next() {
-		if (pos < this.items.size() - 1) {
-			pos++;
-			return true;
+		while(this.tokenizer.hasMoreTokens()) {
+			String token = this.tokenizer.nextToken();
+			TypeDef def = TypeDef.match(token);
+			if (def != null) {
+				while(this.tokenizer.hasMoreTokens()) {
+					String nToken = this.tokenizer.previewToken();
+					TypeDef nDef = TypeDef.match(nToken);
+					if (nDef.isWrappedLine()) {
+						this.tokenizer.nextToken();
+						def.merge(nDef);
+					} else {
+						break;
+					}
+				}
+				this.typeDef=def;
+				this.found=true;
+				return true;
+//				break;
+			} 
 		}
-
+//		if (pos < this.items.size() - 1) {
+//			pos++;
+//			return true;
+//		}
+		this.found=false;
 		return false;
 	}
 
 	private TypeDef getCurrent() {
-		if (this.pos >= this.items.size()) {
-			throw new IndexOutOfBoundsException("" + this.pos);
+		if(this.found) {
+			return this.typeDef;
 		}
-		return this.items.get(this.pos);
+		throw new IndexOutOfBoundsException();
+
+		//		if (this.pos >= this.items.size()) {
+//			throw new IndexOutOfBoundsException("" + this.pos);
+//		}
+//		return this.items.get(this.pos);
 	}
 
 	public String getItemType() {
@@ -138,17 +167,17 @@ public class TypeLineParser {
 		return this.getCurrent().itemComment2;
 	}
 
-	public int getItemCount() {
-		return this.items.size();
-	}
+//	public int getItemCount() {
+//		return this.items.size();
+//	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0, n = this.items.size(); i < n; i++) {
-			sb.append(this.items.get(i));
-			sb.append("\r\n");
-		}
-		return sb.toString();
-	}
+//	@Override
+//	public String toString() {
+//		StringBuilder sb = new StringBuilder();
+//		for (int i = 0, n = this.items.size(); i < n; i++) {
+//			sb.append(this.items.get(i));
+//			sb.append("\r\n");
+//		}
+//		return sb.toString();
+//	}
 }

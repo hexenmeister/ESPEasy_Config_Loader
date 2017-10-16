@@ -1,6 +1,7 @@
 package de.as.esptools.configloader;
 
 import org.junit.Assert;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import de.as.esptools.configloader.datatypes.util.TypeLineParser;
@@ -81,6 +82,14 @@ public class TypeLineParserTest {
 		Assert.assertEquals("T", inst.getItemType());
 		Assert.assertEquals("N", inst.getItemName());
 		Assert.assertEquals("D", inst.getItemData());
+		
+		Assert.assertEquals(false, inst.next());
+		try {
+			inst.getItemName();
+			fail("must be out of bounds");
+		} catch (IndexOutOfBoundsException e) {
+			// Ignore
+		}
 	}
 
 	@Test
@@ -587,7 +596,11 @@ public class TypeLineParserTest {
 				+ "/* comment 1 test  */ type name : data  ww // comment2\r\n";
 
 		TypeLineParser inst = new TypeLineParser(data);
-		inst.next();
+		while (inst.next()) {
+			String t="/* " + inst.getItemComment1() + " */ " + inst.getItemType() + " " + inst.getItemName()
+					+ " : " + inst.getItemData() + " // " + inst.getItemComment2();
+			Assert.assertEquals("/* comment 1 test */ type name : data  ww // comment2", t);
+		}
 		// System.out.println(inst);
 		// System.out.println(inst.getItemCount());
 
