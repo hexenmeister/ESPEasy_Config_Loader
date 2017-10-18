@@ -23,22 +23,42 @@ public class TypeLineParser {
 //	private List<TypeDef> items = new ArrayList<TypeDef>();
 //	private int pos = -1;
 
-	private static class TypeDef {
+	public static class TypeDef {
 		// suchen nach Muster: xxx[num]
 		private static final Pattern WRAPPED_LINE_PATTERN = Pattern
 				.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*:(.*)$");
-		String itemType;
-		String itemName;
-		String itemData;
-		String itemComment1;
-		String itemComment2;
+		private String itemType;
+		private String itemName;
+		private String itemData;
+		private String itemComment1;
+		private String itemComment2;
 
 		private TypeDef() {
 		}
 
+		public String getItemType() {
+			return itemType;
+		}
+
+		public String getItemName() {
+			return itemName;
+		}
+
+		public String getItemData() {
+			return itemData;
+		}
+
+		public String getItemComment1() {
+			return itemComment1;
+		}
+
+		public String getItemComment2() {
+			return itemComment2;
+		}
+
 		@Override
 		public String toString() {
-			return "/* " + itemComment1 + " */ " + itemType + " " + itemName + " : " + itemData + " // " + itemComment2;
+			return "/* " + getItemComment1() + " */ " + getItemType() + " " + getItemName() + " : " + getItemData() + " // " + getItemComment2();
 		}
 
 		public static final TypeDef match(String line) {
@@ -70,11 +90,11 @@ public class TypeLineParser {
 		}
 
 		public boolean isWrappedLine() {
-			return this.itemType == null || this.itemType.isEmpty();
+			return this.getItemType() == null || this.getItemType().isEmpty();
 		}
 
 		public void merge(TypeDef inst) {
-			this.itemData += " " + inst.itemData;
+			this.itemData += " " + inst.getItemData();
 		}
 	}
 
@@ -148,23 +168,23 @@ public class TypeLineParser {
 	}
 
 	public String getItemType() {
-		return this.getCurrent().itemType;
+		return this.getCurrent().getItemType();
 	}
 
 	public String getItemName() {
-		return this.getCurrent().itemName;
+		return this.getCurrent().getItemName();
 	}
 
 	public String getItemData() {
-		return this.getCurrent().itemData;
+		return this.getCurrent().getItemData();
 	}
 
 	public String getItemComment1() {
-		return this.getCurrent().itemComment1;
+		return this.getCurrent().getItemComment1();
 	}
 
 	public String getItemComment2() {
-		return this.getCurrent().itemComment2;
+		return this.getCurrent().getItemComment2();
 	}
 
 //	public int getItemCount() {
