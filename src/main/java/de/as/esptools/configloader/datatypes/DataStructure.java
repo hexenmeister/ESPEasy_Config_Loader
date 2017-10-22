@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.as.esptools.configloader.datatypes.util.TypeLineParser;
+import de.as.esptools.configloader.datatypes.util.TypeLineParserOld;
 import de.as.esptools.configloader.datatypes.util.Util;
 
 public class DataStructure implements IDataStructure, IDataType, Cloneable {
@@ -202,13 +202,13 @@ public class DataStructure implements IDataStructure, IDataType, Cloneable {
 
 	@Override
 	public void importTypeAndDataStringCreate(String data) throws DataImportException, DataItemCreationException {
-		TypeLineParser parser = new TypeLineParser(data);
+		TypeLineParserOld parser = new TypeLineParserOld(data);
 		while (parser.next()) {
 			createItem(parser);
 		}
 	}
 
-	private void createItem(TypeLineParser parser) throws DataItemCreationException, DataImportException {
+	private void createItem(TypeLineParserOld parser) throws DataItemCreationException, DataImportException {
 		String itemType = parser.getItemType();
 		String itemData = parser.getItemData();
 		if (itemType != null) {

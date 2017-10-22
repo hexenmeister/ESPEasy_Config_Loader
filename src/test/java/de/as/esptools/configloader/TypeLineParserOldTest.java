@@ -4,9 +4,9 @@ import org.junit.Assert;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 
-import de.as.esptools.configloader.datatypes.util.TypeLineParser;
+import de.as.esptools.configloader.datatypes.util.TypeLineParserOld;
 
-public class TypeLineParserTest {
+public class TypeLineParserOldTest {
 
 	@Test
 	public void testParser() {
@@ -23,7 +23,7 @@ public class TypeLineParserTest {
 				+ "                                  : data  5        \r\n"
 				+ "                                  : data line 2\r\n" + "/*C1*/T N:D//C2";
 
-		TypeLineParser inst = new TypeLineParser(data);
+		TypeLineParserOld inst = new TypeLineParserOld(data);
 
 		// System.out.println(inst);
 
@@ -75,8 +75,8 @@ public class TypeLineParserTest {
 		Assert.assertEquals("type", inst.getItemType());
 		Assert.assertEquals("", inst.getItemName());
 		Assert.assertEquals("data  1 data  2 data  3 data  4 data  5 data line 2", inst.getItemData());
-		
 		inst.next();
+
 		Assert.assertEquals("C1", inst.getItemComment1());
 		Assert.assertEquals("C2", inst.getItemComment2());
 		Assert.assertEquals("T", inst.getItemType());
@@ -595,7 +595,7 @@ public class TypeLineParserTest {
 				+ "/* comment 1 test  */ type name : data  ww // comment2\r\n"
 				+ "/* comment 1 test  */ type name : data  ww // comment2\r\n";
 
-		TypeLineParser inst = new TypeLineParser(data);
+		TypeLineParserOld inst = new TypeLineParserOld(data);
 		while (inst.next()) {
 			String t="/* " + inst.getItemComment1() + " */ " + inst.getItemType() + " " + inst.getItemName()
 					+ " : " + inst.getItemData() + " // " + inst.getItemComment2();

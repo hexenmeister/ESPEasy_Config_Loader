@@ -2,38 +2,150 @@ package de.as.esptools.configloader.datatypes.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TypeLineParser {
 
-//	public static void main(String[] a) {
-//		// Pattern p =
-//		// Pattern.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\s*:(.*)$");
-//		Pattern p = Pattern.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*:(.*)$");
-//		Matcher m = p.matcher("/* comment 1   */ type name : data  ww // comment2");
-//		if (m.find()) {
-//			for (int i = 0, n = m.groupCount(); i <= n; i++) {
-//				System.out.println(i + ":" + m.group(i));
-//			}
-//		}
-//	}
-
-//	private List<TypeDef> items = new ArrayList<TypeDef>();
-//	private int pos = -1;
-
 	public static class TypeDef {
 		// suchen nach Muster: xxx[num]
 		private static final Pattern WRAPPED_LINE_PATTERN = Pattern
 				.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*:(.*)$");
+
+		// /* bla */ struct name { // comment
+		// ALT:
+		// ("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*\\{(.*)$")
+		private static final Pattern STRUCT_LINE_PATTERN = Pattern
+				.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*\\W+(.*)\\{(.*)$");
 		private String itemType;
 		private String itemName;
 		private String itemData;
 		private String itemComment1;
 		private String itemComment2;
 
+		private List<TypeDef> children;
+
 		private TypeDef() {
+			this.children = new ArrayList<TypeDef>();
+		}
+
+		public static List<TypeDef> parse(StringTokenizerEx st) {
+			List<TypeDef> ret = new ArrayList<TypeDef>();
+			TypeDef inst;
+			while ((inst = parseIntern(st)) != null) {
+				ret.add(inst);
+			}
+			return ret;
+		}
+
+		protected static TypeDef parseIntern(StringTokenizerEx st) {
+			String[] def;
+			while (st.hasMoreTokens()) {
+				String token = st.nextToken();
+				if ((def = matchSimple(token)) != null) {
+					TypeDef inst = new TypeDef();
+					inst.itemComment1 = def[0];
+					inst.itemType = def[1];
+					inst.itemName = def[2];
+					inst.itemData = def[3];
+					inst.itemComment2 = def[4];
+					while (st.hasMoreTokens()) {
+						String nToken = st.previewToken();
+						String[] nDef = matchSimple(nToken);
+						if (isWrappedLine(nDef)) {
+							st.nextToken();
+							inst.merge(nDef);
+						} else {
+							return inst;
+							// break;
+						}
+					}
+					return inst;
+				} else if ((def = matchStruct(token)) != null) {
+					TypeDef inst = new TypeDef();
+					inst.itemComment1 = def[0];
+					inst.itemType = def[1];
+					inst.itemName = def[2];
+					inst.itemData = def[3];
+					inst.itemComment2 = def[4];
+					TypeDef instN;
+					while ((instN = parseIntern(st)) != null) {
+						inst.addChild(instN);
+					}
+					return inst;
+				} else if (matchEndMark(token)) {
+					return null;
+				} else if (matchStopMark(token)) {
+					return null;
+				}
+			}
+			return null;
+		}
+
+		private static String[] matchStruct(String line) {
+			// TODO
+			Matcher matcher = STRUCT_LINE_PATTERN.matcher(line);
+			String[] ret = new String[5];
+			if (matcher.find()) {
+				/* itemComment1 */ ret[0] = nn(matcher.group(1));
+				/* itemType */ ret[1] = nn(matcher.group(2));
+				/* itemName */ ret[2] = nn(matcher.group(3));
+				/* itemData */ ret[3] = nn(matcher.group(4));
+				int pos;
+				if ((pos = ret[3].indexOf("//")) >= 0) {
+					/* itemComment2 */ ret[4] = /* itemData */ ret[3].substring(pos + 2).trim();
+					/* itemData */ ret[3] = /* itemData */ ret[3].substring(0, pos).trim();
+				} else {
+					/* itemComment2 */ ret[4] = "";
+				}
+				return ret;
+			} else {
+				return null;
+			}
+		}
+
+		private static String[] matchSimple(String line) {
+			Matcher matcher = WRAPPED_LINE_PATTERN.matcher(line);
+			String[] ret = new String[5];
+			if (matcher.find()) {
+				/* itemComment1 */ ret[0] = nn(matcher.group(1));
+				/* itemType */ ret[1] = nn(matcher.group(2));
+				/* itemName */ ret[2] = nn(matcher.group(3));
+				/* itemData */ ret[3] = nn(matcher.group(4));
+				int pos;
+				if ((pos = ret[3].indexOf("//")) >= 0) {
+					/* itemComment2 */ ret[4] = /* itemData */ ret[3].substring(pos + 2).trim();
+					/* itemData */ ret[3] = /* itemData */ ret[3].substring(0, pos).trim();
+				} else {
+					/* itemComment2 */ ret[4] = "";
+				}
+				return ret;
+			} else {
+				return null;
+			}
+		}
+
+		private static boolean matchEndMark(String line) {
+			return line != null && line.trim().toUpperCase().startsWith("}");
+		}
+
+		private static boolean matchStopMark(String line) {
+			return line != null && line.trim().toUpperCase().startsWith("#END");
+		}
+
+		private static String nn(String s) {
+			if (s == null) {
+				return "";
+			}
+			return s.trim();
+		}
+
+		public static boolean isWrappedLine(String[] def) {
+			return /* itemType */ def[1] == null || /* itemType */ def[1].isEmpty();
+		}
+
+		public void merge(String[] inst) {
+			this.itemData += " " + /* temData */ inst[3];
 		}
 
 		public String getItemType() {
@@ -56,70 +168,29 @@ public class TypeLineParser {
 			return itemComment2;
 		}
 
+		public void addChild(TypeDef child) {
+			this.children.add(child);
+		}
+
+		public List<TypeDef> getChildren() {
+			return this.children;
+		}
+
 		@Override
 		public String toString() {
-			return "/* " + getItemComment1() + " */ " + getItemType() + " " + getItemName() + " : " + getItemData() + " // " + getItemComment2();
+			return "/* " + getItemComment1() + " */ " + getItemType() + " " + getItemName() + " : " + getItemData()
+					+ " // " + getItemComment2() + " [children: " + this.getChildren().size() + "]";
 		}
 
-		public static final TypeDef match(String line) {
-			Matcher matcher = WRAPPED_LINE_PATTERN.matcher(line);
-			if (matcher.find()) {
-				TypeDef inst = new TypeDef();
-				inst.itemComment1 = nn(matcher.group(1));
-				inst.itemType = nn(matcher.group(2));
-				inst.itemName = nn(matcher.group(3));
-				inst.itemData = nn(matcher.group(4));
-				int pos;
-				if ((pos = inst.itemData.indexOf("//")) >= 0) {
-					inst.itemComment2 = inst.itemData.substring(pos + 2).trim();
-					inst.itemData = inst.itemData.substring(0, pos).trim();
-				} else {
-					inst.itemComment2 = "";
-				}
-				return inst;
-			} else {
-				return null;
-			}
-		}
-
-		private static String nn(String s) {
-			if (s == null) {
-				return "";
-			}
-			return s.trim();
-		}
-
-		public boolean isWrappedLine() {
-			return this.getItemType() == null || this.getItemType().isEmpty();
-		}
-
-		public void merge(TypeDef inst) {
-			this.itemData += " " + inst.getItemData();
-		}
 	}
 
 	private StringTokenizerEx tokenizer;
 	private TypeDef typeDef;
-	private boolean found=false;
-	
+	// private boolean found = false;
+
 	public TypeLineParser(String data) {
 		if (data != null) {
 			tokenizer = new StringTokenizerEx(data, "\n\r");
-//			while (st.hasMoreTokens()) {
-//				String token = st.nextToken();
-//				TypeDef def = TypeDef.match(token);
-//				if (def != null) {
-//					if (def.isWrappedLine()) {
-//						if (this.items.size() > 0) {
-//							this.items.get(this.items.size() - 1).merge(def);
-//						} else {
-//							throw new IndexOutOfBoundsException("no previous element");
-//						}
-//					} else {
-//						this.items.add(def);
-//					}
-//				}
-//			}
 		} else {
 			throw new IllegalArgumentException("Data string maynot be null");
 		}
@@ -127,44 +198,22 @@ public class TypeLineParser {
 	}
 
 	public boolean next() {
-		while(this.tokenizer.hasMoreTokens()) {
-			String token = this.tokenizer.nextToken();
-			TypeDef def = TypeDef.match(token);
+		while (this.tokenizer.hasMoreTokens()) {
+			TypeDef def = TypeDef.parseIntern(this.tokenizer);
 			if (def != null) {
-				while(this.tokenizer.hasMoreTokens()) {
-					String nToken = this.tokenizer.previewToken();
-					TypeDef nDef = TypeDef.match(nToken);
-					if (nDef.isWrappedLine()) {
-						this.tokenizer.nextToken();
-						def.merge(nDef);
-					} else {
-						break;
-					}
-				}
-				this.typeDef=def;
-				this.found=true;
+				this.typeDef = def;
 				return true;
-//				break;
-			} 
+			}
 		}
-//		if (pos < this.items.size() - 1) {
-//			pos++;
-//			return true;
-//		}
-		this.found=false;
+		this.typeDef = null;
 		return false;
 	}
 
 	private TypeDef getCurrent() {
-		if(this.found) {
+		if (this.typeDef != null) {
 			return this.typeDef;
 		}
 		throw new IndexOutOfBoundsException();
-
-		//		if (this.pos >= this.items.size()) {
-//			throw new IndexOutOfBoundsException("" + this.pos);
-//		}
-//		return this.items.get(this.pos);
 	}
 
 	public String getItemType() {
@@ -187,17 +236,4 @@ public class TypeLineParser {
 		return this.getCurrent().getItemComment2();
 	}
 
-//	public int getItemCount() {
-//		return this.items.size();
-//	}
-
-//	@Override
-//	public String toString() {
-//		StringBuilder sb = new StringBuilder();
-//		for (int i = 0, n = this.items.size(); i < n; i++) {
-//			sb.append(this.items.get(i));
-//			sb.append("\r\n");
-//		}
-//		return sb.toString();
-//	}
 }
