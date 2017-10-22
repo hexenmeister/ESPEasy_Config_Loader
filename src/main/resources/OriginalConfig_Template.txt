@@ -48,66 +48,66 @@ struct SettingsStruct
   boolean       UseSerial      :
   boolean       UseSSDP        :
   boolean       UseNTP         :
-  ulong         WireClockStretchLimit:
+  ulong         WireClockStretchLimit :
   boolean       GlobalSync     :
-  ulong         ConnectionFailuresThreshold:
+  ulong         ConnectionFailuresThreshold :
   int16         TimeZone       :
   boolean       MQTTRetainFlag :
   boolean       InitSPI        :
-  byte          Protocol[$CONTROLLER_MAX]:
-  byte          Notification[$NOTIFICATION_MAX]:
-  byte          TaskDeviceNumber[$TASKS_MAX]:
-  uint          OLD_TaskDeviceID[$TASKS_MAX]:
-    int8        TaskDevicePin1[$TASKS_MAX]:
-    int8        TaskDevicePin2[$TASKS_MAX]:
-    int8        TaskDevicePin3[$TASKS_MAX]:
-    byte        TaskDevicePort[$TASKS_MAX]:
-  boolean       TaskDevicePin1PullUp[$TASKS_MAX]:
-  int16         TaskDevicePluginConfig[$TASKS_MAX][$PLUGIN_CONFIGVAR_MAX]:
-  boolean       TaskDevicePin1Inversed[$TASKS_MAX]:
-  float         TaskDevicePluginConfigFloat[$TASKS_MAX][$PLUGIN_CONFIGFLOATVAR_MAX]:
-  long          TaskDevicePluginConfigLong[$TASKS_MAX][$PLUGIN_CONFIGLONGVAR_MAX]:
-  boolean       OLD_TaskDeviceSendData[$TASKS_MAX]:
-  boolean       TaskDeviceGlobalSync[$TASKS_MAX]:
-  byte          TaskDeviceDataFeed[$TASKS_MAX]:
-  ulong         TaskDeviceTimer[$TASKS_MAX]:
-  boolean       TaskDeviceEnabled[$TASKS_MAX]:
-  boolean       ControllerEnabled[$CONTROLLER_MAX]:
-  boolean       NotificationEnabled[$NOTIFICATION_MAX]:
-  uint          TaskDeviceID[$CONTROLLER_MAX][$TASKS_MAX]:
-  boolean       TaskDeviceSendData[$CONTROLLER_MAX][$TASKS_MAX]:
-  boolean       Pin_status_led_Inversed:
-  boolean       deepSleepOnFail:
-  boolean       UseValueLogger:
+  byte[$CONTROLLER_MAX]     Protocol             :
+  byte[$NOTIFICATION_MAX]   Notification         :
+  byte[$TASKS_MAX]          TaskDeviceNumber     :
+  uint[$TASKS_MAX]          OLD_TaskDeviceID     :
+    int8[$TASKS_MAX]        TaskDevicePin1       :
+    int8[$TASKS_MAX]        TaskDevicePin2       :
+    int8[$TASKS_MAX]        TaskDevicePin3       :
+    byte[$TASKS_MAX]        TaskDevicePort       :
+  boolean[$TASKS_MAX]       TaskDevicePin1PullUp :
+  int16[$TASKS_MAX][$PLUGIN_CONFIGVAR_MAX]       TaskDevicePluginConfig      :
+  boolean[$TASKS_MAX]       TaskDevicePin1Inversed:
+  float[$TASKS_MAX][$PLUGIN_CONFIGFLOATVAR_MAX]  TaskDevicePluginConfigFloat :
+  long[$TASKS_MAX][$PLUGIN_CONFIGLONGVAR_MAX]    TaskDevicePluginConfigLong  :
+  boolean[$TASKS_MAX]                   OLD_TaskDeviceSendData :
+  boolean[$TASKS_MAX]                   TaskDeviceGlobalSync   :
+  byte[$TASKS_MAX]                      TaskDeviceDataFeed     :
+  ulong[$TASKS_MAX]                     TaskDeviceTimer        :
+  boolean[$TASKS_MAX]                   TaskDeviceEnabled      :
+  boolean[$CONTROLLER_MAX]              ControllerEnabled      :
+  boolean[$NOTIFICATION_MAX]            NotificationEnabled    :
+  uint[$CONTROLLER_MAX][$TASKS_MAX]     TaskDeviceID           :
+  boolean[$CONTROLLER_MAX][$TASKS_MAX]  TaskDeviceSendData     :
+  boolean       Pin_status_led_Inversed          :
+  boolean       deepSleepOnFail                  :
+  boolean       UseValueLogger                   :
   fillup        : $DAT_OFFSET_TASKS
   // TaskSettings
-  occur [$TASKS_MAX] {
+  occurs tasksettings $TASKS_MAX {
     byte    TaskIndex;
-    char[41]                         TaskDeviceName :
-    char[VARS_PER_TASK][41]          TaskDeviceFormula :
-    char[VARS_PER_TASK][41]          TaskDeviceValueNames :
+    char[41]                         TaskDeviceName             :
+    char[VARS_PER_TASK][41]          TaskDeviceFormula          :
+    char[VARS_PER_TASK][41]          TaskDeviceValueNames       :
     long[PLUGIN_EXTRACONFIGVAR_MAX]  TaskDevicePluginConfigLong :
-    byte[VARS_PER_TASK]              TaskDeviceValueDecimals :
-    int16[PLUGIN_EXTRACONFIGVAR_MAX] TaskDevicePluginConfig :
+    byte[VARS_PER_TASK]              TaskDeviceValueDecimals    :
+    int16[PLUGIN_EXTRACONFIGVAR_MAX] TaskDevicePluginConfig     :
   }
   fillup        : $DAT_OFFSET_TASKS+$DAT_TASKS_CUSTOM_OFFSET
   // CustomTaskSettings
-  occur [$TASKS_MAX] {
+  occurs custontasksettings $TASKS_MAX {
     byte[$TASKS_MAX][1024] customTaskSettings :
   }
   fillup        : $DAT_OFFSET_CONTROLLER
   // ControllerSettings
-  occur [$CONTROLLER_MAX] {
-    boolean       UseDNS :
-    byte[4]       IP :
-    uint          Port :
-    char[65]      HostName :
-    char[129]     Publish :
+  occurs controllersettings $CONTROLLER_MAX {
+    boolean       UseDNS    :
+    byte[4]       IP        :
+    uint          Port      :
+    char[65]      HostName  :
+    char[129]     Publish   :
     char[129]     Subscribe :
   }
   fillup        : $DAT_OFFSET_CUSTOM_CONTROLLER
   // CustomControllerSettings
-  occur [$CONTROLLER_MAX] {
+  occurs customcontrollersettings $CONTROLLER_MAX {
     byte[$CONTROLLER_MAX][1024] CustomControllerSettings : 
   }
 }
