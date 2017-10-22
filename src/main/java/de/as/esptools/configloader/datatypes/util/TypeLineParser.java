@@ -8,15 +8,13 @@ import java.util.regex.Pattern;
 public class TypeLineParser {
 
 	public static class TypeDef {
-		// suchen nach Muster: xxx[num]
+		// suchen nach Muster: /* bla */ xxx[num] name : data // comment
 		private static final Pattern WRAPPED_LINE_PATTERN = Pattern
-				.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*:(.*)$");
+				.compile("^\\s*+(?:\\/\\*(.*)\\*\\/)?+\\W*(?:(\\S++)(?:\\W*(\\w*)))*\\W*:(.*+)$");
 
 		// /* bla */ struct name { // comment
-		// ALT:
-		// ("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*\\{(.*)$")
 		private static final Pattern STRUCT_LINE_PATTERN = Pattern
-				.compile("^\\s*(?:\\/\\*(.*)\\*\\/)?\\W*(?:(\\w+)(?:\\W*(\\w*)))*\\W*\\W+(.*)\\{(.*)$");
+				.compile("^\\s*+(?:\\/\\*(.*)\\*\\/)?+\\W*(?:(\\S++)(?:\\W*(\\w*)))*\\W*\\W+(.*)\\{(.*)$");
 		private String itemType;
 		private String itemName;
 		private String itemData;
@@ -141,6 +139,9 @@ public class TypeLineParser {
 		}
 
 		public static boolean isWrappedLine(String[] def) {
+			if (def == null) {
+				return false;
+			}
 			return /* itemType */ def[1] == null || /* itemType */ def[1].isEmpty();
 		}
 
@@ -209,7 +210,7 @@ public class TypeLineParser {
 		return false;
 	}
 
-	private TypeDef getCurrent() {
+	public TypeDef getCurrent() {
 		if (this.typeDef != null) {
 			return this.typeDef;
 		}
@@ -236,4 +237,7 @@ public class TypeLineParser {
 		return this.getCurrent().getItemComment2();
 	}
 
+	public List<TypeDef> getChildren() {
+		return this.getCurrent().getChildren();
+	}
 }
